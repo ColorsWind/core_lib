@@ -1,0 +1,5 @@
+name: Core_lib
+version: 1.0
+main: io.github.divios.core_lib.Core_lib
+prefix: CoreLib
+description: Core api for spigot plugins
