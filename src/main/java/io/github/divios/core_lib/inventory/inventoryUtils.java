@@ -1,5 +1,6 @@
 package io.github.divios.core_lib.inventory;
 
+import io.github.divios.core_lib.Core_lib;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.inventory.Inventory;
@@ -58,7 +59,7 @@ public class inventoryUtils {
             BukkitObjectOutputStream dataOutput = new BukkitObjectOutputStream(outputStream);
 
             // Save inventory's size
-            dataOutput.writeObject(inv.getSize());
+            dataOutput.writeInt(inv.getSize());
 
             // Save inventory's title
             dataOutput.writeObject(title);

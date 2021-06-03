@@ -2,6 +2,10 @@ package io.github.divios.core_lib.itemutils;
 
 import de.tr7zw.nbtapi.NBTItem;
 import io.github.divios.core_lib.XCore.SkullUtils;
+import io.github.divios.core_lib.XCore.XMaterial;
+import io.github.divios.core_lib.inventory.InventoryGUI;
+import io.github.divios.core_lib.inventory.ItemButton;
+import io.github.divios.core_lib.inventory.inventoryUtils;
 import io.github.divios.core_lib.misc.FormatUtils;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -10,22 +14,27 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.util.io.BukkitObjectInputStream;
+import org.bukkit.util.io.BukkitObjectOutputStream;
+import org.yaml.snakeyaml.external.biz.base64Coder.Base64Coder;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.util.*;
 import java.util.function.BiPredicate;
 import java.util.stream.Collectors;
 
 /**
  * A utility class to easily modify items
- * @author Redempt
  *
+ * @author Redempt
  */
 public class ItemUtils {
 
     /**
      * Renames an ItemStack, functionally identical to {@link ItemUtils#setName(ItemStack, String)} but kept for legacy reasons
+     *
      * @param item The ItemStack to be renamed
      * @param name The name to give the ItemStack
      * @return The renamed ItemStack
@@ -40,6 +49,7 @@ public class ItemUtils {
 
     /**
      * Renames an ItemStack
+     *
      * @param item The ItemStack to be renamed
      * @param name The name to give the ItemStack
      * @return The renamed ItemStack
@@ -50,6 +60,7 @@ public class ItemUtils {
 
     /**
      * Set a single line of lore for an ItemStack
+     *
      * @param item The ItemStack to be given lore
      * @param line The line of lore to be given
      * @return The modified ItemStack
@@ -66,6 +77,7 @@ public class ItemUtils {
 
     /**
      * Set multiple lines of lore for an ItemStack
+     *
      * @param item The ItemStack to be given lore
      * @param lore The lines of lore to be given
      * @return The modified ItemStack
@@ -80,6 +92,7 @@ public class ItemUtils {
 
     /**
      * Add a line of lore to an ItemStack
+     *
      * @param item The ItemStack to be given lore
      * @param line The line of lore to add
      * @return The modified ItemStack
@@ -97,7 +110,8 @@ public class ItemUtils {
 
     /**
      * Adds multiple lines of lore to an ItemStack
-     * @param item The ItemStack to be given lore
+     *
+     * @param item  The ItemStack to be given lore
      * @param lines The lines or lore to add
      * @return The modified ItemStack
      */
@@ -114,6 +128,7 @@ public class ItemUtils {
 
     /**
      * Set multiple lines of lore for an ItemStack
+     *
      * @param item The ItemStack to be given lore
      * @param lore The lines of lore to be given
      * @return The modified ItemStack
@@ -124,6 +139,7 @@ public class ItemUtils {
 
     /**
      * Sets an item to be unbreakable
+     *
      * @param item The item to make unbreakable
      * @return The unbreakable item
      */
@@ -137,9 +153,10 @@ public class ItemUtils {
 
     /**
      * Add an enchantment to an ItemStack
-     * @param item The ItemStack to be enchanted
+     *
+     * @param item    The ItemStack to be enchanted
      * @param enchant The Enchantment to add to the ItemStack
-     * @param level The level of the Enchantment
+     * @param level   The level of the Enchantment
      * @return The enchanted ItemStack
      */
     public static ItemStack addEnchant(ItemStack item, Enchantment enchant, int level) {
@@ -155,7 +172,8 @@ public class ItemUtils {
 
     /**
      * Adds ItemFlags to the item
-     * @param item The item to add ItemFlags to
+     *
+     * @param item  The item to add ItemFlags to
      * @param flags The ItemFlags to add
      * @return The modified item
      */
@@ -169,6 +187,7 @@ public class ItemUtils {
 
     /**
      * Sets NBTData
+     *
      * @param item
      * @param key
      * @param o
@@ -182,6 +201,7 @@ public class ItemUtils {
 
     /**
      * Returns if the item has the key
+     *
      * @param item
      * @param key
      * @return
@@ -193,6 +213,7 @@ public class ItemUtils {
 
     /**
      * Returns the object on the key
+     *
      * @param item
      * @param key
      * @param type
@@ -206,12 +227,13 @@ public class ItemUtils {
 
     /**
      * Applies a texture to the item. Must be PLAYER_HEAD
+     *
      * @param item
      * @param url
      * @return
      */
     public static ItemStack applyTexture(ItemStack item, String url) {
-        if (!item.getType().equals(Material.PLAYER_HEAD))
+        if (!item.getType().equals(XMaterial.PLAYER_HEAD.parseMaterial()))
             return item;
 
         ItemStack cloned = item.clone();
@@ -222,8 +244,9 @@ public class ItemUtils {
 
     /**
      * Counts the number of the given item in the given inventory
-     * @param inv The inventory to count the items in
-     * @param item The item to count
+     *
+     * @param inv        The inventory to count the items in
+     * @param item       The item to count
      * @param comparison A filter to compare items for counting
      * @return The number of items found
      */
@@ -239,7 +262,8 @@ public class ItemUtils {
 
     /**
      * Counts the number of the given item in the given inventory
-     * @param inv The inventory to count the items in
+     *
+     * @param inv  The inventory to count the items in
      * @param item The item to count
      * @return The number of items found
      */
@@ -249,7 +273,8 @@ public class ItemUtils {
 
     /**
      * Counts the number of items of the given type in the given inventory
-     * @param inv The inventory to count the items in
+     *
+     * @param inv  The inventory to count the items in
      * @param type The type of item to count
      * @return The number of items found
      */
@@ -259,9 +284,10 @@ public class ItemUtils {
 
     /**
      * Removes the specified amount of the given item from the given inventory
-     * @param inv The inventory to remove the items from
-     * @param item The item to be removed
-     * @param amount The amount of items to remove
+     *
+     * @param inv        The inventory to remove the items from
+     * @param item       The item to be removed
+     * @param amount     The amount of items to remove
      * @param comparison A filter to compare items for removal
      * @return Whether the amount specified could be removed. False if it removed less than specified.
      */
@@ -290,8 +316,9 @@ public class ItemUtils {
 
     /**
      * Removes the specified amount of the given item from the given inventory
-     * @param inv The inventory to remove the items from
-     * @param item The item to be removed
+     *
+     * @param inv    The inventory to remove the items from
+     * @param item   The item to be removed
      * @param amount The amount of items to remove
      * @return Whether the amount specified could be removed. False if it removed less than specified.
      */
@@ -301,8 +328,9 @@ public class ItemUtils {
 
     /**
      * Removes the specified amount of the given item type from the given inventory
-     * @param inv The inventory to remove the items from
-     * @param type The item type to be removed
+     *
+     * @param inv    The inventory to remove the items from
+     * @param type   The item type to be removed
      * @param amount The amount of items to remove
      * @return Whether the amount specified could be removed. False if it removed less than specified.
      */
@@ -312,9 +340,10 @@ public class ItemUtils {
 
     /**
      * Remove all matching items up to a maximum, returning the number that were removed
-     * @param inv The inventory to count and remove items from
-     * @param item The item to count and remove
-     * @param max The maximum number of items to remove
+     *
+     * @param inv        The inventory to count and remove items from
+     * @param item       The item to count and remove
+     * @param max        The maximum number of items to remove
      * @param comparison A filter to compare items for counting and removal
      * @return How many items were removed
      */
@@ -327,9 +356,10 @@ public class ItemUtils {
 
     /**
      * Remove all matching items up to a maximum, returning the number that were removed
-     * @param inv The inventory to count and remove items from
+     *
+     * @param inv  The inventory to count and remove items from
      * @param item The item to count and remove
-     * @param max The maximum number of items to remove
+     * @param max  The maximum number of items to remove
      * @return How many items were removed
      */
     public static int countAndRemove(Inventory inv, ItemStack item, int max) {
@@ -338,9 +368,10 @@ public class ItemUtils {
 
     /**
      * Remove all matching items up to a maximum, returning the number that were removed
-     * @param inv The inventory to count and remove items from
+     *
+     * @param inv  The inventory to count and remove items from
      * @param type The item type to count and remove
-     * @param max The maximum number of items to remove
+     * @param max  The maximum number of items to remove
      * @return How many items were removed
      */
     public static int countAndRemove(Inventory inv, Material type, int max) {
@@ -349,7 +380,8 @@ public class ItemUtils {
 
     /**
      * Remove all matching items, returning the number that were removed
-     * @param inv The inventory to count and remove items from
+     *
+     * @param inv  The inventory to count and remove items from
      * @param item The item to count and remove
      * @return How many items were removed
      */
@@ -359,7 +391,8 @@ public class ItemUtils {
 
     /**
      * Remove all items of a specified type, returning the number that were removed
-     * @param inv The inventory to count and remove items from
+     *
+     * @param inv  The inventory to count and remove items from
      * @param type The item type to count and remove
      * @return How many items were removed
      */
@@ -369,8 +402,9 @@ public class ItemUtils {
 
     /**
      * Give the player the specified items, dropping them on the ground if there is not enough room
+     *
      * @param player The player to give the items to
-     * @param items The items to be given
+     * @param items  The items to be given
      */
     public static void give(Player player, ItemStack... items) {
         player.getInventory().addItem(items).values().forEach(i -> player.getWorld().dropItem(player.getLocation(), i));
@@ -378,8 +412,9 @@ public class ItemUtils {
 
     /**
      * Gives the player the specified amount of the specified item, dropping them on the ground if there is not enough room
+     *
      * @param player The player to give the items to
-     * @param item The item to be given to the player
+     * @param item   The item to be given to the player
      * @param amount The amount the player should be given
      */
     public static void give(Player player, ItemStack item, int amount) {
@@ -400,8 +435,9 @@ public class ItemUtils {
 
     /**
      * Gives the player the specified amount of the specified item type, dropping them on the ground if there is not enough room
+     *
      * @param player The player to give the items to
-     * @param type The item type to be given to the player
+     * @param type   The item type to be given to the player
      * @param amount The amount the player should be given
      */
     public static void give(Player player, Material type, int amount) {
@@ -410,7 +446,8 @@ public class ItemUtils {
 
     /**
      * Compares the traits of two items
-     * @param first The first ItemStack
+     *
+     * @param first  The first ItemStack
      * @param second The second ItemStack
      * @param traits The ItemTraits to compare
      * @return Whether the two items are identical in terms of the traits provided. Returns true if both items are null, and false if only one is null.
@@ -432,6 +469,7 @@ public class ItemUtils {
 
     /**
      * Checks if the given item is null or AIR
+     *
      * @param item item to check
      * @return Boolean with the result
      */
@@ -441,6 +479,7 @@ public class ItemUtils {
 
     /**
      * Translates all itemData from the recipient to the receiver
+     *
      * @param recipient
      * @param receiver
      */
@@ -451,17 +490,49 @@ public class ItemUtils {
             receiver.setItemMeta(recipient.getItemMeta());
             receiver.setAmount(recipient.getAmount());
             receiver.setDurability(recipient.getDurability());
-        } catch (IllegalArgumentException ignored) {}
+        } catch (IllegalArgumentException ignored) {
+        }
     }
 
     /**
      * Compares the type, name, and lore of two items
-     * @param first The first ItemStack
+     *
+     * @param first  The first ItemStack
      * @param second The second ItemStack
      * @return Whether the two items are identical in terms of type, name, and lore. Returns true if both items are null, and false if only one is null.
      */
     public static boolean compare(ItemStack first, ItemStack second) {
         return compare(first, second, ItemTrait.TYPE, ItemTrait.NAME, ItemTrait.LORE);
     }
+
+    public static String serialize(ItemStack item) {
+        try {
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            BukkitObjectOutputStream dataOutput = new BukkitObjectOutputStream(outputStream);
+
+            dataOutput.writeObject(item);
+
+            return Base64Coder.encodeLines(outputStream.toByteArray());
+
+        } catch (IOException e) {
+            throw new IllegalStateException("Unable to serialize InventoryGui state.", e);
+        }
+    }
+
+    public static ItemStack deserialize(String base64) {
+        try {
+            ByteArrayInputStream InputStream = new ByteArrayInputStream(Base64Coder.decodeLines(base64));
+            BukkitObjectInputStream dataInput = new BukkitObjectInputStream(InputStream);
+
+            ItemStack item = (ItemStack) dataInput.readObject();
+            dataInput.close();
+
+            return item;
+
+        } catch (Exception e) {
+            throw new IllegalStateException("Unable to deserialize InventoryGui state.", e);
+        }
+    }
+
 
 }

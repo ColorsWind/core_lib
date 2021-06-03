@@ -3,8 +3,10 @@ package io.github.divios.core_lib.inventory;
 import io.github.divios.core_lib.Core_lib;
 import io.github.divios.core_lib.XCore.XMaterial;
 import io.github.divios.core_lib.itemutils.ItemBuilder;
+import net.minecraft.server.v1_16_R2.InventoryUtils;
 import net.wesjd.anvilgui.AnvilGUI;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
@@ -16,11 +18,14 @@ import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.util.io.BukkitObjectInputStream;
+import org.bukkit.util.io.BukkitObjectOutputStream;
+import org.yaml.snakeyaml.external.biz.base64Coder.Base64Coder;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.util.*;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
@@ -29,6 +34,8 @@ import java.util.stream.Collectors;
  * @author Redempt
  */
 public class InventoryGUI implements Listener {
+
+    private static final Core_lib plugin = Core_lib.getInstance();
 
     /**
      * A gray stained glass pane with no name. Good for filling empty slots in GUIs.
@@ -467,11 +474,13 @@ public class InventoryGUI implements Listener {
         /**
          * Restore the GUI to this state
          */
-        public void restore() {
+        public InventoryGUI restore() {
             gui.clear();
             gui.buttons = new ArrayList<>(buttons);
             gui.openSlots = new HashSet<>(openSlots);
             gui.inventory.setContents(contents.clone());
+
+            return gui;
         }
 
     }
