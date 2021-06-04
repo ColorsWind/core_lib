@@ -6,6 +6,8 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.List;
+
 /**
  * A utility class to easily create items
  * @author Redempt
@@ -75,6 +77,15 @@ public class ItemBuilder extends ItemStack {
     }
 
     /**
+     * Set the lore of this ItemBuilder
+     * @param lore The lines of lore
+     * @return The ItemBuilder with lore added
+     */
+    public ItemBuilder setLore(List<String> lore) {
+        return new ItemBuilder(ItemUtils.setLore(this, lore));
+    }
+
+    /**
      * Add a line of lore to this ItemBuilder
      * @param line The line of lore
      * @return The ItemBuilder with lore added
@@ -89,6 +100,15 @@ public class ItemBuilder extends ItemStack {
      * @return The ItemBuilder with lore added
      */
     public ItemBuilder addLore(String... lines) {
+        return new ItemBuilder(ItemUtils.addLore(this, lines));
+    }
+
+    /**
+     * Add multiple lines of lore to this ItemBuilder
+     * @param lines The lines of lore
+     * @return The ItemBuilder with lore added
+     */
+    public ItemBuilder addLore(List<String> lines) {
         return new ItemBuilder(ItemUtils.addLore(this, lines));
     }
 
@@ -120,6 +140,28 @@ public class ItemBuilder extends ItemStack {
     public ItemBuilder addItemFlags(ItemFlag... flags) {
         return new ItemBuilder(ItemUtils.addItemFlags(this, flags));
     }
+
+    /**
+     * Adds ItemFlags to this ItemBuilder
+     * @param flags The ItemFlags to add
+     * @return The ItemBuilder with the flags added
+     */
+    public ItemBuilder addItemFlags(List<ItemFlag> flags) { return new ItemBuilder(ItemUtils.addItemFlags(this, flags));
+    }
+
+    /**
+     * Removes ItemFlags from this ItemBuilder
+     * @param flags The ItemFlags to remove
+     * @return The ItemBuilder with the flags removed
+     */
+    public ItemBuilder removeItemFlags(ItemFlag... flags) { return new ItemBuilder(ItemUtils.removeItemFlags(this, flags)); }
+
+    /**
+     * Removes ItemFlags from this ItemBuilder
+     * @param flags The ItemFlags to remove
+     * @return The ItemBuilder with the flags removed
+     */
+    public ItemBuilder removeItemFlags(List<ItemFlag> flags) { return new ItemBuilder(ItemUtils.removeItemFlags(this, flags)); }
 
     /**
      * Sets this ItemBuilder to be unbreakable

@@ -7,6 +7,7 @@ import io.github.divios.core_lib.inventory.InventoryGUI;
 import io.github.divios.core_lib.inventory.ItemButton;
 import io.github.divios.core_lib.inventory.inventoryUtils;
 import io.github.divios.core_lib.misc.FormatUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
@@ -16,6 +17,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.util.io.BukkitObjectInputStream;
 import org.bukkit.util.io.BukkitObjectOutputStream;
+import org.jetbrains.annotations.NotNull;
 import org.yaml.snakeyaml.external.biz.base64Coder.Base64Coder;
 
 import java.io.ByteArrayInputStream;
@@ -40,7 +42,7 @@ public class ItemUtils {
      * @return The renamed ItemStack
      */
     public static ItemStack rename(ItemStack item, String name) {
-        ItemMeta meta = item.getItemMeta();
+        ItemMeta meta = getMetadata(item);
         meta.setDisplayName(FormatUtils.color(name));
         ItemStack clone = item.clone();
         clone.setItemMeta(meta);
@@ -59,6 +61,13 @@ public class ItemUtils {
     }
 
     /**
+     * Returns the ItemStack display name
+     * @param item The ItemStack to get the name
+     * @return The name of the ItemStack
+     */
+    public static String getName(ItemStack item) { return getMetadata(item).getDisplayName(); }
+
+    /**
      * Set a single line of lore for an ItemStack
      *
      * @param item The ItemStack to be given lore
@@ -66,13 +75,18 @@ public class ItemUtils {
      * @return The modified ItemStack
      */
     public static ItemStack setLore(ItemStack item, String line) {
-        ItemMeta meta = item.getItemMeta();
-        List<String> lore = new ArrayList<>();
-        lore.add(FormatUtils.color(line));
-        meta.setLore(lore);
-        ItemStack clone = item.clone();
-        clone.setItemMeta(meta);
-        return clone;
+        return setLore(item, Collections.singletonList(line));
+    }
+
+    /**
+     * Returns the lore of the item. If the item has not lore,
+     * returns a new List
+     * @param item ItemStack to get the lore
+     * @return The lore of the ItemStack
+     */
+    public static @NotNull List<String> getLore(ItemStack item) {
+        return getMetadata(item).getLore() == null ? new ArrayList<>() :
+                getMetadata(item).getLore();
     }
 
     /**
@@ -83,44 +97,8 @@ public class ItemUtils {
      * @return The modified ItemStack
      */
     public static ItemStack setLore(ItemStack item, List<String> lore) {
-        ItemMeta meta = item.getItemMeta();
-        meta.setLore(lore.stream().map(s -> FormatUtils.color(s)).collect(Collectors.toList()));
-        ItemStack clone = item.clone();
-        clone.setItemMeta(meta);
-        return clone;
-    }
-
-    /**
-     * Add a line of lore to an ItemStack
-     *
-     * @param item The ItemStack to be given lore
-     * @param line The line of lore to add
-     * @return The modified ItemStack
-     */
-    public static ItemStack addLore(ItemStack item, String line) {
-        ItemMeta meta = item.getItemMeta();
-        List<String> lore = meta.getLore();
-        lore = lore == null ? new ArrayList<>() : lore;
-        lore.add(FormatUtils.color(line));
-        meta.setLore(lore);
-        ItemStack clone = item.clone();
-        clone.setItemMeta(meta);
-        return clone;
-    }
-
-    /**
-     * Adds multiple lines of lore to an ItemStack
-     *
-     * @param item  The ItemStack to be given lore
-     * @param lines The lines or lore to add
-     * @return The modified ItemStack
-     */
-    public static ItemStack addLore(ItemStack item, String... lines) {
-        ItemMeta meta = item.getItemMeta();
-        List<String> lore = meta.getLore();
-        lore = lore == null ? new ArrayList<>() : lore;
-        lore.addAll(Arrays.stream(lines).map(s -> FormatUtils.color(s)).collect(Collectors.toList()));
-        meta.setLore(lore);
+        ItemMeta meta = getMetadata(item);
+        meta.setLore(lore.stream().map(FormatUtils::color).collect(Collectors.toList()));
         ItemStack clone = item.clone();
         clone.setItemMeta(meta);
         return clone;
@@ -138,6 +116,60 @@ public class ItemUtils {
     }
 
     /**
+     * Add a line of lore to an ItemStack
+     *
+     * @param item The ItemStack to be given lore
+     * @param line The line of lore to add
+     * @return The modified ItemStack
+     */
+    public static ItemStack addLore(ItemStack item, String line) {
+        return addLore(item, Collections.singletonList(line));
+    }
+
+    /**
+     * Adds multiple lines of lore to an ItemStack
+     *
+     * @param item  The ItemStack to be given lore
+     * @param lines The lines or lore to add
+     * @return The modified ItemStack
+     */
+    public static ItemStack addLore(ItemStack item, String... lines) {
+        return addLore(item, Arrays.asList(lines));
+    }
+
+    /**
+     * Adds multiple lines of lore to an ItemStack
+     *
+     * @param item  The ItemStack to be given lore
+     * @param lines The lines or lore to add
+     * @return The modified ItemStack
+     */
+    public static ItemStack addLore(ItemStack item, List<String> lines) {
+        ItemMeta meta = getMetadata(item);
+        List<String> lore = meta.getLore();
+        lore = lore == null ? new ArrayList<>() : lore;
+        lore.addAll(lines.stream().map(FormatUtils::color).collect(Collectors.toList()));
+        meta.setLore(lore);
+        ItemStack clone = item.clone();
+        clone.setItemMeta(meta);
+        return clone;
+    }
+
+    /**
+     * Removes the lore of an ItemStack
+     * @param item The ItemStack which lore to be removed
+     * @param line the line to be removed
+     * @return ItemStack with the lore removed
+     */
+    public static ItemStack removeLore(ItemStack item, int line) {
+        ItemStack cloned = item.clone();
+        List<String> lore = getLore(cloned);
+        if (line < lore.size()) lore.remove(line);
+
+        return setLore(cloned, lore);
+    }
+
+    /**
      * Sets an item to be unbreakable
      *
      * @param item The item to make unbreakable
@@ -145,7 +177,7 @@ public class ItemUtils {
      */
     public static ItemStack setUnbreakable(ItemStack item) {
         item = item.clone();
-        ItemMeta meta = item.getItemMeta();
+        ItemMeta meta = getMetadata(item);
         meta.setUnbreakable(true);
         item.setItemMeta(meta);
         return item;
@@ -160,7 +192,7 @@ public class ItemUtils {
      * @return The enchanted ItemStack
      */
     public static ItemStack addEnchant(ItemStack item, Enchantment enchant, int level) {
-        ItemMeta meta = item.getItemMeta();
+        ItemMeta meta = getMetadata(item);
         meta.addEnchant(enchant, level, true);
         if (level == 0) {
             meta.removeEnchant(enchant);
@@ -168,6 +200,18 @@ public class ItemUtils {
         ItemStack clone = item.clone();
         clone.setItemMeta(meta);
         return clone;
+    }
+
+    public static boolean hasItemFlags(ItemStack item, ItemFlag flag) {
+        return getMetadata(item).hasItemFlag(flag);
+    }
+
+    public static boolean hasItemFlags(ItemStack item, ItemFlag... flags) {
+        ItemMeta meta = getMetadata(item);
+        for (ItemFlag flag : flags)
+            if (!meta.hasItemFlag(flag)) return false;
+
+        return true;
     }
 
     /**
@@ -178,8 +222,45 @@ public class ItemUtils {
      * @return The modified item
      */
     public static ItemStack addItemFlags(ItemStack item, ItemFlag... flags) {
-        ItemMeta meta = item.getItemMeta();
-        meta.addItemFlags(flags);
+        return addItemFlags(item, Arrays.asList(flags));
+    }
+
+    /**
+     * Adds ItemFlags to the item
+     *
+     * @param item  The item to add ItemFlags to
+     * @param flags The ItemFlags to add
+     * @return The modified item
+     */
+    public static ItemStack addItemFlags(ItemStack item, List<ItemFlag> flags) {
+        ItemMeta meta = getMetadata(item);
+        flags.forEach(meta::addItemFlags);
+        ItemStack clone = item.clone();
+        clone.setItemMeta(meta);
+        return clone;
+    }
+
+    /**
+     * Removes ItemFlags from the item
+     *
+     * @param item  The item to add ItemFlags to
+     * @param flags The ItemFlags to add
+     * @return The modified item
+     */
+    public static ItemStack removeItemFlags(ItemStack item, ItemFlag... flags) {
+        return removeItemFlags(item, Arrays.asList(flags));
+    }
+
+    /**
+     * Removes ItemFlags from the item
+     *
+     * @param item  The item to add ItemFlags to
+     * @param flags The ItemFlags to add
+     * @return The modified item
+     */
+    public static ItemStack removeItemFlags(ItemStack item, List<ItemFlag> flags) {
+        ItemMeta meta = getMetadata(item);
+        flags.forEach(meta::removeItemFlags);
         ItemStack clone = item.clone();
         clone.setItemMeta(meta);
         return clone;
@@ -240,6 +321,11 @@ public class ItemUtils {
         cloned.setItemMeta(SkullUtils.applySkin(cloned.getItemMeta(), url));
 
         return cloned;
+    }
+
+    public static ItemMeta getMetadata(ItemStack item) {
+        return item.getItemMeta() == null ?
+                Bukkit.getItemFactory().getItemMeta(item.getType()) : item.getItemMeta();
     }
 
     /**

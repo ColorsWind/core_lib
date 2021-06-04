@@ -11,17 +11,6 @@ import java.util.function.Consumer;
  * @author Redempt
  */
 public class Task {
-    
-    public static final Core_lib main = Core_lib.getInstance();
-
-    /**
-     * Schedules a sync delayed task to run as soon as possible
-     * @param run The task to run
-     * @return The Task that has been scheduled
-     */
-    public static Task syncDelayed(Runnable run) {
-        return syncDelayed(main, run);
-    }
 
     /**
      * Schedules a sync delayed task to run as soon as possible
@@ -31,15 +20,6 @@ public class Task {
      */
     public static Task syncDelayed(Plugin plugin, Runnable run) {
         return syncDelayed(plugin, run, 0);
-    }
-
-    /**
-     * Schedules a sync delayed task to run as soon as possible
-     * @param run The task to run
-     * @return The Task that has been scheduled
-     */
-    public static Task syncDelayed(Consumer<Task> run) {
-        return syncDelayed(main, run);
     }
 
     /**
@@ -54,16 +34,6 @@ public class Task {
 
     /**
      * Schedules a sync delayed task to run after a delay
-     * @param run The task to run
-     * @param delay The delay in ticks to wait before running the task
-     * @return The Task that has been scheduled
-     */
-    public static Task syncDelayed(Runnable run, long delay) {
-        return syncDelayed(main, run, delay);
-    }
-
-    /**
-     * Schedules a sync delayed task to run after a delay
      * @param plugin The plugin scheduling the task
      * @param run The task to run
      * @param delay The delay in ticks to wait before running the task
@@ -71,16 +41,6 @@ public class Task {
      */
     public static Task syncDelayed(Plugin plugin, Runnable run, long delay) {
         return syncDelayed(plugin, t -> run.run(), delay);
-    }
-
-    /**
-     * Schedules a sync delayed task to run after a delay
-     * @param run The task to run
-     * @param delay The delay in ticks to wait before running the task
-     * @return The Task that has been scheduled
-     */
-    public static Task syncDelayed(Consumer<Task> run, long delay) {
-        return syncDelayed(main, run, delay);
     }
 
     /**
@@ -98,17 +58,6 @@ public class Task {
 
     /**
      * Schedules a sync repeating task to run later
-     * @param run The task to run
-     * @param delay The delay in ticks to wait before running the task
-     * @param period The number of ticks between executions of the task
-     * @return The Task that has been scheduled
-     */
-    public static Task syncRepeating(Runnable run, long delay, long period) {
-        return syncRepeating(main, run, delay, period);
-    }
-
-    /**
-     * Schedules a sync repeating task to run later
      * @param plugin The plugin scheduling the task
      * @param run The task to run
      * @param delay The delay in ticks to wait before running the task
@@ -117,17 +66,6 @@ public class Task {
      */
     public static Task syncRepeating(Plugin plugin, Runnable run, long delay, long period) {
         return syncRepeating(plugin, t -> run.run(), delay, period);
-    }
-
-    /**
-     * Schedules a sync repeating task to run later
-     * @param run The task to run
-     * @param delay The delay in ticks to wait before running the task
-     * @param period The number of ticks between executions of the task
-     * @return The Task that has been scheduled
-     */
-    public static Task syncRepeating(Consumer<Task> run, long delay, long period) {
-        return syncRepeating(main, run, delay, period);
     }
 
     /**
@@ -146,30 +84,12 @@ public class Task {
 
     /**
      * Schedules an async delayed task to run as soon as possible
-     * @param run The task to run
-     * @return The Task that has been scheduled
-     */
-    public static Task asyncDelayed(Runnable run) {
-        return asyncDelayed(main, run);
-    }
-
-    /**
-     * Schedules an async delayed task to run as soon as possible
      * @param plugin The plugin scheduling the task
      * @param run The task to run
      * @return The Task that has been scheduled
      */
     public static Task asyncDelayed(Plugin plugin, Runnable run) {
         return asyncDelayed(plugin, t -> run.run(), 0);
-    }
-
-    /**
-     * Schedules an async delayed task to run as soon as possible
-     * @param run The task to run
-     * @return The Task that has been scheduled
-     */
-    public static Task asyncDelayed(Consumer<Task> run) {
-        return asyncDelayed(main, run);
     }
 
     /**
@@ -184,16 +104,6 @@ public class Task {
 
     /**
      * Schedules an async delayed task to run after a delay
-     * @param run The task to run
-     * @param delay The delay in ticks to wait before running the task
-     * @return The Task that has been scheduled
-     */
-    public static Task asyncDelayed(Runnable run, long delay) {
-        return asyncDelayed(main, run, delay);
-    }
-
-    /**
-     * Schedules an async delayed task to run after a delay
      * @param plugin The plugin scheduling the task
      * @param run The task to run
      * @param delay The delay in ticks to wait before running the task
@@ -201,16 +111,6 @@ public class Task {
      */
     public static Task asyncDelayed(Plugin plugin, Runnable run, long delay) {
         return asyncDelayed(plugin, t -> run.run(), delay);
-    }
-
-    /**
-     * Schedules an async delayed task to run after a delay
-     * @param run The task to run
-     * @param delay The delay in ticks to wait before running the task
-     * @return The Task that has been scheduled
-     */
-    public static Task asyncDelayed(Consumer<Task> run, long delay) {
-        return asyncDelayed(main, run, delay);
     }
 
     /**
@@ -228,17 +128,6 @@ public class Task {
 
     /**
      * Schedules an async repeating task to run later
-     * @param run The task to run
-     * @param delay The delay in ticks to wait before running the task
-     * @param period The number of ticks between executions of the task
-     * @return The Task that has been scheduled
-     */
-    public static Task asyncRepeating(Consumer<Task> run, long delay, long period) {
-        return asyncRepeating(main, run, delay, period);
-    }
-
-    /**
-     * Schedules an async repeating task to run later
      * @param plugin The plugin scheduling the task
      * @param run The task to run
      * @param delay The delay in ticks to wait before running the task
@@ -249,17 +138,6 @@ public class Task {
         Task[] task = {null};
         task[0] = new Task(Bukkit.getScheduler().scheduleAsyncRepeatingTask(plugin, () -> run.accept(task[0]), delay, period), TaskType.ASYNC_REPEATING, plugin);
         return task[0];
-    }
-
-    /**
-     * Schedules an async repeating task to run later
-     * @param run The task to run
-     * @param delay The delay in ticks to wait before running the task
-     * @param period The number of ticks between executions of the task
-     * @return The Task that has been scheduled
-     */
-    public static Task asyncRepeating(Runnable run, long delay, long period) {
-        return asyncRepeating(main, run, delay, period);
     }
 
     /**

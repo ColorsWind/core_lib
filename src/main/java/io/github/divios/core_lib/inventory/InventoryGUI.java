@@ -3,6 +3,7 @@ package io.github.divios.core_lib.inventory;
 import io.github.divios.core_lib.Core_lib;
 import io.github.divios.core_lib.XCore.XMaterial;
 import io.github.divios.core_lib.itemutils.ItemBuilder;
+import io.github.divios.core_lib.misc.Task;
 import net.minecraft.server.v1_16_R2.InventoryUtils;
 import net.wesjd.anvilgui.AnvilGUI;
 import org.bukkit.Bukkit;
@@ -18,6 +19,7 @@ import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.util.io.BukkitObjectInputStream;
 import org.bukkit.util.io.BukkitObjectOutputStream;
 import org.yaml.snakeyaml.external.biz.base64Coder.Base64Coder;
@@ -35,8 +37,6 @@ import java.util.stream.Collectors;
  */
 public class InventoryGUI implements Listener {
 
-    private static final Core_lib plugin = Core_lib.getInstance();
-
     /**
      * A gray stained glass pane with no name. Good for filling empty slots in GUIs.
      */
@@ -46,6 +46,7 @@ public class InventoryGUI implements Listener {
         FILLER = new ItemBuilder(XMaterial.GRAY_STAINED_GLASS_PANE).setName(" ");
     }
 
+    private final Plugin plugin;
     private final Inventory inventory;
     private final String title;
     private List<ItemButton> buttons = new ArrayList<>();
@@ -62,10 +63,11 @@ public class InventoryGUI implements Listener {
      *
      * @param inventory The inventory to create a GUI from
      */
-    public InventoryGUI(Inventory inventory, String title) {
+    public InventoryGUI(Plugin plugin, Inventory inventory, String title) {
+        this.plugin = plugin;
         this.inventory = inventory;
         this.title = title;
-        Bukkit.getPluginManager().registerEvents(this, Core_lib.getInstance());
+        Bukkit.getPluginManager().registerEvents(this, plugin);
     }
 
     /**
@@ -73,8 +75,8 @@ public class InventoryGUI implements Listener {
      * @param size The size of the inventory
      * @param name The name of the inventory
      */
-    public InventoryGUI(int size, String name) {
-        this(Bukkit.createInventory(null, size, name), name);
+    public InventoryGUI(Plugin plugin, int size, String name) {
+        this(plugin, Bukkit.createInventory(null, size, name), name);
     }
 
     /**
@@ -414,9 +416,8 @@ public class InventoryGUI implements Listener {
                 ItemStack item = e.getCurrentItem();
                 item.setAmount(amount);
                 e.setCurrentItem(item);
-                Bukkit.getScheduler().scheduleSyncDelayedTask(Core_lib.getInstance(), () -> {
-                    ((Player) e.getWhoClicked()).updateInventory();
-                });
+                Task.syncDelayed(plugin, () ->
+                        ((Player) e.getWhoClicked()).updateInventory());
                 onClickOpenSlot.accept(e, slots);
                 return;
             }
