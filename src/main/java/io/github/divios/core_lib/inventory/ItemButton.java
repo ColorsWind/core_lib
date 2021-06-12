@@ -3,7 +3,6 @@ package io.github.divios.core_lib.inventory;
 import io.github.divios.core_lib.itemutils.ItemUtils;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.util.io.BukkitObjectOutputStream;
 import org.yaml.snakeyaml.external.biz.base64Coder.Base64Coder;
 
 import java.io.*;

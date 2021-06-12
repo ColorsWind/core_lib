@@ -3,9 +3,6 @@ package io.github.divios.core_lib.itemutils;
 import de.tr7zw.nbtapi.NBTItem;
 import io.github.divios.core_lib.XCore.SkullUtils;
 import io.github.divios.core_lib.XCore.XMaterial;
-import io.github.divios.core_lib.inventory.InventoryGUI;
-import io.github.divios.core_lib.inventory.ItemButton;
-import io.github.divios.core_lib.inventory.inventoryUtils;
 import io.github.divios.core_lib.misc.FormatUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -23,7 +20,10 @@ import org.yaml.snakeyaml.external.biz.base64Coder.Base64Coder;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.function.BiPredicate;
 import java.util.stream.Collectors;
 
@@ -597,11 +597,12 @@ public class ItemUtils {
             BukkitObjectOutputStream dataOutput = new BukkitObjectOutputStream(outputStream);
 
             dataOutput.writeObject(item);
+            dataOutput.close();
 
             return Base64Coder.encodeLines(outputStream.toByteArray());
 
         } catch (IOException e) {
-            throw new IllegalStateException("Unable to serialize InventoryGui state.", e);
+            throw new IllegalStateException("Unable to serialize item.", e);
         }
     }
 
@@ -616,7 +617,7 @@ public class ItemUtils {
             return item;
 
         } catch (Exception e) {
-            throw new IllegalStateException("Unable to deserialize InventoryGui state.", e);
+            throw new IllegalStateException("Unable to deserialize item.", e);
         }
     }
 

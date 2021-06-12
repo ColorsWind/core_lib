@@ -1,6 +1,6 @@
 package io.github.divios.core_lib.inventory;
 
-import io.github.divios.core_lib.Core_lib;
+import io.github.divios.core_lib.misc.Pair;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.inventory.Inventory;
@@ -83,7 +83,7 @@ public class inventoryUtils {
      * @param holder holder to set for the new inventory
      * @return deserialized inventory
      */
-    public static Map.Entry<String, Inventory> deserialize(String base64, @Nullable InventoryHolder holder) {
+    public static Pair<String, Inventory> deserialize(String base64, @Nullable InventoryHolder holder) {
         try {
             Inventory inv;
             ByteArrayInputStream InputStream = new ByteArrayInputStream(Base64Coder.decodeLines(base64));
@@ -103,7 +103,7 @@ public class inventoryUtils {
             }
 
             dataInput.close();
-            return new AbstractMap.SimpleEntry<>(title, inv);
+            return new Pair<>(title, inv);
 
         } catch (Exception e) {
             throw new IllegalStateException("Unable to deserialize inventory.", e);
@@ -116,7 +116,7 @@ public class inventoryUtils {
      * @param base64 string on base 64 to deserialize
      * @return deserialized inventory
      */
-    public static Map.Entry<String, Inventory> deserialize(String base64) {
+    public static Pair<String, Inventory> deserialize(String base64) {
         return deserialize(base64, null);
     }
 

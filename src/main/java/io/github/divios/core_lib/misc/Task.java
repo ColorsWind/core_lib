@@ -1,6 +1,5 @@
 package io.github.divios.core_lib.misc;
 
-import io.github.divios.core_lib.Core_lib;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 
