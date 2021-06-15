@@ -2,6 +2,7 @@ package io.github.divios.core_lib.inventory;
 
 import io.github.divios.core_lib.XCore.XMaterial;
 import io.github.divios.core_lib.itemutils.ItemBuilder;
+import io.github.divios.core_lib.misc.FormatUtils;
 import io.github.divios.core_lib.misc.Task;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -69,7 +70,7 @@ public class InventoryGUI implements Listener {
      * @param name The name of the inventory
      */
     public InventoryGUI(Plugin plugin, int size, String name) {
-        this(plugin, Bukkit.createInventory(null, size, name), name);
+        this(plugin, Bukkit.createInventory(null, size, FormatUtils.color(name)), name);
     }
 
     /**

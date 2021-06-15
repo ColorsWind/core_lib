@@ -14,9 +14,7 @@ import org.yaml.snakeyaml.external.biz.base64Coder.Base64Coder;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.util.AbstractMap;
 import java.util.Arrays;
-import java.util.Map;
 
 public class inventoryUtils {
 
@@ -103,7 +101,7 @@ public class inventoryUtils {
             }
 
             dataInput.close();
-            return new Pair<>(title, inv);
+            return Pair.of(title, inv);
 
         } catch (Exception e) {
             throw new IllegalStateException("Unable to deserialize inventory.", e);

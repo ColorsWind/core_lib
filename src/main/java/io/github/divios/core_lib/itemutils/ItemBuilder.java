@@ -67,6 +67,10 @@ public class ItemBuilder extends ItemStack {
         return new ItemBuilder(ItemUtils.addEnchant(this, enchant, level));
     }
 
+    public ItemBuilder removeEnchant(Enchantment enchantment) {
+        return new ItemBuilder(ItemUtils.removeEnchant(this, enchantment));
+    }
+
     /**
      * Set the lore of this ItemBuilder
      * @param lore The lines of lore
@@ -120,6 +124,10 @@ public class ItemBuilder extends ItemStack {
     public ItemBuilder setName(String name) {
         return new ItemBuilder(ItemUtils.rename(this, name));
     }
+
+    public ItemBuilder setMaterial(Material m) { return new ItemBuilder(ItemUtils.setMaterial(this, m)); }
+
+    public ItemBuilder setMaterial(XMaterial m) { return setMaterial(m.parseMaterial()); }
 
     /**
      * Set the durability (damage) of the ItemBuilder

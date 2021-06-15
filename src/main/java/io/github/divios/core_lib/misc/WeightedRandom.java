@@ -16,6 +16,8 @@ public class WeightedRandom<T> {
     private List<Double> totals;
     private List<T> items;
 
+    private boolean removeOnRoll = false;
+
     /**
      * Create a new WeightedRandom from a map of outcomes to their weights
      * @param map The map of outcomes to their weights
@@ -80,6 +82,10 @@ public class WeightedRandom<T> {
         total = 0;
     }
 
+    public void removeOnRoll() { removeOnRoll = true; }
+
+    public void setRemoveOnRoll(boolean removeOnRoll) { this.removeOnRoll = removeOnRoll; }
+
     private WeightedRandom(Map<T, Double> weights, boolean no) {
         initialize(weights);
     }
@@ -112,7 +118,16 @@ public class WeightedRandom<T> {
             pos = -(pos + 1);
         }
         pos = Math.min(pos, items.size() - 1);
-        return items.get(pos);
+        T toReturn = items.get(pos);
+
+        if (removeOnRoll) {
+            weights.remove(toReturn);
+            initialize(weights);
+        }
+
+        return toReturn;
+
+
     }
 
     /**

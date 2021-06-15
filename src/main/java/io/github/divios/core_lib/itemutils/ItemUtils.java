@@ -67,6 +67,20 @@ public class ItemUtils {
      */
     public static String getName(ItemStack item) { return getMetadata(item).getDisplayName(); }
 
+    public static ItemStack setMaterial(ItemStack item, Material m) {
+        ItemStack cloned = item.clone();
+        cloned.setType(m);
+        return cloned;
+    }
+
+    public static ItemStack setMaterial(ItemStack item, XMaterial m) {
+        return setMaterial(item, m.parseMaterial());
+    }
+
+    public static Material getMaterial(ItemStack item) {
+        return item.getType();
+    }
+
     /**
      * Set a single line of lore for an ItemStack
      *
@@ -183,6 +197,14 @@ public class ItemUtils {
         return item;
     }
 
+    public static ItemStack setDurability(ItemStack item, short durability) {
+        ItemStack cloned = item.clone();
+        cloned.setDurability(durability);
+        return cloned;
+    }
+
+    public static short setDurability(ItemStack item) { return item.getDurability(); }
+
     /**
      * Add an enchantment to an ItemStack
      *
@@ -200,6 +222,15 @@ public class ItemUtils {
         ItemStack clone = item.clone();
         clone.setItemMeta(meta);
         return clone;
+    }
+
+    public static ItemStack removeEnchant(ItemStack item, Enchantment enchant) {
+        ItemMeta meta = getMetadata(item);
+        meta.removeEnchant(enchant);
+
+        ItemStack cloned = item.clone();
+        cloned.setItemMeta(meta);
+        return cloned;
     }
 
     public static boolean hasItemFlags(ItemStack item, ItemFlag flag) {

@@ -74,11 +74,11 @@ dependencies {
 
     implementation 'org.jetbrains:annotations:20.1.0'
     compileOnly 'com.github.MilkBowl:VaultAPI:1.7'
-    compileOnly "org.spigotmc:spigot:1.16.3-R0.1-SNAPSHOT"
-    compileOnly group: "org.spigotmc", name: "spigot-api", version: "1.16.5-R0.1-SNAPSHOT"
+    compileOnly "org.spigotmc:spigot:1.17-R0.1-SNAPSHOT"
+    compileOnly group: "org.spigotmc", name: "spigot-api", version: "1.17-R0.1-SNAPSHOT"
     api "net.wesjd:anvilgui:1.5.0-SNAPSHOT"
     api "org.bstats:bstats-bukkit:1.8"
-    api "de.tr7zw:item-nbt-api-plugin:2.7.1"
+    api "de.tr7zw:item-nbt-api-plugin:2.8.0"
 }
 
 shadowJar {

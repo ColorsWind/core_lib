@@ -136,7 +136,7 @@ public class dynamicGui implements InventoryHolder, Listener {
         if (!isSearch) content = contentX.contentS.get();
         else content = contentX.searchContent;
 
-        int slot = 0;
+        final int[] slot = {0};
         Inventory returnGui = Bukkit.createInventory(this, 54, FormatUtils.color(title.apply(page)));
         setDefaultItems(returnGui);
         if (pos == 0 && content.size() > 45) setNextItem(returnGui);
@@ -148,12 +148,14 @@ public class dynamicGui implements InventoryHolder, Listener {
             setPreviousItem(returnGui);
         }
 
-        for (ItemStack item : content) {
-            if (slot == rows2fill * page) break;
-            if (slot >= (page - 1) * rows2fill) returnGui.setItem(slot - (page - 1) * rows2fill, item);
+        Task.asyncDelayed(plugin, () -> {
+            for (ItemStack item : content) {
+                if (slot[0] == rows2fill * page) break;
+                if (slot[0] >= (page - 1) * rows2fill) returnGui.setItem(slot[0] - (page - 1) * rows2fill, item);
 
-            slot++;
-        }
+                slot[0]++;
+            }
+        }, 0L);
         return returnGui;
     }
 
@@ -169,7 +171,7 @@ public class dynamicGui implements InventoryHolder, Listener {
 
         if (addItems != null) addItems.accept(inv, page);
 
-        if(!searchOn) return;
+        if (!searchOn) return;
 
         ItemStack search = null;
         if (!isSearch) {
@@ -230,7 +232,9 @@ public class dynamicGui implements InventoryHolder, Listener {
         }
     }
 
-    public List<Inventory> getinvs() { return invsList; }
+    public List<Inventory> getinvs() {
+        return invsList;
+    }
 
     @Override
     public Inventory getInventory() {
@@ -253,22 +257,17 @@ public class dynamicGui implements InventoryHolder, Listener {
             unregister();
             preventClose.unregister();
             back.accept(p);
-        }
-
-        else if (slot == 53 && !ItemUtils.isEmpty(item)) {
+        } else if (slot == 53 && !ItemUtils.isEmpty(item)) {
             boolean aux = preventCloseB.get();
             preventCloseB.set(false);
             p.openInventory(processNextGui(inv, 1));
             preventCloseB.set(aux);
-        }
-        else if (slot == 45 && !ItemUtils.isEmpty(item)) {
+        } else if (slot == 45 && !ItemUtils.isEmpty(item)) {
             boolean aux = preventCloseB.get();
             preventCloseB.set(false);
             p.openInventory(processNextGui(inv, -1));
             preventCloseB.set(aux);
-        }
-
-        else if (e.getSlot() == 51 && searchOn) searchAction(item);                             /* Search button */
+        } else if (e.getSlot() == 51 && searchOn) searchAction(item);                             /* Search button */
 
         else {
             Response response;
@@ -283,8 +282,7 @@ public class dynamicGui implements InventoryHolder, Listener {
             if (response.getResponse() == ResponseX.CLOSE) {
                 preventClose.unregister();
                 p.closeInventory();
-            }
-            else if (response.getResponse() == ResponseX.UPDATE) {
+            } else if (response.getResponse() == ResponseX.UPDATE) {
                 preventClose.unregister();
                 new dynamicGui(plugin, p, contentX, title, back, rows2fill, contentAction,
                         nonContentAction, addItems, searchOn, isSearch, page, preventCloseB.get());
