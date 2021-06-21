@@ -1,5 +1,6 @@
 package io.github.divios.core_lib.misc;
 
+import com.cryptomorin.xseries.messages.Titles;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventPriority;

@@ -1,5 +1,6 @@
 package io.github.divios.core_lib.misc;
 
+import com.cryptomorin.xseries.messages.Titles;
 import io.github.divios.core_lib.itemutils.ItemUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -18,7 +19,7 @@ public class ItemPrompt{
     private final Task TaskID;
     public final BiConsumer<Player, ItemStack> onComplete;
     private final Consumer<Player> expiredAction;
-    private final EventListener<PlayerInteractEvent> listener;
+    private EventListener<PlayerInteractEvent> listener;
 
     public ItemPrompt(Plugin plugin,
                       Player p,
@@ -32,12 +33,13 @@ public class ItemPrompt{
         this.onComplete = onComplete;
         this.expiredAction = expiredAction;
 
-        listener = new EventListener<>(plugin, PlayerInteractEvent.class,
-                EventPriority.HIGH, this::OnPlayerClick);
+        p.closeInventory();
+        Task.syncDelayed(plugin, () -> listener = new EventListener<>(plugin, PlayerInteractEvent.class,
+                EventPriority.HIGH, this::OnPlayerClick), 1L);
 
         TaskID = Task.syncDelayed(plugin, () -> {
             listener.unregister();
-            expiredAction.accept(p);
+            this.expiredAction.accept(p);
         }, 200);
 
         Titles.sendTitle(p, 20, 60, 20,

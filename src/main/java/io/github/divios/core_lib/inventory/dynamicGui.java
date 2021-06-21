@@ -1,6 +1,6 @@
 package io.github.divios.core_lib.inventory;
 
-import io.github.divios.core_lib.XCore.XMaterial;
+import com.cryptomorin.xseries.XMaterial;
 import io.github.divios.core_lib.itemutils.ItemBuilder;
 import io.github.divios.core_lib.itemutils.ItemUtils;
 import io.github.divios.core_lib.misc.EventListener;
@@ -100,18 +100,18 @@ public class dynamicGui implements InventoryHolder, Listener {
     }
 
     private static class contentX {
-        public Supplier<List<ItemStack>> contentS;
+        public List<ItemStack> contentS;
         public List<ItemStack> searchContent;
 
-        public contentX(Supplier contentS) {
-            this.contentS = contentS;
+        public contentX(Supplier<List<ItemStack>> contentS) {
+            this.contentS = contentS.get();
         }
     }
 
     private void createStructure() {
 
         List<ItemStack> content;
-        if (!isSearch) content = contentX.contentS.get();
+        if (!isSearch) content = contentX.contentS;
         else content = contentX.searchContent;
 
         double nD = content.size() / Double.valueOf(rows2fill);
@@ -132,12 +132,15 @@ public class dynamicGui implements InventoryHolder, Listener {
     }
 
     private Inventory createSingleInv(int page, int pos) {
-        List<ItemStack> content;
-        if (!isSearch) content = contentX.contentS.get();
-        else content = contentX.searchContent;
 
         final int[] slot = {0};
         Inventory returnGui = Bukkit.createInventory(this, 54, FormatUtils.color(title.apply(page)));
+
+
+        List<ItemStack> content;
+        if (!isSearch) content = contentX.contentS;
+        else content = contentX.searchContent;
+
         setDefaultItems(returnGui);
         if (pos == 0 && content.size() > 45) setNextItem(returnGui);
         if (pos == 1) {
@@ -148,14 +151,14 @@ public class dynamicGui implements InventoryHolder, Listener {
             setPreviousItem(returnGui);
         }
 
-        Task.asyncDelayed(plugin, () -> {
-            for (ItemStack item : content) {
-                if (slot[0] == rows2fill * page) break;
-                if (slot[0] >= (page - 1) * rows2fill) returnGui.setItem(slot[0] - (page - 1) * rows2fill, item);
+        for (ItemStack item : content) {
+            if (slot[0] == rows2fill * page) break;
+            if (slot[0] >= (page - 1) * rows2fill) returnGui.setItem(slot[0] - (page - 1) * rows2fill, item);
 
-                slot[0]++;
-            }
-        }, 0L);
+            slot[0]++;
+        }
+
+
         return returnGui;
     }
 
@@ -214,7 +217,7 @@ public class dynamicGui implements InventoryHolder, Listener {
                     })
                     .onComplete((player, text) -> {
 
-                        for (ItemStack s : contentX.contentS.get()) {
+                        for (ItemStack s : contentX.contentS) {
                             String name = FormatUtils.stripColor(s.getItemMeta().getDisplayName());
                             if (name.toLowerCase().startsWith(text.toLowerCase())) {
                                 lists.add(s);
@@ -281,6 +284,7 @@ public class dynamicGui implements InventoryHolder, Listener {
 
             if (response.getResponse() == ResponseX.CLOSE) {
                 preventClose.unregister();
+                unregister();
                 p.closeInventory();
             } else if (response.getResponse() == ResponseX.UPDATE) {
                 preventClose.unregister();

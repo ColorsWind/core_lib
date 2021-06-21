@@ -1,8 +1,8 @@
 package io.github.divios.core_lib.itemutils;
 
+import com.cryptomorin.xseries.SkullUtils;
+import com.cryptomorin.xseries.XMaterial;
 import de.tr7zw.nbtapi.NBTItem;
-import io.github.divios.core_lib.XCore.SkullUtils;
-import io.github.divios.core_lib.XCore.XMaterial;
 import io.github.divios.core_lib.misc.FormatUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;

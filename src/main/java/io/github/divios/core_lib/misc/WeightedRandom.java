@@ -3,6 +3,7 @@ package io.github.divios.core_lib.misc;
 import java.util.*;
 import java.util.function.Function;
 import java.util.function.ToDoubleFunction;
+import java.util.stream.IntStream;
 
 /**
  * Uses a map of outcomes to weights to get random values
@@ -104,6 +105,19 @@ public class WeightedRandom<T> {
         });
     }
 
+    private void reMap(int index) {
+        T rolled = items.get(index);
+        Double rolledWeight = weights.get(rolled);
+
+        total -= rolledWeight;
+        totals.remove(index);
+        IntStream.range(index, totals.size())
+                .forEach(value ->
+                        totals.set(index, totals.get(index) - rolledWeight));
+        items.remove(index);
+        weights.remove(rolled);
+    }
+
     /**
      * Rolls and gets a weighted random outcome
      * @return A weighted random outcome, or null if there are no possible outcomes
@@ -118,14 +132,12 @@ public class WeightedRandom<T> {
             pos = -(pos + 1);
         }
         pos = Math.min(pos, items.size() - 1);
-        T toReturn = items.get(pos);
 
-        if (removeOnRoll) {
-            weights.remove(toReturn);
-            initialize(weights);
-        }
+        T rolled = items.get(pos);
 
-        return toReturn;
+        if (removeOnRoll) reMap(pos);
+
+        return rolled;
 
 
     }
