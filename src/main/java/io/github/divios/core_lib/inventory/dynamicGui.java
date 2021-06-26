@@ -191,20 +191,20 @@ public class dynamicGui implements InventoryHolder, Listener {
             search = new ItemBuilder(XMaterial.REDSTONE_BLOCK)
                     .setName("&c&lCancel search").setLore("&7Click to cancel search");
         }
-        inv.setItem(51, search);
+        inv.setItem(52, search);
 
     }
 
     private void setNextItem(Inventory inv) {
-        ItemStack next = new ItemBuilder(Material.PLAYER_HEAD)
+        ItemStack next = new ItemBuilder(XMaterial.PLAYER_HEAD)
                 .setName("&6&lNext").applyTexture("19bf3292e126a105b54eba713aa1b152d541a1d8938829c56364d178ed22bf");
-        inv.setItem(53, next);
+        inv.setItem(51, next);
     }
 
     private void setPreviousItem(Inventory inv) {
-        ItemStack previous = new ItemBuilder(Material.PLAYER_HEAD)
+        ItemStack previous = new ItemBuilder(XMaterial.PLAYER_HEAD)
                 .setName("&6&lPrevious").applyTexture("bd69e06e5dadfd84e5f3d1c21063f2553b2fa945ee1d4d7152fdc5425bc12a9");
-        inv.setItem(45, previous);
+        inv.setItem(47, previous);
     }
 
     private void searchAction(ItemStack item) {
