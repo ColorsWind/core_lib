@@ -74,7 +74,10 @@ public class ItemUtils {
     }
 
     public static ItemStack setMaterial(ItemStack item, XMaterial m) {
-        return setMaterial(item, m.parseMaterial());
+        ItemStack cloned = item.clone();
+        cloned.setType(m.parseMaterial());
+        cloned.setData(m.parseItem().getData());
+        return cloned;
     }
 
     public static Material getMaterial(ItemStack item) {

@@ -2,6 +2,7 @@ package io.github.divios.core_lib.inventory;
 
 import com.cryptomorin.xseries.XMaterial;
 import io.github.divios.core_lib.itemutils.ItemBuilder;
+import io.github.divios.core_lib.itemutils.ItemUtils;
 import io.github.divios.core_lib.misc.Task;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -21,21 +22,21 @@ public class materialsPrompt {
 
     private final Plugin plugin;
     private final Player p;
-    private final BiConsumer<Boolean, Material> consumer;
+    private final BiConsumer<Boolean, XMaterial> consumer;
 
     static {
         contents = removeGarbageMaterial();
     }
 
     private materialsPrompt(Plugin plugin, Player p,
-                           BiConsumer<Boolean, Material> consumer
+                           BiConsumer<Boolean, XMaterial> consumer
     ) {
         this.plugin = plugin;
         this.p = p;
         this.consumer = consumer;
     }
 
-    public static void open(Plugin plugin, Player p, BiConsumer<Boolean, Material> consumer) {
+    public static void open(Plugin plugin, Player p, BiConsumer<Boolean, XMaterial> consumer) {
 
         materialsPrompt instance = new materialsPrompt(plugin, p, consumer);
         new dynamicGui.Builder()
@@ -52,8 +53,9 @@ public class materialsPrompt {
     }
 
     private dynamicGui.Response contentActions(InventoryClickEvent e) {
+        if (ItemUtils.isEmpty(e.getCurrentItem())) return dynamicGui.Response.nu();
         Task.syncDelayed(plugin, () -> consumer.accept(true,
-                XMaterial.matchXMaterial(e.getCurrentItem()).parseMaterial())
+                XMaterial.matchXMaterial(e.getCurrentItem()))
                 , 1L);
         return dynamicGui.Response.close();
     }

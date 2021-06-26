@@ -18,6 +18,8 @@ public class CommandManager implements TabCompleter, CommandExecutor {
     private static CommandManager instance = null;
     private static final Set<abstractCommand> cmds = new HashSet<>();
 
+    private static String notPerms = "Not perms";
+
     private CommandManager() {}
 
     public static void register(PluginCommand cmdPlugin) {
@@ -32,6 +34,8 @@ public class CommandManager implements TabCompleter, CommandExecutor {
     public static void addCommand(abstractCommand... _cmds) { cmds.addAll(Arrays.asList(_cmds)); }
 
     public static void removeCommand(abstractCommand cmd) { cmds.remove(cmd); }
+
+    public static void setNotPerms(String notPermsMsg) { notPerms = notPermsMsg; }
 
     public static Set<abstractCommand> getCmds() { return Collections.unmodifiableSet(cmds); }
 
@@ -61,7 +65,7 @@ public class CommandManager implements TabCompleter, CommandExecutor {
 
                     for (String perm : absC.getPerms())     // Check Perms
                         if (!commandSender.hasPermission(perm)) {
-                            commandSender.sendMessage("Not perms");
+                            commandSender.sendMessage(notPerms);
                             return;
                         }
 
@@ -83,6 +87,8 @@ public class CommandManager implements TabCompleter, CommandExecutor {
 
         if (strings.length == 1) {      // Si son los primeros parametros
             toReturn = Optional.of(cmds.stream()
+                    .filter(abstractCommand ->
+                            abstractCommand.getPerms().stream().allMatch(commandSender::hasPermission))
                     .map(abstractCommand::getName)
                     .collect(Collectors.toList()));
         }
@@ -97,7 +103,7 @@ public class CommandManager implements TabCompleter, CommandExecutor {
                                 .skip(1).collect(Collectors.toList())));
         }
 
-        return toReturn
+        return toReturn     // this filters cmds with letters inputed
                 .filter(steam -> steam.stream().findAny().isPresent())
                 .orElseGet(Collections::emptyList).stream()
                 .filter(s -> s.toLowerCase(Locale.ROOT)

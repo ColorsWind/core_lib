@@ -100,11 +100,18 @@ public class dynamicGui implements InventoryHolder, Listener {
     }
 
     private static class contentX {
+        Supplier<List<ItemStack>> update;
         public List<ItemStack> contentS;
         public List<ItemStack> searchContent;
 
         public contentX(Supplier<List<ItemStack>> contentS) {
+            this.update = contentS;
             this.contentS = contentS.get();
+        }
+
+        public contentX update() {
+            this.contentS = update.get();
+            return this;
         }
     }
 
@@ -168,7 +175,7 @@ public class dynamicGui implements InventoryHolder, Listener {
 
     private void setDefaultItems(Inventory inv) {
 
-        ItemStack backItem = new ItemBuilder(XMaterial.OAK_SIGN)  //back button
+        ItemStack backItem = new ItemBuilder(XMaterial.OAK_DOOR)  //back button
                 .setName("&c&lReturn").setLore("&7Click to go back");
         inv.setItem(49, backItem);
 
@@ -189,14 +196,14 @@ public class dynamicGui implements InventoryHolder, Listener {
     }
 
     private void setNextItem(Inventory inv) {
-        ItemStack next = new ItemBuilder(Material.ARROW)
-                .setName("&6&lNext");
+        ItemStack next = new ItemBuilder(Material.PLAYER_HEAD)
+                .setName("&6&lNext").applyTexture("19bf3292e126a105b54eba713aa1b152d541a1d8938829c56364d178ed22bf");
         inv.setItem(53, next);
     }
 
     private void setPreviousItem(Inventory inv) {
-        ItemStack previous = new ItemBuilder(Material.ARROW)
-                .setName("&6&lPrevious");
+        ItemStack previous = new ItemBuilder(Material.PLAYER_HEAD)
+                .setName("&6&lPrevious").applyTexture("bd69e06e5dadfd84e5f3d1c21063f2553b2fa945ee1d4d7152fdc5425bc12a9");
         inv.setItem(45, previous);
     }
 
@@ -288,7 +295,7 @@ public class dynamicGui implements InventoryHolder, Listener {
                 p.closeInventory();
             } else if (response.getResponse() == ResponseX.UPDATE) {
                 preventClose.unregister();
-                new dynamicGui(plugin, p, contentX, title, back, rows2fill, contentAction,
+                new dynamicGui(plugin, p, contentX.update(), title, back, rows2fill, contentAction,
                         nonContentAction, addItems, searchOn, isSearch, page, preventCloseB.get());
             }
         }

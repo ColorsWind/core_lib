@@ -38,6 +38,7 @@ C:\\Users\\serbe\\eclipse-workspace\\core_lib\\src\\main\\java\\io\\github\\divi
 C:\\Users\\serbe\\eclipse-workspace\\core_lib\\src\\main\\java\\io\\github\\divios\\core_lib\\itemutils\\ItemUtils.java
 C:\\Users\\serbe\\eclipse-workspace\\core_lib\\src\\main\\java\\io\\github\\divios\\core_lib\\misc\\ChatPrompt.java
 C:\\Users\\serbe\\eclipse-workspace\\core_lib\\src\\main\\java\\io\\github\\divios\\core_lib\\misc\\EventListener.java
+C:\\Users\\serbe\\eclipse-workspace\\core_lib\\src\\main\\java\\io\\github\\divios\\core_lib\\misc\\FenwickTree.java
 C:\\Users\\serbe\\eclipse-workspace\\core_lib\\src\\main\\java\\io\\github\\divios\\core_lib\\misc\\FormatUtils.java
 C:\\Users\\serbe\\eclipse-workspace\\core_lib\\src\\main\\java\\io\\github\\divios\\core_lib\\misc\\ItemPrompt.java
 C:\\Users\\serbe\\eclipse-workspace\\core_lib\\src\\main\\java\\io\\github\\divios\\core_lib\\misc\\Msg.java
@@ -45,3 +46,4 @@ C:\\Users\\serbe\\eclipse-workspace\\core_lib\\src\\main\\java\\io\\github\\divi
 C:\\Users\\serbe\\eclipse-workspace\\core_lib\\src\\main\\java\\io\\github\\divios\\core_lib\\misc\\Task.java
 C:\\Users\\serbe\\eclipse-workspace\\core_lib\\src\\main\\java\\io\\github\\divios\\core_lib\\misc\\timeStampUtils.java
 C:\\Users\\serbe\\eclipse-workspace\\core_lib\\src\\main\\java\\io\\github\\divios\\core_lib\\misc\\WeightedRandom.java
+C:\\Users\\serbe\\eclipse-workspace\\core_lib\\src\\main\\java\\io\\github\\divios\\core_lib\\misc\\XSymbols.java

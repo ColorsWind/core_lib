@@ -7,6 +7,7 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
+import java.util.function.Consumer;
 
 /**
  * A utility class to easily create items
@@ -185,5 +186,9 @@ public class ItemBuilder extends ItemStack {
      * @return
      */
     public ItemBuilder applyTexture(String url) { return new ItemBuilder(ItemUtils.applyTexture(this, url)); }
+
+    public void ifPresent(Consumer<ItemStack> consumer) {
+        if (!ItemUtils.isEmpty(this)) consumer.accept(this);
+    }
 
 }

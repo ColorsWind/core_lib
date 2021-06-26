@@ -36,11 +36,11 @@ public class ChatPrompt {
 
         TaskID = Task.syncDelayed(plugin, () -> {
             listener.unregister();
-            onExpired.accept(p);
+            this.onExpired.accept(p);
         }, 400);
 
         p.closeInventory();
-        Titles.sendTitle(p, 20, 60, 20,
+        Titles.sendTitle(p, 10, 25, 10,
                 title, subtitle);
 
     }
@@ -54,7 +54,6 @@ public class ChatPrompt {
 
         e.setCancelled(true);
 
-        Titles.clearTitle(p);
         Bukkit.getScheduler().runTaskLater(plugin, () ->
                 onComplete.accept(p, e.getMessage()), 1);
         TaskID.cancel();

@@ -35,7 +35,7 @@ public class ItemPrompt{
 
         p.closeInventory();
         Task.syncDelayed(plugin, () -> listener = new EventListener<>(plugin, PlayerInteractEvent.class,
-                EventPriority.HIGH, this::OnPlayerClick), 1L);
+                EventPriority.HIGH, this::OnPlayerClick), 3L);
 
         TaskID = Task.syncDelayed(plugin, () -> {
             listener.unregister();
