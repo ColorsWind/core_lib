@@ -1,5 +1,6 @@
 package io.github.divios.core_lib.inventory;
 
+import io.github.divios.core_lib.itemutils.ItemUtils;
 import io.github.divios.core_lib.misc.Pair;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -44,6 +45,24 @@ public class inventoryUtils {
             to.setContents(Arrays.stream(from.getContents()).limit(to.getSize()).toArray(ItemStack[]::new));
         else
             to.setContents(from.getContents());
+    }
+
+    /**
+     * Gets the first empty slot of an item
+     * @param inv
+     * @return
+     */
+    public static int getFirstEmpty(Inventory inv) {
+        int slot = -1;
+
+        for (int i=0; i < inv.getSize(); i++) {
+            if (ItemUtils.isEmpty(inv.getItem(i))) {
+                slot = i;
+                break;
+            }
+        }
+
+        return slot;
     }
 
     /**

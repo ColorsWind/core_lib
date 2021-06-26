@@ -95,6 +95,8 @@ public class InventoryGUI implements Listener {
      * @param slot   The slot to add the button to
      */
     public void addButton(ItemButton button, int slot) {
+        if (hasButton(slot))
+            removeButton(slot);
         button.setSlot(slot);
         buttons.add(button);
         inventory.setItem(slot, button.getItem());
@@ -107,6 +109,8 @@ public class InventoryGUI implements Listener {
      * @param slot   The slot to add the button to
      */
     public void addButton(int slot, ItemButton button) {
+        if (hasButton(slot))
+            removeButton(slot);
         addButton(button, slot);
     }
 
@@ -120,6 +124,15 @@ public class InventoryGUI implements Listener {
     public void addButton(ItemButton button, int x, int y) {
         int slot = x + (y * 9);
         addButton(button, slot);
+    }
+
+    public void removeButton(int slot) {
+        buttons.removeIf(itemButton -> itemButton.getSlot() == slot);
+        inventory.clear(slot);
+    }
+
+    public boolean hasButton(int slot) {
+        return buttons.stream().anyMatch(itemButton -> itemButton.getSlot() == slot);
     }
 
     /**
