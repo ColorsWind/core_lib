@@ -5,9 +5,7 @@ import io.github.divios.core_lib.itemutils.ItemBuilder;
 import io.github.divios.core_lib.itemutils.ItemUtils;
 import io.github.divios.core_lib.misc.Task;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
@@ -15,7 +13,6 @@ import org.bukkit.plugin.Plugin;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.BiConsumer;
 import java.util.stream.IntStream;
 
@@ -92,8 +89,10 @@ public class materialsPrompt {
                         e -> inv.get(index - 1).open(p)), 47);
             }
 
-            inventoryGUI.addButton(new ItemButton(new ItemBuilder(XMaterial.OAK_DOOR)
-                .setName("&cReturn").setLore("&7Click to return"), e -> {
+            inventoryGUI.addButton(new ItemButton(new ItemBuilder(XMaterial.PLAYER_HEAD)
+                .setName("&cReturn").setLore("&7Click to return")
+                .applyTexture("19bf3292e126a105b54eba713aa1b152d541a1d8938829c56364d178ed22bf")
+                    , e -> {
                 Task.syncDelayed(plugin, this::destroyAll, 3L);
                 consumer.accept(false, null);
             }), 8);

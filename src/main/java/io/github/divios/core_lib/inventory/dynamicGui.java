@@ -8,7 +8,6 @@ import io.github.divios.core_lib.misc.FormatUtils;
 import io.github.divios.core_lib.misc.Task;
 import net.wesjd.anvilgui.AnvilGUI;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -262,22 +261,23 @@ public class dynamicGui implements InventoryHolder, Listener {
         Player p = (Player) e.getWhoClicked();
         ItemStack item = e.getCurrentItem();
         Inventory inv = e.getView().getTopInventory();
+        int pos = invsList.indexOf(inv);
 
         if (slot == 49) {
             unregister();
             preventClose.unregister();
             back.accept(p);
-        } else if (slot == 53 && !ItemUtils.isEmpty(item)) {
+        } else if (slot == 51 && pos != invsList.size() - 1) {
             boolean aux = preventCloseB.get();
             preventCloseB.set(false);
             p.openInventory(processNextGui(inv, 1));
             preventCloseB.set(aux);
-        } else if (slot == 45 && !ItemUtils.isEmpty(item)) {
+        } else if (slot == 47 && pos != 0) {
             boolean aux = preventCloseB.get();
             preventCloseB.set(false);
             p.openInventory(processNextGui(inv, -1));
             preventCloseB.set(aux);
-        } else if (e.getSlot() == 51 && searchOn) searchAction(item);                             /* Search button */
+        } else if (e.getSlot() == 52 && searchOn) searchAction(item);                             /* Search button */
 
         else {
             Response response;

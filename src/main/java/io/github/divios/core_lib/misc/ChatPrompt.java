@@ -41,7 +41,7 @@ public class ChatPrompt {
 
         p.closeInventory();
         Titles.sendTitle(p, 10, 25, 10,
-                title, subtitle);
+                FormatUtils.color(title), FormatUtils.color(subtitle));
 
     }
 
