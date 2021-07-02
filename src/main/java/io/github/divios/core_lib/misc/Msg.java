@@ -1,8 +1,12 @@
 package io.github.divios.core_lib.misc;
 
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 public class Msg {
@@ -60,6 +64,15 @@ public class Msg {
             }).collect(Collectors.toList());
         }
 
+    }
+
+    public static void sendMsg(Player p, String s) {
+        if (p == null) return;
+        p.sendMessage(FormatUtils.color(s));
+    }
+
+    public static void sendMsg(UUID uuid, String s) {
+        sendMsg(Bukkit.getPlayer(uuid), s);
     }
 
 }

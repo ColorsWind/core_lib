@@ -1,11 +1,13 @@
 package io.github.divios.core_lib.commands;
 
+import org.bukkit.Bukkit;
 import org.bukkit.command.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * This class is responsible for managing all the commands
@@ -17,6 +19,8 @@ public class CommandManager implements TabCompleter, CommandExecutor {
 
     private static CommandManager instance = null;
     private static final Set<abstractCommand> cmds = new HashSet<>();
+
+    private static abstractCommand DEFAULT = null;
 
     private static String notPerms = "Not perms";
 
@@ -37,6 +41,8 @@ public class CommandManager implements TabCompleter, CommandExecutor {
 
     public static void setNotPerms(String notPermsMsg) { notPerms = notPermsMsg; }
 
+    public static void setDefault(abstractCommand _default) { DEFAULT = _default; }
+
     public static Set<abstractCommand> getCmds() { return Collections.unmodifiableSet(cmds); }
 
     @Override
@@ -48,9 +54,17 @@ public class CommandManager implements TabCompleter, CommandExecutor {
         if (strings.length == 0)
             return false;
 
-        cmds.stream()
-                .filter(absC -> absC.getName().equals(strings[0]))
-                .findFirst()
+        Optional<abstractCommand> match_cmds = cmds.stream()
+                .filter(absC -> absC.getName().equals(strings[0])).findFirst();
+
+        if (!match_cmds.isPresent()) {
+            if (DEFAULT != null) {
+                DEFAULT.run(commandSender, Collections.emptyList());
+                return true;
+            }
+        }
+
+        match_cmds
                 .ifPresent(absC -> {
 
                     if (!absC.validArgs(Arrays.stream(strings).skip(1).collect(Collectors.toList()))) {     //Check valid args
