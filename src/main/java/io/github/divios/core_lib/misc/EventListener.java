@@ -1,9 +1,11 @@
 package io.github.divios.core_lib.misc;
 
+import io.github.divios.core_lib.Core_lib;
 import org.bukkit.Bukkit;
 import org.bukkit.event.*;
 import org.bukkit.plugin.Plugin;
 
+import java.util.Objects;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
@@ -15,18 +17,17 @@ import java.util.function.Consumer;
  */
 public class EventListener<T extends Event> implements Listener {
 
-    private Plugin plugin;
+    private Plugin plugin = Core_lib.getPlugin();
     private BiConsumer<EventListener<T>, T> handler;
     private Class<T> eventClass;
 
     /**
      * Creates and registers a Listener for the given event
-     * @param plugin The plugin registering the listener
      * @param eventClass The class of the event being listened for
      * @param priority The EventPriority for this listener
      * @param handler The callback to receive the event and this EventListener
      */
-    public EventListener(Plugin plugin, Class<T> eventClass, EventPriority priority, BiConsumer<EventListener<T>, T> handler) {
+    public EventListener(Class<T> eventClass, EventPriority priority, BiConsumer<EventListener<T>, T> handler) {
         this.handler = handler;
         this.eventClass = eventClass;
         Bukkit.getPluginManager().registerEvent(eventClass, this, priority, (l, e) -> handleEvent((T) e), plugin);
@@ -34,33 +35,30 @@ public class EventListener<T extends Event> implements Listener {
 
     /**
      * Creates and registers a Listener for the given event
-     * @param plugin The plugin registering the listener
      * @param eventClass The class of the event being listened for
      * @param priority The EventPriority for this listener
      * @param handler The callback to receive the event
      */
-    public EventListener(Plugin plugin, Class<T> eventClass, EventPriority priority, Consumer<T> handler) {
-        this(plugin, eventClass, priority, (l, e) -> handler.accept(e));
+    public EventListener(Class<T> eventClass, EventPriority priority, Consumer<T> handler) {
+        this(eventClass, priority, (l, e) -> handler.accept(e));
     }
 
     /**
      * Creates and registers a Listener for the given event
-     * @param plugin The plugin registering the listener
      * @param eventClass The class of the event being listened for
      * @param handler The callback to receive the event and this EventListener
      */
-    public EventListener(Plugin plugin, Class<T> eventClass, BiConsumer<EventListener<T>, T> handler) {
-        this(plugin, eventClass, EventPriority.NORMAL, handler);
+    public EventListener(Class<T> eventClass, BiConsumer<EventListener<T>, T> handler) {
+        this(eventClass, EventPriority.NORMAL, handler);
     }
 
     /**
      * Creates and registers a Listener for the given event
-     * @param plugin The plugin registering the listener
      * @param eventClass The class of the event being listened for
      * @param handler The callback to receive the event
      */
-    public EventListener(Plugin plugin, Class<T> eventClass, Consumer<T> handler) {
-        this(plugin, eventClass, EventPriority.NORMAL, handler);
+    public EventListener(Class<T> eventClass, Consumer<T> handler) {
+        this(eventClass, EventPriority.NORMAL, handler);
     }
 
     @EventHandler
@@ -75,6 +73,41 @@ public class EventListener<T extends Event> implements Listener {
      */
     public void unregister() {
         HandlerList.unregisterAll(this);
+    }
+
+
+    public static class Builder<T extends Event> {
+
+        private Plugin plugin = null;
+        private BiConsumer<EventListener<T>, T> handler = null;
+        private Class<T> eventClass = null;
+        private EventPriority priority = null;
+
+        public Builder(Plugin plugin) {
+            this.plugin = plugin;
+        }
+
+        public Builder<T> suscribe(Class<T> eventClass, EventPriority priority) {
+            this.eventClass = eventClass;
+            this.priority = priority;
+            return this;
+        }
+
+        public Builder<T> suscribe(Class<T> eventClass) {
+            return suscribe(eventClass, EventPriority.NORMAL);
+        }
+
+        public EventListener<T> handler(BiConsumer<EventListener<T>, T> handler) {
+            this.handler = handler;
+
+            Objects.requireNonNull(eventClass, "Event class cannot be null");
+            Objects.requireNonNull(handler, "Handle cannot be null");
+
+            if (priority == null) priority = EventPriority.NORMAL;
+
+            return new EventListener<>(eventClass, priority, handler);
+        }
+
     }
 
 }

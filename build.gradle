@@ -12,7 +12,7 @@ plugins {
 apply plugin: 'maven-publish'
 
 group = 'io.github.divios'
-def pluginVersion = '1.0'
+def pluginVersion = '2.0'
 version = pluginVersion
 
 sourceCompatibility = '1.8'
@@ -83,10 +83,11 @@ dependencies {
 }
 
 shadowJar {
-    relocate "org.bstats", "io.github.divios.CoreLib.shaded.bstats"
-    relocate "net.wesjd.anvilgui", "io.github.divios.CoreLib.shaded.anvilGUI"
-    relocate "de.tr7zw.changeme.nbtapi", "io.github.divios.CoreLib.shaded.nbt-api"
-    relocate "com.cryptomorin.xseries" , "io.github.divios.CoreLib.shaded.XSeries"
+    relocate "org.bstats", "io.github.divios.core_lib.shaded.bstats"
+    relocate "net.wesjd.anvilgui", "io.github.divios.core_lib.shaded.anvilGUI"
+    relocate "de.tr7zw.changeme.nbtapi", "io.github.divios.core_lib.shaded.nbt-api"
+    relocate "com.cryptomorin.xseries" , "io.github.divios.core_lib.shaded.XSeries"
+
     minimize()
 }
 

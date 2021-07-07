@@ -1,5 +1,6 @@
 package io.github.divios.core_lib.database;
 
+import io.github.divios.core_lib.Core_lib;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 
@@ -20,9 +21,9 @@ public class DataManagerAbstract {
 
     private static final Map<String, LinkedList<Runnable>> queues = new HashMap<>();
 
-    public DataManagerAbstract(DatabaseConnector databaseConnector, Plugin plugin) {
+    public DataManagerAbstract(DatabaseConnector databaseConnector) {
         this.databaseConnector = databaseConnector;
-        this.plugin = plugin;
+        this.plugin = Core_lib.getPlugin();
     }
 
     /**

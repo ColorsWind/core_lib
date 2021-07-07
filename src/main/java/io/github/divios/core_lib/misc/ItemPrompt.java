@@ -34,7 +34,7 @@ public class ItemPrompt{
         this.expiredAction = expiredAction;
 
         p.closeInventory();
-        Task.syncDelayed(plugin, () -> listener = new EventListener<>(plugin, PlayerInteractEvent.class,
+        Task.syncDelayed(plugin, () -> listener = new EventListener<>(PlayerInteractEvent.class,
                 EventPriority.HIGH, this::OnPlayerClick), 3L);
 
         TaskID = Task.syncDelayed(plugin, () -> {

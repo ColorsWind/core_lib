@@ -3,62 +3,115 @@ package io.github.divios.core_lib.misc;
 import com.cryptomorin.xseries.messages.Titles;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventPriority;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.plugin.Plugin;
 
-import java.util.function.BiConsumer;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.function.Consumer;
 
-public class ChatPrompt {
+public class ChatPrompt implements Listener {
 
-    private final Plugin plugin;
-    private final Player p;
-    private final BiConsumer<Player, String> onComplete;
-    private final Consumer<Player> onExpired;
-    private final Task TaskID;
+    private static final Map<Player, Prompt> prompts = new HashMap<>();
+    private static boolean load = false;
 
-    private final EventListener<AsyncPlayerChatEvent> listener;
+    private static void init(Plugin plugin) {
+        if (!load) {
+            new ChatPrompt(plugin);
+            load = true;
+        }
+    }
 
-    public ChatPrompt(Plugin plugin, Player p,
-                      BiConsumer<Player, String> onComplete,
-                      Consumer<Player> onExpired,
-                      String title,
-                      String subtitle
+    /**
+     * Prompts a player with callbacks for player response and cancelling
+     * @param player The player to prompt
+     * @param plugin The prompt to send to the player
+     * @param onResponse The callback for when the player responds
+     * @param onCancel The callback for when the prompt is cancelled
+     */
+    public static void prompt(
+            Plugin plugin,
+            Player player,
+            Consumer<String> onResponse,
+            Consumer<CancelReason> onCancel,
+            String title,
+            String subTitle
+
     ) {
-        this.plugin = plugin;
-        this.p = p;
-        this.onComplete = onComplete;
-        this.onExpired = onExpired;
-
-        listener = new EventListener<>(plugin, AsyncPlayerChatEvent.class,
-                EventPriority.HIGHEST, this::chatListener);
-
-        TaskID = Task.syncDelayed(plugin, () -> {
-            listener.unregister();
-            this.onExpired.accept(p);
-        }, 400);
-
-        p.closeInventory();
-        Titles.sendTitle(p, 10, 25, 10,
-                FormatUtils.color(title), FormatUtils.color(subtitle));
-
+        init(plugin);
+        Prompt removed = prompts.remove(player);
+        if (removed != null) {
+            removed.cancel(CancelReason.PROMPT_OVERRIDDEN);
+        }
+        prompts.put(player, new Prompt(onResponse, onCancel));
+        player.closeInventory();
+        Titles.sendTitle(player, FormatUtils.color(title), FormatUtils.color(subTitle));
+        Msg.sendMsg(player, "&7Input chat. Type &fcancel &7to exit");
     }
 
 
-    public void chatListener(EventListener<AsyncPlayerChatEvent> lis,
-                             AsyncPlayerChatEvent e) {
+    private ChatPrompt(Plugin plugin) {
+        Bukkit.getPluginManager().registerEvents(this, plugin);
+    }
 
-        if (e.getPlayer() != p) return;
-        if(e.getMessage().isEmpty()) return;
-
+    @EventHandler
+    public void onChat(AsyncPlayerChatEvent e) {
+        Prompt p = prompts.remove(e.getPlayer());
+        if (p == null) {
+            return;
+        }
         e.setCancelled(true);
+        if (e.getMessage().equalsIgnoreCase("cancel")) {
+            p.cancel(CancelReason.PLAYER_CANCELLED);
+            return;
+        }
+        p.respond(e.getMessage());
+    }
 
-        Bukkit.getScheduler().runTaskLater(plugin, () ->
-                onComplete.accept(p, e.getMessage()), 1);
-        TaskID.cancel();
-        lis.unregister();
+    @EventHandler
+    public void onLeave(PlayerQuitEvent e) {
+        Prompt p = prompts.remove(e.getPlayer());
+        if (p != null) {
+            p.cancel(CancelReason.PLAYER_LEFT);
+        }
+    }
 
+    private static class Prompt {
+
+        private final Consumer<String> onResponse;
+        private final Consumer<CancelReason> onCancel;
+
+        public Prompt(Consumer<String> onResponse, Consumer<CancelReason> onCancel) {
+            this.onResponse = onResponse;
+            this.onCancel = onCancel;
+        }
+
+        public void respond(String response) {
+            onResponse.accept(response);
+        }
+
+        public void cancel(CancelReason reason) {
+            onCancel.accept(reason);
+        }
+
+    }
+
+    public enum CancelReason {
+        /**
+         * Passed when the player was given another prompt. This prompt is removed and cancelled.
+         */
+        PROMPT_OVERRIDDEN,
+        /**
+         * Passed when the prompt was cancelled because the player typed 'cancel'.
+         */
+        PLAYER_CANCELLED,
+        /**
+         * Passed when the prompt was cancelled because the player left the server.
+         */
+        PLAYER_LEFT
     }
 
 }

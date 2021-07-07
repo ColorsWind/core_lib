@@ -5,11 +5,7 @@ import io.github.divios.core_lib.region.events.RegionEnterEvent;
 import io.github.divios.core_lib.region.events.RegionExitEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.event.entity.PlayerDeathEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerMoveEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.event.player.PlayerRespawnEvent;
-import org.bukkit.event.player.PlayerTeleportEvent;
+import org.bukkit.event.player.*;
 import org.bukkit.plugin.Plugin;
 
 
@@ -30,7 +26,7 @@ public class RegionEnterExitListener {
             return;
         }
         registered = true;
-        new EventListener<>(plugin, PlayerMoveEvent.class, e -> {
+        new EventListener<>(PlayerMoveEvent.class, e -> {
             regionMap.get(e.getFrom()).forEach(r -> {
                 if (r.contains(e.getFrom()) && !r.contains(e.getTo())) {
                     Bukkit.getPluginManager().callEvent(new RegionExitEvent(e.getPlayer(), r, RegionExitEvent.ExitCause.MOVE, e));
@@ -42,7 +38,7 @@ public class RegionEnterExitListener {
                 }
             });
         });
-        new EventListener<>(plugin, PlayerTeleportEvent.class, e -> {
+        new EventListener<>(PlayerTeleportEvent.class, e -> {
             regionMap.get(e.getFrom()).forEach(r -> {
                 if (r.contains(e.getFrom()) && !r.contains(e.getTo())) {
                     Bukkit.getPluginManager().callEvent(new RegionExitEvent(e.getPlayer(), r, RegionExitEvent.ExitCause.TELEPORT, e));
@@ -54,28 +50,28 @@ public class RegionEnterExitListener {
                 }
             });
         });
-        new EventListener<>(plugin, PlayerQuitEvent.class, e -> {
+        new EventListener<>(PlayerQuitEvent.class, e -> {
             regionMap.get(e.getPlayer().getLocation()).forEach(r -> {
                 if (r.contains(e.getPlayer().getLocation())) {
                     Bukkit.getPluginManager().callEvent(new RegionExitEvent(e.getPlayer(), r, RegionExitEvent.ExitCause.QUIT, null));
                 }
             });
         });
-        new EventListener<>(plugin, PlayerJoinEvent.class, e -> {
+        new EventListener<>(PlayerJoinEvent.class, e -> {
             regionMap.get(e.getPlayer().getLocation()).forEach(r -> {
                 if (r.contains(e.getPlayer().getLocation())) {
                     Bukkit.getPluginManager().callEvent(new RegionEnterEvent(e.getPlayer(), r, RegionEnterEvent.EnterCause.JOIN, null));
                 }
             });
         });
-        new EventListener<>(plugin, PlayerDeathEvent.class, e -> {
+        new EventListener<>(PlayerDeathEvent.class, e -> {
             regionMap.get(e.getEntity().getLocation()).forEach(r -> {
                 if (r.contains(e.getEntity().getLocation())) {
                     Bukkit.getPluginManager().callEvent(new RegionExitEvent(e.getEntity(), r, RegionExitEvent.ExitCause.DEATH, null));
                 }
             });
         });
-        new EventListener<>(plugin, PlayerRespawnEvent.class, e -> {
+        new EventListener<>(PlayerRespawnEvent.class, e -> {
             regionMap.get(e.getPlayer().getLocation()).forEach(r -> {
                 if (r.contains(e.getPlayer().getLocation())) {
                     Bukkit.getPluginManager().callEvent(new RegionEnterEvent(e.getPlayer(), r, RegionEnterEvent.EnterCause.RESPAWN, null));

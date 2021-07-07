@@ -400,7 +400,7 @@ public class SpheroidRegion extends Region {
      */
     public static SpheroidRegion fromString(Plugin plugin, String string) {
         String[] split = string.split("-");
-        Location center = LocationUtils.fromString(plugin, split[0]);
+        Location center = LocationUtils.fromString(split[0]);
         String[] radSplit = split[1].split(" ");
         double xRad = Double.parseDouble(radSplit[0]);
         double yRad = Double.parseDouble(radSplit[1]);

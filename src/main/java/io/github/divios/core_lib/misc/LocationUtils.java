@@ -1,11 +1,6 @@
 package io.github.divios.core_lib.misc;
 
-import java.text.DecimalFormat;
-import java.util.*;
-import java.util.function.Consumer;
-import java.util.function.Predicate;
-import java.util.regex.Pattern;
-
+import io.github.divios.core_lib.Core_lib;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -15,8 +10,13 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.world.WorldLoadEvent;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.util.Vector;
+
+import java.text.DecimalFormat;
+import java.util.*;
+import java.util.function.Consumer;
+import java.util.function.Predicate;
+import java.util.regex.Pattern;
 
 
 public class LocationUtils {
@@ -129,12 +129,12 @@ public class LocationUtils {
      * @param ticks The delay for the teleport, in ticks
      * @param result A lambda to handle the result, given true if the teleport succeeded, false otherwise
      */
-    public static void delayedTeleport(Plugin plugin, Player player, Location loc, int ticks, Consumer<Boolean> result) {
+    public static void delayedTeleport(Player player, Location loc, int ticks, Consumer<Boolean> result) {
         double seconds = ticks / 20d;
        // player.sendMessage(Messages.msg("teleportDelay").replace("%seconds%", timeFormat.format(seconds)));
         Location start = player.getLocation();
         Task[] task = {null};
-        EventListener<?> listener = new EventListener<>(plugin, PlayerMoveEvent.class, (l, e) -> {
+        EventListener<?> listener = new EventListener<>(PlayerMoveEvent.class, (l, e) -> {
             if (!e.getPlayer().equals(player)) {
                 return;
             }
@@ -145,7 +145,7 @@ public class LocationUtils {
                 result.accept(false);
             }
         });
-        task[0] = Task.syncDelayed(plugin, () -> {
+        task[0] = Task.syncDelayed(Core_lib.getPlugin(), () -> {
             player.teleport(loc);
             listener.unregister();
             result.accept(true);
@@ -159,8 +159,8 @@ public class LocationUtils {
      * @param loc The location to teleport the player to after the delay
      * @param ticks The delay for the teleport, in ticks
      */
-    public static void delayedTeleport(Plugin plugin, Player player, Location loc, int ticks) {
-        delayedTeleport(plugin, player, loc, ticks, b -> {});
+    public static void delayedTeleport( Player player, Location loc, int ticks) {
+        delayedTeleport(player, loc, ticks, b -> {});
     }
 
     /**
@@ -182,7 +182,7 @@ public class LocationUtils {
      * @param separator The separator that was used in toString
      * @return The Location
      */
-    public static Location fromString(Plugin plugin, String string, String separator) {
+    public static Location fromString(String string, String separator) {
         String[] split = string.split(Pattern.quote(separator));
         World world = Bukkit.getWorld(split[0]);
         double x = Double.parseDouble(split[1]);
@@ -190,7 +190,7 @@ public class LocationUtils {
         double z = Double.parseDouble(split[3]);
         Location location = new Location(world, x, y, z);
         if (world == null) {
-            waitForWorld(plugin, split[0], location::setWorld);
+            waitForWorld(split[0], location::setWorld);
         }
         return location;
     }
@@ -224,7 +224,7 @@ public class LocationUtils {
      * @param separator The separator used when converting this Location to a String
      * @param callback The callback to use the Location once it has been loaded
      */
-    public static void fromStringLater(Plugin plugin, String string, String separator, Consumer<Location> callback) {
+    public static void fromStringLater(String string, String separator, Consumer<Location> callback) {
         String[] split = string.split(Pattern.quote(separator));
         World world = Bukkit.getWorld(split[0]);
         double x = Double.parseDouble(split[1]);
@@ -234,7 +234,7 @@ public class LocationUtils {
             callback.accept(new Location(world, x, y, z));
             return;
         }
-        new EventListener<>(plugin, WorldLoadEvent.class, (l, e) -> {
+        new EventListener<>(WorldLoadEvent.class, (l, e) -> {
             if (e.getWorld().getName().equals(split[0])) {
                 World w = Bukkit.getWorld(split[0]);
                 callback.accept(new Location(w, x, y, z));
@@ -297,19 +297,19 @@ public class LocationUtils {
      * @param string The stringified Location
      * @return The Location
      */
-    public static Location fromString(Plugin plugin, String string) {
-        return fromString(plugin, string, " ");
+    public static Location fromString(String string) {
+        return fromString(string, " ");
     }
 
     private static Map<String, List<Consumer<World>>> waiting = new HashMap<>();
     private static boolean initialized = false;
 
-    private static void initializeListener(Plugin plugin) {
+    private static void initializeListener() {
         if (initialized) {
             return;
         }
         initialized = true;
-        new EventListener<>(plugin, WorldLoadEvent.class, e -> {
+        new EventListener<>( WorldLoadEvent.class, e -> {
             List<Consumer<World>> list = waiting.remove(e.getWorld().getName());
             if (list == null) {
                 return;
@@ -323,7 +323,7 @@ public class LocationUtils {
      * @param worldname The name of the world
      * @param callback A callback to be passed the world when it loads
      */
-    public static void waitForWorld(Plugin plugin, String worldname, Consumer<World> callback) {
+    public static void waitForWorld(String worldname, Consumer<World> callback) {
         World world = Bukkit.getWorld(worldname);
         if (world != null) {
             callback.accept(world);
@@ -332,7 +332,7 @@ public class LocationUtils {
         waiting.putIfAbsent(worldname, new ArrayList<>());
         List<Consumer<World>> list = waiting.get(worldname);
         list.add(callback);
-        initializeListener(plugin);
+        initializeListener();
     }
 
     /**

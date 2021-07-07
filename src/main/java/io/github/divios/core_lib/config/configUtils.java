@@ -1,7 +1,5 @@
 package io.github.divios.core_lib.config;
 
-import org.bukkit.plugin.Plugin;
-
 import java.io.*;
 
 public class configUtils {
@@ -20,17 +18,23 @@ public class configUtils {
     }
 
     public static void copyContents(InputStream in, File to) throws IOException {
-        if (to.exists()) return;
 
-            to.createNewFile();
-            OutputStream out = new FileOutputStream(to);
-            byte[] buffer = new byte[1024];
-            int lenght = in.read(buffer);
-            while (lenght != -1) {
-                out.write(buffer, 0, lenght);
-                lenght = in.read(buffer);
-            }
+        OutputStream out = new FileOutputStream(to);
+        byte[] buffer = new byte[1024];
+        int lenght = in.read(buffer);
+        while (lenght != -1) {
+            out.write(buffer, 0, lenght);
+            lenght = in.read(buffer);
+        }
 
+    }
+
+    public static void createFile(File f) {
+        try {
+            f.createNewFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }
