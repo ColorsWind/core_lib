@@ -100,6 +100,7 @@ public class DataManagerAbstract {
     }
 
     private void doQueue(String queueKey, Consumer<Boolean> callback) {
+        if (queues.get(queueKey) == null) return;
         Runnable runnable = queues.get(queueKey).getFirst();
         async(() -> {
             runnable.run();
