@@ -293,4 +293,9 @@ public abstract class Region implements Cloneable {
         }
     }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(getCenter(), Arrays.hashCode(getCorners()));
+    }
+
 }
