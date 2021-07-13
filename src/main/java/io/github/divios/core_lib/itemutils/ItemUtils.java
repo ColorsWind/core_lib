@@ -2,6 +2,8 @@ package io.github.divios.core_lib.itemutils;
 
 import com.cryptomorin.xseries.SkullUtils;
 import com.cryptomorin.xseries.XMaterial;
+import com.google.common.collect.BiMap;
+import com.google.common.collect.HashBiMap;
 import de.tr7zw.nbtapi.NBTItem;
 import io.github.divios.core_lib.misc.FormatUtils;
 import org.bukkit.Bukkit;
@@ -20,12 +22,14 @@ import org.yaml.snakeyaml.external.biz.base64Coder.Base64Coder;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BiPredicate;
+import java.util.function.Function;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 /**
  * A utility class to easily modify items
@@ -62,10 +66,13 @@ public class ItemUtils {
 
     /**
      * Returns the ItemStack display name
+     *
      * @param item The ItemStack to get the name
      * @return The name of the ItemStack
      */
-    public static String getName(ItemStack item) { return getMetadata(item).getDisplayName(); }
+    public static String getName(ItemStack item) {
+        return getMetadata(item).getDisplayName();
+    }
 
     public static ItemStack setMaterial(ItemStack item, Material m) {
         ItemStack cloned = item.clone();
@@ -98,6 +105,7 @@ public class ItemUtils {
     /**
      * Returns the lore of the item. If the item has not lore,
      * returns a new List
+     *
      * @param item ItemStack to get the lore
      * @return The lore of the ItemStack
      */
@@ -172,8 +180,32 @@ public class ItemUtils {
         return clone;
     }
 
+    public static ItemStack addLorewithPlaces(ItemStack item,
+                                              List<String> lines, Function<String, String> placeholders) {
+
+        final ItemStack[] toReturn = {item.clone()};
+        Pattern regex = Pattern.compile("\\{(.*)\\}");
+
+        lines.forEach(s -> {
+            AtomicReference<String> aux = new AtomicReference<>(s);
+            Matcher matcher = regex.matcher(s);
+
+            while (matcher.find()) {
+                String match = matcher.group(1);
+                String placeH = placeholders.apply(match);
+                if (placeH == null) continue;
+                aux.set(s.replace("{" + match + "}", placeH));
+            }
+
+            toReturn[0] = addLore(toReturn[0], aux.get());
+        });
+
+        return toReturn[0];
+    }
+
     /**
      * Removes the lore of an ItemStack
+     *
      * @param item The ItemStack which lore to be removed
      * @param line the line to be removed
      * @return ItemStack with the lore removed
@@ -206,7 +238,9 @@ public class ItemUtils {
         return cloned;
     }
 
-    public static short setDurability(ItemStack item) { return item.getDurability(); }
+    public static short setDurability(ItemStack item) {
+        return item.getDurability();
+    }
 
     /**
      * Add an enchantment to an ItemStack

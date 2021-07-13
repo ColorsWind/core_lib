@@ -6,8 +6,10 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.function.Function;
 
 /**
  * A utility class to easily create items
@@ -116,6 +118,12 @@ public class ItemBuilder extends ItemStack {
     public ItemBuilder addLore(List<String> lines) {
         return new ItemBuilder(ItemUtils.addLore(this, lines));
     }
+
+    public ItemBuilder addLorewithPlaces(List<String> lines, Function<String, String> placeholders) {
+        return new ItemBuilder(ItemUtils.addLorewithPlaces(this, lines, placeholders)); }
+
+    public ItemBuilder addLorewithPlaces(String lines, Function<String, String> placeholders) {
+        return addLorewithPlaces(Collections.singletonList(lines), placeholders); }
 
     /**
      * Renames this ItemBuilder

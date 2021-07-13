@@ -65,6 +65,12 @@ public class inventoryUtils {
         return slot;
     }
 
+    public static int getEmptySlots(Inventory inv) {
+        return Math.toIntExact(Arrays.stream(inv.getContents())
+                .filter(ItemUtils::isEmpty)
+                .count());
+    }
+
     /**
      * Serializes an inventory to base64
      * @param inv to be serialized
