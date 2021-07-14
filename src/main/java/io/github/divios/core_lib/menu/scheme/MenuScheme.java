@@ -28,13 +28,11 @@ package io.github.divios.core_lib.menu.scheme;
 import com.google.common.collect.ImmutableList;
 import io.github.divios.core_lib.menu.Gui;
 
-
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
-
-import javax.annotation.Nullable;
 
 /**
  * Helps to populate a menu with border items

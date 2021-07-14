@@ -14,9 +14,9 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -27,6 +27,8 @@ public class paginatedGui {
     private final List<ItemButton> items;
     private final Pair<ItemStack, Integer> backButton;
     private final Pair<ItemStack, Integer> nextButton;
+    private final Pair<ItemButton, Integer> exitButton;
+    private final BiConsumer<InventoryGUI, Integer> withButtons;
     private final PopulatorContentContext populator;
 
     private final List<InventoryGUI> invs = new ArrayList<>();
@@ -36,13 +38,16 @@ public class paginatedGui {
             List<ItemButton> items,
             Pair<ItemStack, Integer> backButton,
             Pair<ItemStack, Integer> nextButton,
-
+            Pair<ItemButton, Integer> exitButton,
+            BiConsumer<InventoryGUI, Integer> withButtons,
             PopulatorContentContext populator
     ) {
         this.title = title;
         this.items = items;
         this.backButton = backButton;
         this.nextButton = nextButton;
+        this.exitButton = exitButton;
+        this.withButtons = withButtons;
         this.populator = populator;
 
         init();
@@ -95,6 +100,10 @@ public class paginatedGui {
                         e -> invs.get(finalI + 1).open((Player) e.getWhoClicked())));
             }
 
+            invGui.addButton(exitButton.get2(), exitButton.get1());
+
+            withButtons.accept(invGui, i);
+
             invGui.setDestroyOnClose(false);
             invs.add(invGui);
         }
@@ -122,12 +131,14 @@ public class paginatedGui {
         return new BuilderImpl();
     }
 
-
     protected static final class BuilderImpl implements paginatedGuiBuilder {
+
         private String title;
         private List<ItemButton> items;
         private Pair<ItemStack, Integer> backButton;
         private Pair<ItemStack, Integer> nextButton;
+        private Pair<ItemButton, Integer> exitButton;
+        private BiConsumer<InventoryGUI, Integer> withButtons;
         private PopulatorContentContext populator;
 
         BuilderImpl() {}
@@ -163,6 +174,23 @@ public class paginatedGui {
         }
 
         @Override
+        public paginatedGuiBuilder withExitButton(ItemButton item, int slot) {
+            this.exitButton = Pair.of(item, slot);
+            return this;
+        }
+
+        @Override
+        public paginatedGuiBuilder withExitButton(ItemStack item, Consumer<InventoryClickEvent> e, int slot) {
+            return withExitButton(ItemButton.create(item, e), slot);
+        }
+
+        @Override
+        public paginatedGuiBuilder withButtons(BiConsumer<InventoryGUI, Integer> withButtons) {
+            this.withButtons = withButtons;
+            return this;
+        }
+
+        @Override
         public paginatedGuiBuilder withPopulator(inventoryPopulatorState populator) {
             this.populator = populator.restore();
             return this;
@@ -188,8 +216,12 @@ public class paginatedGui {
                     "Backbutton slot out of bounds");
             Preconditions.checkArgument(nextButton.get2() >= 0 && nextButton.get2() < 54,
                     "nextButton slot out of bounds");
+            Preconditions.checkArgument(exitButton.get2() >= 0 && exitButton.get2() < 54,
+                    "nextButton slot out of bounds");
 
-            return new paginatedGui(title, items, backButton, nextButton, populator);
+            if (withButtons == null) withButtons = (e, i) -> {};
+
+            return new paginatedGui(title, items, backButton, nextButton, exitButton, withButtons, populator);
         }
     }
 }

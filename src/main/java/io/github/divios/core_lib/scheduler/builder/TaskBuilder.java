@@ -28,9 +28,8 @@ package io.github.divios.core_lib.scheduler.builder;
 
 import io.github.divios.core_lib.promise.ThreadContext;
 
-import java.util.concurrent.TimeUnit;
-
 import javax.annotation.Nonnull;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Functional builder providing chained access to the functionality in ;

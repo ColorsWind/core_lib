@@ -28,8 +28,6 @@ package io.github.divios.core_lib.command.functional;
 import io.github.divios.core_lib.command.Command;
 import io.github.divios.core_lib.command.CommandInterruptException;
 import io.github.divios.core_lib.command.context.CommandContext;
-
-
 import org.bukkit.command.CommandSender;
 
 /**

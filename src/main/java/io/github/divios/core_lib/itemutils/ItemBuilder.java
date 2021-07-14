@@ -8,6 +8,7 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
@@ -48,6 +49,10 @@ public class ItemBuilder extends ItemStack {
      * @param xmaterial The type of the item
      */
     public ItemBuilder(XMaterial xmaterial) { super(xmaterial.parseItem()); }
+
+    public static ItemBuilder of(XMaterial xMaterial) { return new ItemBuilder(xMaterial); }
+
+    public static ItemBuilder of(ItemStack item) { return new ItemBuilder(item); }
 
     /**
      * Sets the stack size of this ItemBuilder
@@ -134,6 +139,8 @@ public class ItemBuilder extends ItemStack {
         return new ItemBuilder(ItemUtils.rename(this, name));
     }
 
+    public ItemBuilder setEmptyName() { return new ItemBuilder(ItemUtils.rename(this, "&c")); }
+
     public ItemBuilder setMaterial(Material m) { return new ItemBuilder(ItemUtils.setMaterial(this, m)); }
 
     public ItemBuilder setMaterial(XMaterial m) { return setMaterial(m.parseMaterial()); }
@@ -194,6 +201,8 @@ public class ItemBuilder extends ItemStack {
      * @return
      */
     public ItemBuilder applyTexture(String url) { return new ItemBuilder(ItemUtils.applyTexture(this, url)); }
+
+    public ItemBuilder applyTexture(UUID uuid) { return new ItemBuilder(ItemUtils.applyTexture(this, uuid)); }
 
     public void ifPresent(Consumer<ItemStack> consumer) {
         if (!ItemUtils.isEmpty(this)) consumer.accept(this);

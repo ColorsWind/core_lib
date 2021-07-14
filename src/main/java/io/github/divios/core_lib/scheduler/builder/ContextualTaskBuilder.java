@@ -27,9 +27,8 @@ package io.github.divios.core_lib.scheduler.builder;
 
 import io.github.divios.core_lib.scheduler.Task;
 
-import java.util.function.Consumer;
-
 import javax.annotation.Nonnull;
+import java.util.function.Consumer;
 
 /**
  * Queues execution of tasks using  often combining parameters with

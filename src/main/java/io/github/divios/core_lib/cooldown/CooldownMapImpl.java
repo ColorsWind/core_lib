@@ -30,11 +30,10 @@ import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 
+import javax.annotation.Nonnull;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
-
-import javax.annotation.Nonnull;
 
 class CooldownMapImpl<T> implements CooldownMap<T> {
 

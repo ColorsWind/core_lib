@@ -29,11 +29,10 @@ import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.Map;
-import java.util.function.Consumer;
-
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.Map;
+import java.util.function.Consumer;
 
 /**
  * Represents a slot in a {@link Gui}.

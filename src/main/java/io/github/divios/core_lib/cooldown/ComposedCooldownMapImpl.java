@@ -31,12 +31,11 @@ import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import org.bukkit.Bukkit;
 
+import javax.annotation.Nonnull;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
-
-import javax.annotation.Nonnull;
 
 class ComposedCooldownMapImpl<I, O> implements ComposedCooldownMap<I, O> {
 

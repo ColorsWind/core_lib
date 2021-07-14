@@ -27,11 +27,7 @@ package io.github.divios.core_lib.utils;
 
 import com.google.common.collect.ImmutableMap;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.function.Function;
 
 /**

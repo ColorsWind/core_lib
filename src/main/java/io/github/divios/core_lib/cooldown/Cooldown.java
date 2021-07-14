@@ -31,10 +31,9 @@ import com.google.gson.JsonObject;
 import io.github.divios.core_lib.scheduler.Ticks;
 import io.github.divios.core_lib.time.Time;
 
+import javax.annotation.Nonnull;
 import java.util.OptionalLong;
 import java.util.concurrent.TimeUnit;
-
-import javax.annotation.Nonnull;
 
 /**
  * A simple cooldown abstraction

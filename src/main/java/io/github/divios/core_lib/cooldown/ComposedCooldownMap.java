@@ -25,13 +25,12 @@
 
 package io.github.divios.core_lib.cooldown;
 
+import javax.annotation.Nonnull;
 import java.util.Map;
 import java.util.Objects;
 import java.util.OptionalLong;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
-
-import javax.annotation.Nonnull;
 
 /**
  * A self-populating, composed map of cooldown instances

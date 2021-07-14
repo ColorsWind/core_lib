@@ -37,11 +37,10 @@ import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import javax.annotation.Nonnull;
 import java.time.Duration;
 import java.util.Optional;
 import java.util.UUID;
-
-import javax.annotation.Nonnull;
 
 /**
  * A functional command handling utility.

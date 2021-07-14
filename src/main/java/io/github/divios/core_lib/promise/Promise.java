@@ -25,22 +25,15 @@
 
 package io.github.divios.core_lib.promise;
 
-import io.github.divios.core_lib.promise.HelperPromise;
 import io.github.divios.core_lib.terminable.Terminable;
 import io.github.divios.core_lib.utils.Delegates;
 
-import java.util.concurrent.Callable;
-import java.util.concurrent.CancellationException;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.CompletionException;
-import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import java.util.concurrent.*;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 /**
  * An object that acts as a proxy for a result that is initially unknown,

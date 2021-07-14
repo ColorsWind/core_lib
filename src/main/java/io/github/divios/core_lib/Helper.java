@@ -33,9 +33,8 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.ServicesManager;
 import org.bukkit.scheduler.BukkitScheduler;
 
-import java.util.Optional;
-
 import javax.annotation.Nullable;
+import java.util.Optional;
 
 /**
  * Base class for helper, which mainly just proxies calls to {@link Bukkit#getServer()} for convenience.

@@ -31,7 +31,6 @@ import io.github.divios.core_lib.menu.Gui;
 import io.github.divios.core_lib.menu.Item;
 import io.github.divios.core_lib.menu.Slot;
 
-
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;

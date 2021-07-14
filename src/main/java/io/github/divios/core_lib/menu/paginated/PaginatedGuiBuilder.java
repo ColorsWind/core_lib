@@ -26,13 +26,10 @@
 package io.github.divios.core_lib.menu.paginated;
 
 import com.google.common.collect.ImmutableList;
-
 import io.github.divios.core_lib.item.ItemStackBuilder;
 import io.github.divios.core_lib.menu.Item;
 import io.github.divios.core_lib.menu.scheme.MenuScheme;
 import io.github.divios.core_lib.menu.scheme.StandardSchemeMappings;
-
-
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;

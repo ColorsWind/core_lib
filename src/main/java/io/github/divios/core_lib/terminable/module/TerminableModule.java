@@ -27,7 +27,6 @@ package io.github.divios.core_lib.terminable.module;
 
 import io.github.divios.core_lib.terminable.TerminableConsumer;
 
-
 import javax.annotation.Nonnull;
 
 /**

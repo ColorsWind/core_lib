@@ -26,16 +26,13 @@
 package io.github.divios.core_lib.command.functional;
 
 import com.google.common.collect.ImmutableList;
-
 import io.github.divios.core_lib.command.AbstractCommand;
 import io.github.divios.core_lib.command.CommandInterruptException;
 import io.github.divios.core_lib.command.context.CommandContext;
 
-
-import java.util.function.Predicate;
-
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.function.Predicate;
 
 
 class FunctionalCommand extends AbstractCommand {

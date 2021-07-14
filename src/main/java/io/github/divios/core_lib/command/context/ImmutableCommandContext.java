@@ -26,10 +26,8 @@
 package io.github.divios.core_lib.command.context;
 
 import com.google.common.collect.ImmutableList;
-
 import io.github.divios.core_lib.command.argument.Argument;
 import io.github.divios.core_lib.command.argument.SimpleArgument;
-
 import org.bukkit.command.CommandSender;
 
 import javax.annotation.Nonnull;

@@ -26,20 +26,17 @@
 package io.github.divios.core_lib.menu;
 
 import com.google.common.collect.ImmutableMap;
-
 import io.github.divios.core_lib.utils.Delegates;
-
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.Consumer;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 /**
  * The initial model of a clickable item in a {@link Gui}. Immutable.

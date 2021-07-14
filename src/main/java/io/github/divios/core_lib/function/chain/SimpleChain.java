@@ -25,14 +25,13 @@
 
 package io.github.divios.core_lib.function.chain;
 
+import javax.annotation.Nullable;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
-
-import javax.annotation.Nullable;
 
 
 class SimpleChain<T> implements Chain<T> {

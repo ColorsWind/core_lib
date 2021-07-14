@@ -26,11 +26,10 @@ package io.github.divios.core_lib.reflect.proxy;
 
 import com.google.common.collect.Lists;
 
+import javax.annotation.Nonnull;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Proxy;
 import java.util.List;
-
-import javax.annotation.Nonnull;
 
 /**
  * A collection of utilities for working with proxies.

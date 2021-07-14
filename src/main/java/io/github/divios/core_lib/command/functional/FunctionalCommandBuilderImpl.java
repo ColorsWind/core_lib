@@ -27,20 +27,16 @@ package io.github.divios.core_lib.command.functional;
 
 import com.google.common.base.Splitter;
 import com.google.common.collect.ImmutableList;
-
 import io.github.divios.core_lib.command.Command;
 import io.github.divios.core_lib.command.context.CommandContext;
-
-
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
+import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Predicate;
-
-import javax.annotation.Nullable;
 
 
 class FunctionalCommandBuilderImpl<T extends CommandSender> implements FunctionalCommandBuilder<T> {

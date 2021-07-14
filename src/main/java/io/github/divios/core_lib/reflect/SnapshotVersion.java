@@ -25,17 +25,12 @@
 
 package io.github.divios.core_lib.reflect;
 
+import javax.annotation.Nonnull;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.Locale;
-import java.util.Objects;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import javax.annotation.Nonnull;
 
 /**
  * Encapsulates a snapshot version of Minecraft.

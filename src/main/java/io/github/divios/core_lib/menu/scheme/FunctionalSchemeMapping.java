@@ -28,11 +28,10 @@ package io.github.divios.core_lib.menu.scheme;
 import com.google.common.collect.Range;
 import io.github.divios.core_lib.menu.Item;
 
-import java.util.Objects;
-import java.util.function.IntFunction;
-
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.Objects;
+import java.util.function.IntFunction;
 
 /**
  * Implements {@link SchemeMapping} using a function.

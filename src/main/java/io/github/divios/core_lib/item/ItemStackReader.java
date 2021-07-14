@@ -26,7 +26,6 @@
 package io.github.divios.core_lib.item;
 
 import com.google.common.collect.Iterables;
-
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 

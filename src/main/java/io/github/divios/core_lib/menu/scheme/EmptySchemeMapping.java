@@ -27,9 +27,8 @@ package io.github.divios.core_lib.menu.scheme;
 
 import io.github.divios.core_lib.menu.Item;
 
-import java.util.Optional;
-
 import javax.annotation.Nonnull;
+import java.util.Optional;
 
 /**
  * An empty menu scheme.

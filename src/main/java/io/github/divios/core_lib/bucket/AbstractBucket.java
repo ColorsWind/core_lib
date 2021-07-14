@@ -29,14 +29,9 @@ import com.google.common.collect.ImmutableList;
 import io.github.divios.core_lib.bucket.partitioning.PartitioningStrategy;
 import io.github.divios.core_lib.utils.ImmutableCollectors;
 
-import java.util.AbstractSet;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-import java.util.function.Consumer;
-
 import javax.annotation.Nonnull;
+import java.util.*;
+import java.util.function.Consumer;
 
 /**
  * An abstract implementation of {@link Bucket}.

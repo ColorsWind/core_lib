@@ -26,23 +26,16 @@
 package io.github.divios.core_lib.utils;
 
 import com.google.common.base.Preconditions;
-
 import org.bukkit.Bukkit;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandMap;
-import org.bukkit.command.PluginCommand;
-import org.bukkit.command.SimpleCommandMap;
-import org.bukkit.command.TabCompleter;
+import org.bukkit.command.*;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.SimplePluginManager;
 
+import javax.annotation.Nonnull;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.util.Iterator;
 import java.util.Map;
-
-import javax.annotation.Nonnull;
 
 /**
  * Utility for interacting with the server's {@link CommandMap} instance.

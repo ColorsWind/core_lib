@@ -28,28 +28,20 @@ package io.github.divios.core_lib.promise;
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
-
 import io.github.divios.core_lib.Core_lib;
 import io.github.divios.core_lib.interfaces.Delegate;
 import io.github.divios.core_lib.scheduler.HelperExecutors;
 import io.github.divios.core_lib.scheduler.Ticks;
 import org.bukkit.Bukkit;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.Objects;
-import java.util.concurrent.Callable;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.CompletionStage;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
+import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 /**
  * Implementation of {@link Promise} using the server scheduler.

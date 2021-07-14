@@ -30,12 +30,11 @@ import io.github.divios.core_lib.promise.Promise;
 import io.github.divios.core_lib.promise.ThreadContext;
 import io.github.divios.core_lib.scheduler.Task;
 
+import javax.annotation.Nonnull;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
-
-import javax.annotation.Nonnull;
 
 class TaskBuilderImpl implements TaskBuilder {
     static final TaskBuilder INSTANCE = new TaskBuilderImpl();

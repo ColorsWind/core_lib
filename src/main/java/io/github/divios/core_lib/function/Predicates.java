@@ -26,12 +26,11 @@
 package io.github.divios.core_lib.function;
 
 
+import javax.annotation.Nullable;
 import java.util.Collection;
 import java.util.Objects;
 import java.util.function.Function;
 import java.util.function.Predicate;
-
-import javax.annotation.Nullable;
 
 /**
  * A collection of utilities for working with {@link Predicate}s.

@@ -3,17 +3,14 @@ package io.github.divios.core_lib.serialize;
 import com.google.common.base.Preconditions;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-
 import io.github.divios.core_lib.Core_lib;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 
-import java.util.Objects;
-
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.Objects;
 
 /**
  * An immutable and serializable block location object

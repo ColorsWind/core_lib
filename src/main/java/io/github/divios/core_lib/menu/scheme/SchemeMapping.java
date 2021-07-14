@@ -27,10 +27,9 @@ package io.github.divios.core_lib.menu.scheme;
 
 import io.github.divios.core_lib.menu.Item;
 
-import java.util.Optional;
-
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.Optional;
 
 /**
  * Represents a mapping to be used in a {@link MenuScheme}

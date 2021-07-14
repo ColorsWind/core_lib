@@ -26,9 +26,7 @@
 package io.github.divios.core_lib;
 
 import com.google.common.reflect.TypeToken;
-
 import io.github.divios.core_lib.event.functional.merged.MergedSubscriptionBuilder;
-
 import io.github.divios.core_lib.event.functional.single.SingleSubscriptionBuilder;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventPriority;

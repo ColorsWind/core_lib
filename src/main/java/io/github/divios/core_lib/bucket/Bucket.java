@@ -27,10 +27,9 @@ package io.github.divios.core_lib.bucket;
 
 import io.github.divios.core_lib.bucket.partitioning.PartitioningStrategy;
 
+import javax.annotation.Nonnull;
 import java.util.List;
 import java.util.Set;
-
-import javax.annotation.Nonnull;
 
 /**
  * A bucket is an extension of {@link Set}, which allows contained elements

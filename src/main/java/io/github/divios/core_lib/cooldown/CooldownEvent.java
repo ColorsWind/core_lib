@@ -1,10 +1,7 @@
 package io.github.divios.core_lib.cooldown;
 
-import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
-
-import java.util.Objects;
 
 public class CooldownEvent extends Event {
 

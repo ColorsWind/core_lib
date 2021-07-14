@@ -2,8 +2,6 @@ package io.github.divios.core_lib.itemutils;
 
 import com.cryptomorin.xseries.SkullUtils;
 import com.cryptomorin.xseries.XMaterial;
-import com.google.common.collect.BiMap;
-import com.google.common.collect.HashBiMap;
 import de.tr7zw.nbtapi.NBTItem;
 import io.github.divios.core_lib.misc.FormatUtils;
 import org.bukkit.Bukkit;
@@ -29,7 +27,6 @@ import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 /**
  * A utility class to easily modify items
@@ -387,6 +384,16 @@ public class ItemUtils {
 
         ItemStack cloned = item.clone();
         cloned.setItemMeta(SkullUtils.applySkin(cloned.getItemMeta(), url));
+
+        return cloned;
+    }
+
+    public static ItemStack applyTexture(ItemStack item, UUID uuid) {
+        if (!item.getType().equals(XMaterial.PLAYER_HEAD.parseMaterial()))
+            return item;
+
+        ItemStack cloned = item.clone();
+        cloned.setItemMeta(SkullUtils.applySkin(cloned.getItemMeta(), uuid));
 
         return cloned;
     }

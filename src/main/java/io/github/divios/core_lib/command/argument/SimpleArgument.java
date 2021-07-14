@@ -26,11 +26,9 @@
 package io.github.divios.core_lib.command.argument;
 
 
-
-import java.util.Optional;
-
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.Optional;
 
 
 public class SimpleArgument implements Argument {

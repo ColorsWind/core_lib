@@ -27,7 +27,6 @@ package io.github.divios.core_lib.scheduler.threadlock;
 
 import io.github.divios.core_lib.Core_lib;
 import io.github.divios.core_lib.promise.ThreadContext;
-
 import org.bukkit.Bukkit;
 
 import java.util.concurrent.CountDownLatch;

@@ -2,30 +2,20 @@ package io.github.divios.core_lib.utils;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
-
 import io.github.divios.core_lib.Core_lib;
-
 import io.github.divios.core_lib.misc.FormatUtils;
-import net.minecraft.util.ColorUtil;
-import org.bukkit.Bukkit;
-import org.bukkit.Effect;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.OfflinePlayer;
-import org.bukkit.Particle;
-import org.bukkit.Sound;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import javax.annotation.Nullable;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
-
-import javax.annotation.Nullable;
 
 /**
  * A collection of Player related utilities

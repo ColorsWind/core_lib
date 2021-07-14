@@ -26,14 +26,12 @@
 package io.github.divios.core_lib.menu.scheme;
 
 import com.google.common.collect.ImmutableMap;
-
 import io.github.divios.core_lib.menu.Item;
-
-import java.util.Map;
-import java.util.Objects;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.Map;
+import java.util.Objects;
 
 /**
  * Implements {@link SchemeMapping} using an immutable map.

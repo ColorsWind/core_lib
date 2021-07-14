@@ -1,6 +1,7 @@
 package io.github.divios.core_lib.misc;
 
 import com.cryptomorin.xseries.messages.Titles;
+import io.github.divios.core_lib.Core_lib;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -32,6 +33,7 @@ public class ChatPrompt implements Listener {
      * @param onResponse The callback for when the player responds
      * @param onCancel The callback for when the prompt is cancelled
      */
+    @Deprecated
     public static void prompt(
             Plugin plugin,
             Player player,
@@ -41,7 +43,25 @@ public class ChatPrompt implements Listener {
             String subTitle
 
     ) {
-        init(plugin);
+        prompt(player, onResponse, onCancel, title, subTitle);
+    }
+
+    /**
+     * Prompts a player with callbacks for player response and cancelling
+     * @param player The player to prompt
+     * @param onResponse The callback for when the player responds
+     * @param onCancel The callback for when the prompt is cancelled
+     */
+
+    public static void prompt(
+            Player player,
+            Consumer<String> onResponse,
+            Consumer<CancelReason> onCancel,
+            String title,
+            String subTitle
+
+    ) {
+        init(Core_lib.getPlugin());
         Prompt removed = prompts.remove(player);
         if (removed != null) {
             removed.cancel(CancelReason.PROMPT_OVERRIDDEN);

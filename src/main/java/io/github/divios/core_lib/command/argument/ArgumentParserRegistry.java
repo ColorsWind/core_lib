@@ -27,10 +27,9 @@ package io.github.divios.core_lib.command.argument;
 
 import com.google.common.reflect.TypeToken;
 
+import javax.annotation.Nonnull;
 import java.util.Collection;
 import java.util.Optional;
-
-import javax.annotation.Nonnull;
 
 /**
  * A collection of {@link ArgumentParser}s

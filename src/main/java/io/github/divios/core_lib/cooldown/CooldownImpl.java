@@ -25,8 +25,6 @@
 
 package io.github.divios.core_lib.cooldown;
 
-import com.google.gson.JsonElement;
-
 import java.util.OptionalLong;
 import java.util.concurrent.TimeUnit;
 

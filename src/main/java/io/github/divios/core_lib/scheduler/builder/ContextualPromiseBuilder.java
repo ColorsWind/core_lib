@@ -27,10 +27,9 @@ package io.github.divios.core_lib.scheduler.builder;
 
 import io.github.divios.core_lib.promise.Promise;
 
+import javax.annotation.Nonnull;
 import java.util.concurrent.Callable;
 import java.util.function.Supplier;
-
-import javax.annotation.Nonnull;
 
 /**
  * Builds instances of , often combining parameters with

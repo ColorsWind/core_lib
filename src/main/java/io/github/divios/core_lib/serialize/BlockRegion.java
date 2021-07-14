@@ -3,12 +3,9 @@ package io.github.divios.core_lib.serialize;
 import com.google.common.base.Preconditions;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-
 import org.bukkit.block.Block;
 
 import java.util.Objects;
-
-import javax.annotation.Nonnull;
 
 /**
  * An immutable and serializable block region object

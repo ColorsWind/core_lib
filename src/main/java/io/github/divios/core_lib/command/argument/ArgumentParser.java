@@ -27,7 +27,6 @@ package io.github.divios.core_lib.command.argument;
 
 import io.github.divios.core_lib.command.CommandInterruptException;
 
-
 import javax.annotation.Nonnull;
 import java.util.Optional;
 import java.util.function.Function;

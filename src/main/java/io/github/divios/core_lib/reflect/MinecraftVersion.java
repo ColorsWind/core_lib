@@ -25,13 +25,12 @@
 
 package io.github.divios.core_lib.reflect;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.text.SimpleDateFormat;
 import java.util.Comparator;
 import java.util.Locale;
 import java.util.Objects;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 /**
  * Encapsulates a version of Minecraft.

@@ -29,21 +29,19 @@ import io.github.divios.core_lib.interfaces.Delegate;
 import io.github.divios.core_lib.promise.ThreadContext;
 import io.github.divios.core_lib.scheduler.HelperExecutors;
 import io.github.divios.core_lib.scheduler.Scheduler;
-
 import io.github.divios.core_lib.scheduler.Task;
 import io.github.divios.core_lib.scheduler.Ticks;
 import io.github.divios.core_lib.scheduler.builder.TaskBuilder;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitScheduler;
 
+import javax.annotation.Nonnull;
 import java.util.Objects;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
-
-import javax.annotation.Nonnull;
 
 /**
  * Provides common instances of {@link Scheduler}.

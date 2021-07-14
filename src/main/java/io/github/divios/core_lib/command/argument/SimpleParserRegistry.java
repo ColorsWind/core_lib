@@ -28,16 +28,10 @@ package io.github.divios.core_lib.command.argument;
 import com.google.common.collect.ImmutableList;
 import com.google.common.reflect.TypeToken;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
+import javax.annotation.Nonnull;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
-
-import javax.annotation.Nonnull;
 
 public class SimpleParserRegistry implements ArgumentParserRegistry {
     private final Map<TypeToken<?>, List<ArgumentParser<?>>> parsers = new ConcurrentHashMap<>();

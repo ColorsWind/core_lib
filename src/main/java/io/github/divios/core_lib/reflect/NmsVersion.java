@@ -26,14 +26,12 @@
 package io.github.divios.core_lib.reflect;
 
 import com.google.common.collect.ImmutableSet;
-
 import io.github.divios.core_lib.utils.Indexing;
-
-import java.util.Map;
-import java.util.Set;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * An emumeration of NMS versions.

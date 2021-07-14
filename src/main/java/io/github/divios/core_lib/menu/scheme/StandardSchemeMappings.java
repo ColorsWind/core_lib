@@ -27,7 +27,6 @@ package io.github.divios.core_lib.menu.scheme;
 
 import com.google.common.collect.Range;
 import io.github.divios.core_lib.item.ItemStackBuilder;
-
 import org.bukkit.Material;
 
 /**

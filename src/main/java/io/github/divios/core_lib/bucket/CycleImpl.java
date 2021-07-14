@@ -27,10 +27,9 @@ package io.github.divios.core_lib.bucket;
 
 import com.google.common.collect.ImmutableList;
 
+import javax.annotation.Nonnull;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
-
-import javax.annotation.Nonnull;
 
 final class CycleImpl<E> implements Cycle<E> {
 
