@@ -139,7 +139,7 @@ public class LocationUtils {
                 return;
             }
             if (!start.getWorld().equals(e.getTo().getWorld()) || start.distanceSquared(e.getTo()) > 0.125) {
-                //player.sendMessage(Messages.msg("teleportCancelled"));
+                Msg.sendMsg(player, Msg.TELEPORT_CANCELLED);
                 task[0].cancel();
                 l.unregister();
                 result.accept(false);

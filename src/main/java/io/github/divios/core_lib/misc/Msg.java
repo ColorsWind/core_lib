@@ -9,10 +9,13 @@ import java.util.stream.Collectors;
 public class Msg {
 
     public static String PREFIX = "";
+    public static String TELEPORT_CANCELLED = "&7teleport_cancelled";
 
-    public static void setPREFIX(String prefix) {
+    public static synchronized void setPREFIX(String prefix) {
         PREFIX = prefix;
     }
+
+    public static synchronized void setTeleportCancelled(String text) { TELEPORT_CANCELLED = text; }
 
     public static singletonMsg singletonMsg(String s) {
         return new singletonMsg(s);

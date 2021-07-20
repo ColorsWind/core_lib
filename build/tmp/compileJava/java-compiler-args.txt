@@ -160,6 +160,11 @@ C:\\Users\\serbe\\eclipse-workspace\\core_lib\\src\\main\\java\\io\\github\\divi
 C:\\Users\\serbe\\eclipse-workspace\\core_lib\\src\\main\\java\\io\\github\\divios\\core_lib\\multiblock\\Structure.java
 C:\\Users\\serbe\\eclipse-workspace\\core_lib\\src\\main\\java\\io\\github\\divios\\core_lib\\multiblock\\StructureData.java
 C:\\Users\\serbe\\eclipse-workspace\\core_lib\\src\\main\\java\\io\\github\\divios\\core_lib\\multiblock\\StructureFinder.java
+C:\\Users\\serbe\\eclipse-workspace\\core_lib\\src\\main\\java\\io\\github\\divios\\core_lib\\profiles\\MojangApi.java
+C:\\Users\\serbe\\eclipse-workspace\\core_lib\\src\\main\\java\\io\\github\\divios\\core_lib\\profiles\\OfflineModeProfiles.java
+C:\\Users\\serbe\\eclipse-workspace\\core_lib\\src\\main\\java\\io\\github\\divios\\core_lib\\profiles\\Profile.java
+C:\\Users\\serbe\\eclipse-workspace\\core_lib\\src\\main\\java\\io\\github\\divios\\core_lib\\profiles\\ProfileRepository.java
+C:\\Users\\serbe\\eclipse-workspace\\core_lib\\src\\main\\java\\io\\github\\divios\\core_lib\\profiles\\SimpleProfile.java
 C:\\Users\\serbe\\eclipse-workspace\\core_lib\\src\\main\\java\\io\\github\\divios\\core_lib\\promise\\HelperPromise.java
 C:\\Users\\serbe\\eclipse-workspace\\core_lib\\src\\main\\java\\io\\github\\divios\\core_lib\\promise\\Promise.java
 C:\\Users\\serbe\\eclipse-workspace\\core_lib\\src\\main\\java\\io\\github\\divios\\core_lib\\promise\\ThreadContext.java
@@ -207,8 +212,11 @@ C:\\Users\\serbe\\eclipse-workspace\\core_lib\\src\\main\\java\\io\\github\\divi
 C:\\Users\\serbe\\eclipse-workspace\\core_lib\\src\\main\\java\\io\\github\\divios\\core_lib\\time\\Time.java
 C:\\Users\\serbe\\eclipse-workspace\\core_lib\\src\\main\\java\\io\\github\\divios\\core_lib\\utils\\CollectionUtils.java
 C:\\Users\\serbe\\eclipse-workspace\\core_lib\\src\\main\\java\\io\\github\\divios\\core_lib\\utils\\CommandMapUtil.java
+C:\\Users\\serbe\\eclipse-workspace\\core_lib\\src\\main\\java\\io\\github\\divios\\core_lib\\utils\\CommentedConfiguration.java
+C:\\Users\\serbe\\eclipse-workspace\\core_lib\\src\\main\\java\\io\\github\\divios\\core_lib\\utils\\ConfigUpdater.java
 C:\\Users\\serbe\\eclipse-workspace\\core_lib\\src\\main\\java\\io\\github\\divios\\core_lib\\utils\\Delegates.java
 C:\\Users\\serbe\\eclipse-workspace\\core_lib\\src\\main\\java\\io\\github\\divios\\core_lib\\utils\\ImmutableCollectors.java
 C:\\Users\\serbe\\eclipse-workspace\\core_lib\\src\\main\\java\\io\\github\\divios\\core_lib\\utils\\Indexing.java
 C:\\Users\\serbe\\eclipse-workspace\\core_lib\\src\\main\\java\\io\\github\\divios\\core_lib\\utils\\Log.java
 C:\\Users\\serbe\\eclipse-workspace\\core_lib\\src\\main\\java\\io\\github\\divios\\core_lib\\utils\\Players.java
+C:\\Users\\serbe\\eclipse-workspace\\core_lib\\src\\main\\java\\io\\github\\divios\\core_lib\\utils\\UndashedUuids.java
