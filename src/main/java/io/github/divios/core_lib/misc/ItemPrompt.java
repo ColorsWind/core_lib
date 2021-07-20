@@ -1,6 +1,8 @@
 package io.github.divios.core_lib.misc;
 
 import com.cryptomorin.xseries.messages.Titles;
+import com.google.common.base.Preconditions;
+import io.github.divios.core_lib.Core_lib;
 import io.github.divios.core_lib.itemutils.ItemUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -17,10 +19,15 @@ public class ItemPrompt{
     private final Plugin plugin;
     private final Player p;
     private final Task TaskID;
-    public final BiConsumer<Player, ItemStack> onComplete;
+    private final BiConsumer<Player, ItemStack> onComplete;
     private final Consumer<Player> expiredAction;
     private EventListener<PlayerInteractEvent> listener;
 
+    public static ItemPromptBuilder builder() {
+        return new ItemPromptBuilder();
+    }
+
+    @Deprecated
     public ItemPrompt(Plugin plugin,
                       Player p,
                       BiConsumer<Player, ItemStack> onComplete,
@@ -70,4 +77,51 @@ public class ItemPrompt{
 
     }
 
+    public static final class ItemPromptBuilder {
+
+        private final Plugin plugin = Core_lib.getPlugin();
+        private Player p;
+        private BiConsumer<Player, ItemStack> onComplete;
+        private Consumer<Player> expiredAction;
+        private String title;
+        private String subTitle;
+
+        private ItemPromptBuilder() {}
+
+        public ItemPromptBuilder withPlayer(Player p) {
+            this.p = p;
+            return this;
+        }
+
+        public ItemPromptBuilder withComplete(BiConsumer<Player, ItemStack> onComplete) {
+            this.onComplete = onComplete;
+            return this;
+        }
+
+        public ItemPromptBuilder withExpiredAction(Consumer<Player> expiredAction) {
+            this.expiredAction = expiredAction;
+            return this;
+        }
+
+        public ItemPromptBuilder withTitle(String title) {
+            this.title = title;
+            return this;
+        }
+
+        public ItemPromptBuilder withSubtitle(String subTitle) {
+            this.subTitle = subTitle;
+            return this;
+        }
+
+        public ItemPrompt build() {
+
+            Preconditions.checkNotNull(p, "player is null");
+            if (onComplete == null) onComplete = (p, i) -> {};
+            if (expiredAction == null) expiredAction = p -> {};
+            if (title == null) title = "";
+            if (subTitle == null) subTitle = "";
+
+            return new ItemPrompt(plugin, p, onComplete, expiredAction, title, subTitle);
+        }
+    }
 }

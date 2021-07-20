@@ -1,6 +1,7 @@
 package io.github.divios.core_lib.misc;
 
 import com.cryptomorin.xseries.messages.Titles;
+import com.google.common.base.Preconditions;
 import io.github.divios.core_lib.Core_lib;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -24,6 +25,10 @@ public class ChatPrompt implements Listener {
             new ChatPrompt(plugin);
             load = true;
         }
+    }
+
+    public static ChatPromptBuilder builder() {
+        return new ChatPromptBuilder();
     }
 
     /**
@@ -53,6 +58,7 @@ public class ChatPrompt implements Listener {
      * @param onCancel The callback for when the prompt is cancelled
      */
 
+    @Deprecated
     public static void prompt(
             Player player,
             Consumer<String> onResponse,
@@ -134,4 +140,50 @@ public class ChatPrompt implements Listener {
         PLAYER_LEFT
     }
 
+    public static final class ChatPromptBuilder {
+
+        private Player player;
+        private Consumer<String> onResponse;
+        private Consumer<CancelReason> onCancel;
+        private String title;
+        private String subTitle;
+
+        public ChatPromptBuilder withPlayer(Player p) {
+            this.player = p;
+            return this;
+        }
+
+        public ChatPromptBuilder withResponse(Consumer<String> response) {
+            this.onResponse = response;
+            return this;
+        }
+
+        public ChatPromptBuilder withCancel(Consumer<CancelReason> onCancel) {
+            this.onCancel = onCancel;
+            return this;
+        }
+
+        public ChatPromptBuilder withTitle(String title) {
+            this.title = title;
+            return this;
+        }
+
+        public ChatPromptBuilder withSubtitle(String subtitle) {
+            this.subTitle = subtitle;
+            return this;
+        }
+
+        public void prompt() {
+
+            Preconditions.checkNotNull(player, "player is null");
+            if (onResponse == null) onResponse = (s) -> {};
+            if (onCancel == null) onCancel = (r) -> {};
+            if (title == null) title = "";
+            if (subTitle == null) subTitle = "";
+
+            ChatPrompt.prompt(player, onResponse, onCancel, title, subTitle);
+        }
+
+
+    }
 }
