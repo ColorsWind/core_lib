@@ -11,7 +11,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 import java.util.stream.IntStream;
 
 public class confirmIH {
@@ -21,8 +24,10 @@ public class confirmIH {
         private final BiConsumer<Player, Boolean> bi;
         private final ItemStack item;
         private final String title;
-        private final String confirmLore;
-        private final String cancelLore;
+        private final String confirmName;
+        private final List<String> confirmLore;
+        private final String cancelName;
+        private final List<String> cancelLore;
         private boolean backFlag = true;
 
 
@@ -43,15 +48,19 @@ public class confirmIH {
                 BiConsumer<Player, Boolean> true_false,
                 ItemStack item,
                 String title,
-                String confirmLore,
-                String cancelLore) {
+                String confirmName,
+                List<String> confirmLore,
+                String cancelName,
+                List<String> cancelLore) {
 
             this.plugin = plugin;
             this.p = p;
             this.item = item.clone();
             bi = true_false;
             this.title = FormatUtils.color(title);
+            this.confirmName = confirmName;
             this.confirmLore = confirmLore;
+            this.cancelName = cancelName;
             this.cancelLore = cancelLore;
             openInventory();
         }
@@ -72,11 +81,11 @@ public class confirmIH {
 
             IntStream.range(9, 13).forEach(value ->
                     gui.addButton(ItemButton.create(new ItemBuilder(XMaterial.GREEN_STAINED_GLASS_PANE)
-                            .setName(confirmLore), (e) -> bi.accept(p, true)), value));
+                            .setName(confirmName).addLore(confirmLore), (e) -> bi.accept(p, true)), value));
 
             IntStream.range(14, 18).forEach(value ->
                     gui.addButton(ItemButton.create(new ItemBuilder(XMaterial.RED_STAINED_GLASS_PANE)
-                            .setName(cancelLore), (e) -> bi.accept(p, false)), value));
+                            .setName(cancelName).addLore(cancelLore), (e) -> bi.accept(p, false)), value));
 
             gui.destroysOnClose();
             gui.open(p);
@@ -86,11 +95,13 @@ public class confirmIH {
     public static final class confirmIHBuilder {
         private final Plugin plugin = Core_lib.getPlugin();
         private Player p;
-        private BiConsumer<Player, Boolean> bi;
+        private Consumer<Boolean> bi;
         private ItemStack item;
         private String title = "";
-        private String confirmLore = "";
-        private String cancelLore = "";
+        private String confirmName = "";
+        private List<String> confirmLore = new ArrayList<>();
+        private String cancelName = "";
+        private List<String> cancelLore = new ArrayList<>();
 
         private confirmIHBuilder() {
         }
@@ -104,7 +115,7 @@ public class confirmIH {
             return this;
         }
 
-        public confirmIHBuilder withAction(BiConsumer<Player, Boolean> bi) {
+        public confirmIHBuilder withAction(Consumer<Boolean> bi) {
             this.bi = bi;
             return this;
         }
@@ -120,11 +131,23 @@ public class confirmIH {
         }
 
         public confirmIHBuilder withConfirmLore(String confirmLore) {
+            this.confirmName = confirmLore;
+            return this;
+        }
+
+        public confirmIHBuilder withConfirmLore(String confirmName, List<String> confirmLore) {
+            this.confirmName = confirmName;
             this.confirmLore = confirmLore;
             return this;
         }
 
         public confirmIHBuilder withCancelLore(String cancelLore) {
+            this.cancelName = cancelLore;
+            return this;
+        }
+
+        public confirmIHBuilder withCancelLore(String cancelName, List<String> cancelLore) {
+            this.cancelName = cancelName;
             this.cancelLore = cancelLore;
             return this;
         }
@@ -133,13 +156,15 @@ public class confirmIH {
 
             Preconditions.checkNotNull(p, "player null");
 
-            if (bi == null) bi = (p, b) -> {};
+            if (bi == null) bi = (b) -> {};
             if (item == null) item = XMaterial.AIR.parseItem();
             if (title == null) title = "";
-            if (confirmLore == null) confirmLore = "&c";
-            if (cancelLore == null) cancelLore = "&c";
+            if (confirmName == null) confirmName = "&c";
+            if (confirmLore == null) confirmLore = new ArrayList<>();
+            if (cancelName == null) cancelName = "&c";
+            if (cancelLore == null) cancelLore = new ArrayList<>();
 
-            return new confirmIH(plugin, p, bi, item, title, confirmLore, cancelLore);
+            return new confirmIH(plugin, p, (p, b) -> bi.accept(b), item, title, confirmName, confirmLore, cancelName, cancelLore);
         }
     }
 }

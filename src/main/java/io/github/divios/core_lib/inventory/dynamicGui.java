@@ -1,12 +1,13 @@
 package io.github.divios.core_lib.inventory;
 
 import com.cryptomorin.xseries.XMaterial;
+import io.github.divios.core_lib.Schedulers;
 import io.github.divios.core_lib.itemutils.ItemBuilder;
 import io.github.divios.core_lib.itemutils.ItemUtils;
+import io.github.divios.core_lib.misc.ChatPrompt;
 import io.github.divios.core_lib.misc.EventListener;
 import io.github.divios.core_lib.misc.FormatUtils;
 import io.github.divios.core_lib.misc.Task;
-import net.wesjd.anvilgui.AnvilGUI;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -213,31 +214,34 @@ public class dynamicGui implements InventoryHolder, Listener {
                     nonContentAction, addItems, searchOn, false, page, preventCloseB.get());
         } else {
             final List<ItemStack> lists = new ArrayList<>();
-            new AnvilGUI.Builder()
-                    .onClose(player -> {
-                        Task.syncDelayed(plugin, () -> {
+
+            ChatPrompt.builder()
+                    .withPlayer(p)
+                    .withResponse(s -> {
+
+                        for (ItemStack i : contentX.contentS) {
+                            String name = FormatUtils.stripColor(i.getItemMeta().getDisplayName());
+                            if (name.toLowerCase().startsWith(s.toLowerCase())) {
+                                lists.add(i);
+                            }
+                        }
+                        contentX.searchContent = lists;
+                        Schedulers.sync().runLater(()-> {
                             preventClose.unregister();
                             new dynamicGui(plugin, p, contentX, title, back, rows2fill, contentAction,
                                     nonContentAction, addItems, searchOn, true, page, preventCloseB.get());
                         }, 1L);
                     })
-                    .onComplete((player, text) -> {
-
-                        for (ItemStack s : contentX.contentS) {
-                            String name = FormatUtils.stripColor(s.getItemMeta().getDisplayName());
-                            if (name.toLowerCase().startsWith(text.toLowerCase())) {
-                                lists.add(s);
-                            }
-                        }
-                        contentX.searchContent = lists;
-                        return AnvilGUI.Response.close();
-
+                    .withCancel(cancelReason -> {
+                        Schedulers.sync().runLater(()-> {
+                            preventClose.unregister();
+                            new dynamicGui(plugin, p, contentX, title, back, rows2fill, contentAction,
+                                    nonContentAction, addItems, searchOn, true, page, preventCloseB.get());
+                        }, 1L);
                     })
-                    .text("Insert text to search")
-                    .itemLeft(new ItemStack(XMaterial.COMPASS.parseMaterial()))
-                    .title(FormatUtils.color("&6&lSearch"))
-                    .plugin(plugin)
-                    .open(p);
+                    .withTitle("Insert text to search")
+                    .prompt();
+
         }
     }
 

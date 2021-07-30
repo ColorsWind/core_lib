@@ -81,8 +81,8 @@ public class ItemPrompt{
 
         private final Plugin plugin = Core_lib.getPlugin();
         private Player p;
-        private BiConsumer<Player, ItemStack> onComplete;
-        private Consumer<Player> expiredAction;
+        private Consumer<ItemStack> onComplete;
+        private Runnable expiredAction;
         private String title;
         private String subTitle;
 
@@ -93,12 +93,12 @@ public class ItemPrompt{
             return this;
         }
 
-        public ItemPromptBuilder withComplete(BiConsumer<Player, ItemStack> onComplete) {
+        public ItemPromptBuilder withComplete(Consumer<ItemStack> onComplete) {
             this.onComplete = onComplete;
             return this;
         }
 
-        public ItemPromptBuilder withExpiredAction(Consumer<Player> expiredAction) {
+        public ItemPromptBuilder withExpiredAction(Runnable expiredAction) {
             this.expiredAction = expiredAction;
             return this;
         }
@@ -116,12 +116,13 @@ public class ItemPrompt{
         public ItemPrompt build() {
 
             Preconditions.checkNotNull(p, "player is null");
-            if (onComplete == null) onComplete = (p, i) -> {};
-            if (expiredAction == null) expiredAction = p -> {};
+            if (onComplete == null) onComplete = (i) -> {};
+            if (expiredAction == null) expiredAction = () -> {};
             if (title == null) title = "";
             if (subTitle == null) subTitle = "";
 
-            return new ItemPrompt(plugin, p, onComplete, expiredAction, title, subTitle);
+            return new ItemPrompt(plugin, p, (p, i) -> onComplete.accept(i),
+                    (p) -> expiredAction.run(), FormatUtils.color(title), FormatUtils.color(subTitle));
         }
     }
 }

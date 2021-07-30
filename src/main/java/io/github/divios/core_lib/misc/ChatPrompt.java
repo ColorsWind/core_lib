@@ -3,13 +3,20 @@ package io.github.divios.core_lib.misc;
 import com.cryptomorin.xseries.messages.Titles;
 import com.google.common.base.Preconditions;
 import io.github.divios.core_lib.Core_lib;
+import io.github.divios.core_lib.Schedulers;
 import org.bukkit.Bukkit;
+import org.bukkit.conversations.Conversation;
+import org.bukkit.conversations.ConversationContext;
+import org.bukkit.conversations.ConversationFactory;
+import org.bukkit.conversations.Prompt;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.plugin.Plugin;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -72,37 +79,44 @@ public class ChatPrompt implements Listener {
         if (removed != null) {
             removed.cancel(CancelReason.PROMPT_OVERRIDDEN);
         }
-        prompts.put(player, new Prompt(onResponse, onCancel));
+        //prompts.put(player, new Prompt(onResponse, onCancel));
         player.closeInventory();
         Titles.sendTitle(player, FormatUtils.color(title), FormatUtils.color(subTitle));
-        Msg.sendMsg(player, "&7Input chat. Type &fcancel &7to exit");
+
+        Conversation conv = new ConversationFactory(Core_lib.getPlugin())
+                .withEscapeSequence("cancel")
+                .withFirstPrompt(new org.bukkit.conversations.Prompt() {
+
+                    @NotNull
+                    @Override
+                    public String getPromptText(@NotNull ConversationContext conversationContext) {
+                        return FormatUtils.color(Msg.PREFIX + "&7Input chat. Type &fcancel &7to exit");
+                    }
+
+                    @Override
+                    public boolean blocksForInput(@NotNull ConversationContext conversationContext) {
+                        return true;
+                    }
+
+                    @Nullable
+                    @Override
+                    public org.bukkit.conversations.Prompt acceptInput(@NotNull ConversationContext conversationContext, @Nullable String s) {
+                        Schedulers.sync().runLater(() -> onResponse.accept(s), 1);
+                        return null;
+                    }
+                })
+                .addConversationAbandonedListener(e -> onCancel.accept(CancelReason.PLAYER_LEFT))
+                .withTimeout(50)
+                .buildConversation(player);
+
+        conv.setLocalEchoEnabled(false);
+        conv.begin();
+
     }
 
 
     private ChatPrompt(Plugin plugin) {
-        Bukkit.getPluginManager().registerEvents(this, plugin);
-    }
-
-    @EventHandler
-    public void onChat(AsyncPlayerChatEvent e) {
-        Prompt p = prompts.remove(e.getPlayer());
-        if (p == null) {
-            return;
-        }
-        e.setCancelled(true);
-        if (e.getMessage().equalsIgnoreCase("cancel")) {
-            p.cancel(CancelReason.PLAYER_CANCELLED);
-            return;
-        }
-        p.respond(e.getMessage());
-    }
-
-    @EventHandler
-    public void onLeave(PlayerQuitEvent e) {
-        Prompt p = prompts.remove(e.getPlayer());
-        if (p != null) {
-            p.cancel(CancelReason.PLAYER_LEFT);
-        }
+        //Bukkit.getPluginManager().registerEvents(this, plugin);
     }
 
     private static class Prompt {

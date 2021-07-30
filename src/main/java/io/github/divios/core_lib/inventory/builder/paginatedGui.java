@@ -81,6 +81,7 @@ public class paginatedGui {
         dummyInv.setItem(nextButton.get2(), nextButton.get1());
 
         int max = (int) Math.ceil( (float) items.size() / inventoryUtils.getEmptySlots(dummyInv));
+        if (max == 0) max = 1;
 
         for (int i = 0; i < max; i++) {         // initial population
 
@@ -122,6 +123,8 @@ public class paginatedGui {
         }
 
     }
+
+    public inventoryPopulatorState getPopulator() { return populator.toState(); }
 
     public void destroy() {
         invs.forEach(InventoryGUI::destroy);
@@ -209,7 +212,6 @@ public class paginatedGui {
             Preconditions.checkNotNull(backButton, "backButton null");
             Preconditions.checkNotNull(nextButton, "nextButton null");
 
-            Preconditions.checkArgument(!items.isEmpty(), "items is empty");
             Preconditions.checkArgument(!ItemUtils.isEmpty(backButton.get1()), "backbutton is empty");
             Preconditions.checkArgument(!ItemUtils.isEmpty(backButton.get1()), "nextbutton is empty");
             Preconditions.checkArgument(backButton.get2() >= 0 && backButton.get2() < 54,
@@ -220,6 +222,7 @@ public class paginatedGui {
                     "nextButton slot out of bounds");
 
             if (withButtons == null) withButtons = (e, i) -> {};
+            if (title == null) title = "";
 
             return new paginatedGui(title, items, backButton, nextButton, exitButton, withButtons, populator);
         }

@@ -1,5 +1,6 @@
 package io.github.divios.core_lib.commands;
 
+import com.google.common.collect.Lists;
 import org.bukkit.command.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -49,8 +50,10 @@ public class CommandManager implements TabCompleter, CommandExecutor {
                              @NotNull String label,
                              @NotNull String[] strings) {
 
-        if (strings.length == 0)
-            return false;
+        if (strings.length == 0) {
+            if (DEFAULT != null) DEFAULT.run(commandSender, Lists.newArrayList(strings));
+            return true;
+        }
 
         Optional<abstractCommand> match_cmds = cmds.stream()
                 .filter(absC -> absC.getName().equals(strings[0])).findFirst();
