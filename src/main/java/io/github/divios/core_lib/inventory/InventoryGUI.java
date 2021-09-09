@@ -1,9 +1,12 @@
 package io.github.divios.core_lib.inventory;
 
 import com.cryptomorin.xseries.XMaterial;
+import io.github.divios.core_lib.Core_lib;
 import io.github.divios.core_lib.itemutils.ItemBuilder;
 import io.github.divios.core_lib.misc.FormatUtils;
+import io.github.divios.core_lib.misc.Pair;
 import io.github.divios.core_lib.misc.Task;
+import io.netty.handler.codec.base64.Base64Encoder;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -17,11 +20,12 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.util.io.BukkitObjectInputStream;
+import org.bukkit.util.io.BukkitObjectOutputStream;
+import org.yaml.snakeyaml.external.biz.base64Coder.Base64Coder;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.io.*;
+import java.util.*;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
@@ -57,8 +61,31 @@ public class InventoryGUI implements Listener {
      *
      * @param inventory The inventory to create a GUI from
      */
+    @Deprecated
     public InventoryGUI(Plugin plugin, Inventory inventory, String title) {
         this.plugin = plugin;
+        this.inventory = inventory;
+        this.title = title;
+        Bukkit.getPluginManager().registerEvents(this, plugin);
+    }
+
+    /**
+     * Creates a new GUI, instantiating a new inventory with the given size and name
+     * @param size The size of the inventory
+     * @param name The name of the inventory
+     */
+    @Deprecated
+    public InventoryGUI(int size, String name) {
+        this(Bukkit.createInventory(null, size, FormatUtils.color(name)), name);
+    }
+
+    /**
+     * Creates a new GUI from an inventory
+     *
+     * @param inventory The inventory to create a GUI from
+     */
+    public InventoryGUI(Inventory inventory, String title) {
+        this.plugin = Core_lib.getPlugin();
         this.inventory = inventory;
         this.title = title;
         Bukkit.getPluginManager().registerEvents(this, plugin);
@@ -456,6 +483,10 @@ public class InventoryGUI implements Listener {
         }
     }
 
+    public InventoryGUI clone() {
+        return GUIState.fromJson(this.getState().toJson()).restore();
+    }
+
     /**
      * Gets the state of the GUI, which can be restored later
      *
@@ -489,6 +520,48 @@ public class InventoryGUI implements Listener {
             gui.inventory.setContents(contents.clone());
 
             return gui;
+        }
+
+        public String toJson() {
+
+            try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
+                try (BukkitObjectOutputStream dataOutput = new BukkitObjectOutputStream(outputStream)) {
+                    dataOutput.writeObject(buttons);
+                    dataOutput.writeObject(openSlots);
+                    dataOutput.writeObject(contents);
+                    dataOutput.writeObject(inventoryUtils.serialize(gui.getInventory(), gui.getTitle()));
+
+                    return Base64Coder.encodeLines(outputStream.toByteArray());
+                }
+
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        public static GUIState fromJson(String json) {
+
+
+            try (ByteArrayInputStream InputStream = new ByteArrayInputStream(Base64Coder.decodeLines(json))) {
+                try (BukkitObjectInputStream dataInput = new BukkitObjectInputStream(InputStream)) {
+
+                    List<ItemButton> buttons = (List<ItemButton>) dataInput.readObject();
+                    Set<Integer> openSlots = (Set<Integer>) dataInput.readObject();
+                    ItemStack[] contents = (ItemStack[]) dataInput.readObject();
+
+                    Pair<String, Inventory> pair = inventoryUtils.deserialize((String) dataInput.readObject());
+                    InventoryGUI newGui = new InventoryGUI(pair.get2(), pair.get1());
+
+                    return new GUIState(buttons, openSlots, contents, newGui);
+
+                } catch (ClassNotFoundException e) {
+                    throw new RuntimeException(e);
+                }
+
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+
         }
 
     }

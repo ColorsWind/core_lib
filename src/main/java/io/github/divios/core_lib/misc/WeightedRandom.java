@@ -17,8 +17,6 @@ public class WeightedRandom<T> {
     private List<Double> totals;
     private List<T> items;
 
-    private boolean removeOnRoll = false;
-
     /**
      * Create a new WeightedRandom from a map of outcomes to their weights
      * @param map The map of outcomes to their weights
@@ -30,7 +28,7 @@ public class WeightedRandom<T> {
         map.forEach((k, v) -> {
             dmap.put(k, (double) v);
         });
-        return new WeightedRandom<>(dmap, false);
+        return new WeightedRandom<T>(dmap, false);
     }
 
     /**
@@ -83,10 +81,6 @@ public class WeightedRandom<T> {
         total = 0;
     }
 
-    public void removeOnRoll() { removeOnRoll = true; }
-
-    public void setRemoveOnRoll(boolean removeOnRoll) { this.removeOnRoll = removeOnRoll; }
-
     private WeightedRandom(Map<T, Double> weights, boolean no) {
         initialize(weights);
     }
@@ -105,19 +99,6 @@ public class WeightedRandom<T> {
         });
     }
 
-    private void reMap(int index) {
-        T rolled = items.get(index);
-        Double rolledWeight = weights.get(rolled);
-
-        total -= rolledWeight;
-        totals.remove(index);
-        IntStream.range(index, totals.size())
-                .forEach(value ->
-                        totals.set(index, totals.get(index) - rolledWeight));
-        items.remove(index);
-        weights.remove(rolled);
-    }
-
     /**
      * Rolls and gets a weighted random outcome
      * @return A weighted random outcome, or null if there are no possible outcomes
@@ -132,14 +113,7 @@ public class WeightedRandom<T> {
             pos = -(pos + 1);
         }
         pos = Math.min(pos, items.size() - 1);
-
-        T rolled = items.get(pos);
-
-        if (removeOnRoll) reMap(pos);
-
-        return rolled;
-
-
+        return items.get(pos);
     }
 
     /**
@@ -196,6 +170,7 @@ public class WeightedRandom<T> {
         int index = items.indexOf(outcome);
         items.remove(index);
         totals.remove(index);
+        total -= value;
         for (int i = index; i < totals.size(); i++) {
             totals.set(i, totals.get(i) - value);
         }
@@ -206,8 +181,9 @@ public class WeightedRandom<T> {
      * @return An identical copy of this WeightedRandom
      */
     public WeightedRandom<T> clone() {
-        return new WeightedRandom<>(new HashMap<>(weights), false);
+        return new WeightedRandom<T>(new HashMap<>(weights), false);
     }
+
 
     /**
      * Performs a single roll given a map of outcomes to weights. If you need to roll multiple times, instantiate a WeightedRandom and call roll on that each time instead.

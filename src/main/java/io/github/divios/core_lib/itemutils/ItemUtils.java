@@ -655,6 +655,16 @@ public class ItemUtils {
         }
     }
 
+    public static <T> T getMetadata(ItemStack item, String metadata, Class<T> clazz) {
+        return clazz.cast(new NBTItem(item).getObject(metadata, clazz));
+    }
+
+    public static ItemStack setMetadata(ItemStack item, String metadata, Object o) {
+        NBTItem nbtItemize = new NBTItem(item);
+        nbtItemize.setObject(metadata, o);
+        return nbtItemize.getItem();
+    }
+
     /**
      * Compares the type, name, and lore of two items
      *
@@ -681,7 +691,7 @@ public class ItemUtils {
         }
     }
 
-    public static ItemStack deserialize(String base64) {
+    public static ItemStack deserialize (String base64) {
         try {
             ByteArrayInputStream InputStream = new ByteArrayInputStream(Base64Coder.decodeLines(base64));
             BukkitObjectInputStream dataInput = new BukkitObjectInputStream(InputStream);

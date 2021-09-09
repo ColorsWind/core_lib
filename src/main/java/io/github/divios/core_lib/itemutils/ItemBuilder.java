@@ -204,6 +204,10 @@ public class ItemBuilder extends ItemStack {
 
     public ItemBuilder applyTexture(UUID uuid) { return new ItemBuilder(ItemUtils.applyTexture(this, uuid)); }
 
+    public ItemBuilder setMetadata(String metadata, Object o) {
+        return new ItemBuilder(ItemUtils.setMetadata(this, metadata, o));
+    }
+
     public void ifPresent(Consumer<ItemStack> consumer) {
         if (!ItemUtils.isEmpty(this)) consumer.accept(this);
     }

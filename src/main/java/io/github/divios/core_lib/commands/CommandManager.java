@@ -56,7 +56,7 @@ public class CommandManager implements TabCompleter, CommandExecutor {
         }
 
         Optional<abstractCommand> match_cmds = cmds.stream()
-                .filter(absC -> absC.getName().equals(strings[0])).findFirst();
+                .filter(absC -> absC.getName().equalsIgnoreCase(strings[0])).findFirst();
 
         if (!match_cmds.isPresent()) {
             if (DEFAULT != null) {

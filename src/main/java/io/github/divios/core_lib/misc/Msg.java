@@ -1,5 +1,7 @@
 package io.github.divios.core_lib.misc;
 
+import io.github.divios.core_lib.utils.Log;
+import net.md_5.bungee.api.chat.TranslatableComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -73,11 +75,18 @@ public class Msg {
 
     public static void sendMsg(Player p, String s) {
         if (p == null) return;
+        if (s == null || s.isEmpty()) return;
         p.sendMessage(PREFIX + FormatUtils.color(s));
     }
 
     public static void sendMsg(UUID uuid, String s) {
+        if (s == null || s.isEmpty()) return;
         sendMsg(Bukkit.getPlayer(uuid), s);
+    }
+
+    public static void broadcast(String s) {
+        if (s == null || s.isEmpty()) return;
+        Bukkit.getOnlinePlayers().forEach(player -> sendMsg(player, s));
     }
 
 }

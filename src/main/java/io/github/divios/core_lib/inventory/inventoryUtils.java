@@ -4,6 +4,7 @@ import io.github.divios.core_lib.itemutils.ItemUtils;
 import io.github.divios.core_lib.misc.Pair;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
@@ -16,6 +17,8 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 public class inventoryUtils {
 
@@ -45,6 +48,12 @@ public class inventoryUtils {
             to.setContents(Arrays.stream(from.getContents()).limit(to.getSize()).toArray(ItemStack[]::new));
         else
             to.setContents(from.getContents());
+    }
+
+    public static int playerEmptySlots(Player p) {
+        return (int) IntStream.range(0, 36)
+                .filter(value -> ItemUtils.isEmpty(p.getInventory().getItem(value)))
+                .count();
     }
 
     /**
