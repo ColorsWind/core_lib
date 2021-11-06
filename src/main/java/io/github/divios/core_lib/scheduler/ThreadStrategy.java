@@ -4,19 +4,21 @@ import io.github.divios.core_lib.Core_lib;
 import io.github.divios.core_lib.utils.TriConsumer;
 import org.bukkit.Bukkit;
 
+import java.util.function.BiConsumer;
+
 public enum ThreadStrategy {
 
-    async((R, I, P) -> Bukkit.getScheduler().runTaskLaterAsynchronously(Core_lib.PLUGIN, R, I)),
-    sync((R, I, P) -> Bukkit.getScheduler().runTaskLater(Core_lib.PLUGIN, R, I)),
+    async((R, I) -> Bukkit.getScheduler().runTaskLaterAsynchronously(Core_lib.PLUGIN, R, I)),
+    sync((R, I) -> Bukkit.getScheduler().runTaskLater(Core_lib.PLUGIN, R, I));
 
-    private final BiConsumer<Runnable, Integer, Integer> action;
+    private final BiConsumer<Runnable, Integer> action;
 
-    ModeStrategy(TriConsumer<Runnable, Integer, Integer> action)  {
+    ThreadStrategy(BiConsumer<Runnable, Integer> action)  {
         this.action = action;
     }
 
-    protected void run(Runnable runnable, Integer delay, Integer period) {
-        action.accept(runnable, delay, period);
+    protected void run(Runnable runnable, Integer delay) {
+        action.accept(runnable, delay);
     }
 
 }
