@@ -145,7 +145,7 @@ public class LocationUtils {
                 result.accept(false);
             }
         });
-        task[0] = Task.syncDelayed(Core_lib.getPlugin(), () -> {
+        task[0] = Task.syncDelayed(Core_lib.PLUGIN, () -> {
             player.teleport(loc);
             listener.unregister();
             result.accept(true);

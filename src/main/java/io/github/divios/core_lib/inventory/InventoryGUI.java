@@ -6,7 +6,6 @@ import io.github.divios.core_lib.itemutils.ItemBuilder;
 import io.github.divios.core_lib.misc.FormatUtils;
 import io.github.divios.core_lib.misc.Pair;
 import io.github.divios.core_lib.misc.Task;
-import io.netty.handler.codec.base64.Base64Encoder;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -85,7 +84,7 @@ public class InventoryGUI implements Listener {
      * @param inventory The inventory to create a GUI from
      */
     public InventoryGUI(Inventory inventory, String title) {
-        this.plugin = Core_lib.getPlugin();
+        this.plugin = Core_lib.PLUGIN;
         this.inventory = inventory;
         this.title = title;
         Bukkit.getPluginManager().registerEvents(this, plugin);

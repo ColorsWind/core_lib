@@ -17,7 +17,7 @@ import java.util.function.Consumer;
  */
 public class EventListener<T extends Event> implements Listener {
 
-    private Plugin plugin = Core_lib.getPlugin();
+    private Plugin plugin = Core_lib.PLUGIN;
     private BiConsumer<EventListener<T>, T> handler;
     private Class<T> eventClass;
 

@@ -27,24 +27,23 @@ package io.github.divios.core_lib.utils;
 
 import io.github.divios.core_lib.Core_lib;
 import org.bukkit.Bukkit;
-
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Utility for quickly accessing a logger instance without using {@link Bukkit#getLogger()}
  */
 public final class Log {
 
-    public static void info(@Nonnull String s) {
-        Core_lib.getPlugin().getLogger().info(s);
+    public static void info(@NotNull String s) {
+        Core_lib.PLUGIN.getLogger().info(s);
     }
 
-    public static void warn(@Nonnull String s) {
-        Core_lib.getPlugin().getLogger().warning(s);
+    public static void warn(@NotNull String s) {
+        Core_lib.PLUGIN.getLogger().warning(s);
     }
 
-    public static void severe(@Nonnull String s) {
-        Core_lib.getPlugin().getLogger().severe(s);
+    public static void severe(@NotNull String s) {
+        Core_lib.PLUGIN.getLogger().severe(s);
     }
 
     private Log() {

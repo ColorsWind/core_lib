@@ -79,7 +79,7 @@ public class ItemPrompt{
 
     public static final class ItemPromptBuilder {
 
-        private final Plugin plugin = Core_lib.getPlugin();
+        private final Plugin plugin = Core_lib.PLUGIN;
         private Player p;
         private Consumer<ItemStack> onComplete;
         private Runnable expiredAction;

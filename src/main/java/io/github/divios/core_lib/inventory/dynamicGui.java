@@ -1,7 +1,7 @@
 package io.github.divios.core_lib.inventory;
 
 import com.cryptomorin.xseries.XMaterial;
-import io.github.divios.core_lib.Schedulers;
+import io.github.divios.core_lib.Core_lib;
 import io.github.divios.core_lib.itemutils.ItemBuilder;
 import io.github.divios.core_lib.itemutils.ItemUtils;
 import io.github.divios.core_lib.misc.ChatPrompt;
@@ -226,14 +226,14 @@ public class dynamicGui implements InventoryHolder, Listener {
                             }
                         }
                         contentX.searchContent = lists;
-                        Schedulers.sync().runLater(()-> {
+                        Bukkit.getScheduler().scheduleSyncDelayedTask(Core_lib.PLUGIN, ()-> {
                             preventClose.unregister();
                             new dynamicGui(plugin, p, contentX, title, back, rows2fill, contentAction,
                                     nonContentAction, addItems, searchOn, true, page, preventCloseB.get());
                         }, 1L);
                     })
                     .withCancel(cancelReason -> {
-                        Schedulers.sync().runLater(()-> {
+                        Bukkit.getScheduler().scheduleSyncDelayedTask(Core_lib.PLUGIN, ()-> {
                             preventClose.unregister();
                             new dynamicGui(plugin, p, contentX, title, back, rows2fill, contentAction,
                                     nonContentAction, addItems, searchOn, true, page, preventCloseB.get());

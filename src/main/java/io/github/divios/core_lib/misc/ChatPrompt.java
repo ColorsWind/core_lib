@@ -3,17 +3,12 @@ package io.github.divios.core_lib.misc;
 import com.cryptomorin.xseries.messages.Titles;
 import com.google.common.base.Preconditions;
 import io.github.divios.core_lib.Core_lib;
-import io.github.divios.core_lib.Schedulers;
 import org.bukkit.Bukkit;
 import org.bukkit.conversations.Conversation;
 import org.bukkit.conversations.ConversationContext;
 import org.bukkit.conversations.ConversationFactory;
-import org.bukkit.conversations.Prompt;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.AsyncPlayerChatEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -74,7 +69,7 @@ public class ChatPrompt implements Listener {
             String subTitle
 
     ) {
-        init(Core_lib.getPlugin());
+        init(Core_lib.PLUGIN);
         Prompt removed = prompts.remove(player);
         if (removed != null) {
             removed.cancel(CancelReason.PROMPT_OVERRIDDEN);
@@ -83,7 +78,7 @@ public class ChatPrompt implements Listener {
         player.closeInventory();
         Titles.sendTitle(player, FormatUtils.color(title), FormatUtils.color(subTitle));
 
-        Conversation conv = new ConversationFactory(Core_lib.getPlugin())
+        Conversation conv = new ConversationFactory(Core_lib.PLUGIN)
                 .withEscapeSequence("cancel")
                 .withFirstPrompt(new org.bukkit.conversations.Prompt() {
 
@@ -101,7 +96,7 @@ public class ChatPrompt implements Listener {
                     @Nullable
                     @Override
                     public org.bukkit.conversations.Prompt acceptInput(@NotNull ConversationContext conversationContext, @Nullable String s) {
-                        Schedulers.sync().runLater(() -> onResponse.accept(s), 1);
+                        Bukkit.getScheduler().scheduleAsyncDelayedTask(Core_lib.PLUGIN, () -> onResponse.accept(s), 1);
                         return null;
                     }
                 })

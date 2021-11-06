@@ -85,7 +85,7 @@ public class paginatedGui {
 
         for (int i = 0; i < max; i++) {         // initial population
 
-            InventoryGUI invGui = new InventoryGUI(Core_lib.getPlugin(), 54, title);
+            InventoryGUI invGui = new InventoryGUI(Core_lib.PLUGIN, 54, title);
             Inventory inv = invGui.getInventory();
 
             if (populator != null) populator.apply(inv);     // Apply populator

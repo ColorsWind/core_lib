@@ -93,7 +93,7 @@ public class confirmIH {
 
 
     public static final class confirmIHBuilder {
-        private final Plugin plugin = Core_lib.getPlugin();
+        private final Plugin plugin = Core_lib.PLUGIN;
         private Player p;
         private Consumer<Boolean> bi;
         private ItemStack item;

@@ -3,8 +3,8 @@ package io.github.divios.core_lib.inventory.builder;
 import com.cryptomorin.xseries.XMaterial;
 import com.google.common.base.Preconditions;
 import com.google.common.primitives.Ints;
-import io.github.divios.core_lib.function.Numbers;
 import io.github.divios.core_lib.itemutils.ItemBuilder;
+import io.github.divios.core_lib.utils.Primitives;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
@@ -125,8 +125,7 @@ public final class inventoryPopulator {
         public PopulatorContentContext mask(String mask) {
 
             Preconditions.checkArgument(mask.length() == 9, "Mask length");
-            Preconditions.checkArgument(Numbers.parseIntegerOpt(mask).isPresent(),
-                    "Not integer");
+            Preconditions.checkArgument(Primitives.isInteger(mask), "Not integer");
 
             if (masks.size() == 9) return this;
 

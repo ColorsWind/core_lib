@@ -23,7 +23,7 @@ public class DataManagerAbstract {
 
     public DataManagerAbstract(DatabaseConnector databaseConnector) {
         this.databaseConnector = databaseConnector;
-        this.plugin = Core_lib.getPlugin();
+        this.plugin = Core_lib.PLUGIN;
     }
 
     /**
