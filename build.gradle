@@ -12,11 +12,28 @@ plugins {
 apply plugin: 'maven-publish'
 
 group = 'io.github.divios'
-def pluginVersion = '2.0'
+def pluginVersion = '3.0'
 version = pluginVersion
 
 sourceCompatibility = '1.8'
 targetCompatibility = '1.8'
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            from components.java
+        }
+    }
+    repositories {
+        maven {
+            url repsyUrl
+            credentials {
+                username repsyUsername
+                password repsyPassword
+            }
+        }
+    }
+}
 
 repositories {
     mavenCentral()
@@ -57,3 +74,4 @@ shadowJar.configure {
 task deploy(dependsOn: ["clean", "jar", "updateJars"]) {
     updateJars.mustRunAfter shadowJar
 }
+
