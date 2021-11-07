@@ -89,7 +89,7 @@ public class CommandManager implements TabCompleter, CommandExecutor {
                         return;
                     }
 
-                    for (String perm : absC.getPerms())     // Check Perms
+                    for (String perm : absC.getSafePerms())     // Check Perms
                         if (!commandSender.hasPermission(perm)) {
                             commandSender.sendMessage(notPerms);
                             return;
