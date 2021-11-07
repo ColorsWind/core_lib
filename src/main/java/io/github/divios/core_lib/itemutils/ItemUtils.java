@@ -57,6 +57,7 @@ public class ItemUtils {
      * @return The renamed ItemStack
      */
     public static ItemStack setName(ItemStack item, String name) {
+        if (name == null) return item;
         return rename(item, name);
     }
 
