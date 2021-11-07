@@ -24,7 +24,7 @@ import java.util.stream.Stream;
 public class paginatedGui {
 
     private final String title;
-    private final List<ItemButton> items;
+    private final Supplier<List<ItemButton>> items;
     private final Pair<ItemStack, Integer> backButton;
     private final Pair<ItemStack, Integer> nextButton;
     private final Pair<ItemButton, Integer> exitButton;
@@ -35,7 +35,7 @@ public class paginatedGui {
 
     private paginatedGui(
             String title,
-            List<ItemButton> items,
+            Supplier<List<ItemButton>> items,
             Pair<ItemStack, Integer> backButton,
             Pair<ItemStack, Integer> nextButton,
             Pair<ItemButton, Integer> exitButton,
@@ -79,8 +79,10 @@ public class paginatedGui {
         if (populator != null) populator.apply(dummyInv);
         dummyInv.setItem(backButton.get2(), backButton.get1());
         dummyInv.setItem(nextButton.get2(), nextButton.get1());
-
-        int max = (int) Math.ceil( (float) items.size() / inventoryUtils.getEmptySlots(dummyInv));
+        
+        List<ItemButton> supplierItems = items.get();
+        
+        int max = (int) Math.ceil( (float) supplierItems.size() / inventoryUtils.getEmptySlots(dummyInv));
         if (max == 0) max = 1;
 
         for (int i = 0; i < max; i++) {         // initial population
@@ -110,7 +112,7 @@ public class paginatedGui {
         }
 
         InventoryGUI inv = invs.get(0);         // Populate with items
-        for (ItemButton item : items) {
+        for (ItemButton item : supplierItems) {
 
             int slot;
             if ((slot = inventoryUtils.getFirstEmpty(inv.getInventory())) == -1) {
@@ -137,7 +139,7 @@ public class paginatedGui {
     protected static final class BuilderImpl implements paginatedGuiBuilder {
 
         private String title;
-        private List<ItemButton> items;
+        private Supplier<List<ItemButton>> items;
         private Pair<ItemStack, Integer> backButton;
         private Pair<ItemStack, Integer> nextButton;
         private Pair<ItemButton, Integer> exitButton;
@@ -153,7 +155,7 @@ public class paginatedGui {
         }
 
 
-        public paginatedGuiBuilder withItems(List<ItemButton> items) {
+        public paginatedGuiBuilder withItems(Supplier<List<ItemButton>> items) {
             this.items = items;
             return this;
         }
@@ -225,6 +227,11 @@ public class paginatedGui {
             if (title == null) title = "";
 
             return new paginatedGui(title, items, backButton, nextButton, exitButton, withButtons, populator);
+        }
+        
+        @Override
+        public CompletableFuture<paginatedGui> buildFuture() {
+            return CompletableFuture.supplyAsync(this::build);
         }
     }
 }
