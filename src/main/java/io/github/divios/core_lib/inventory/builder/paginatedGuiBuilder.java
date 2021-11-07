@@ -14,9 +14,19 @@ public interface paginatedGuiBuilder {
 
     paginatedGuiBuilder withTitle(String title);
 
-    paginatedGuiBuilder withItems(List<ItemButton> items);
+    default paginatedGuiBuilder withItems(Collection<ItemButton> items) {
+        return withItems(items);
+    }
 
-    paginatedGuiBuilder withItems(Stream<ItemButton> items);
+    default paginatedGuiBuilder withItems(Stream<ItemButton> items) {
+        return withItems(() -> items.collect(Collectors.toList()));
+    }
+
+    default paginatedGuiBuilder withItems(List<ItemButton> items) {
+        return withItems(() -> items);
+    }
+
+    paginatedGuiBuilder withItems(Supplier<List<ItemButton>> items);
 
     paginatedGuiBuilder withBackButton(ItemStack item, int slot);
 
@@ -33,4 +43,6 @@ public interface paginatedGuiBuilder {
     paginatedGuiBuilder withPopulator(PopulatorContentContext populator);
 
     paginatedGui build();
+
+    CompletableFuture<paginatedGui> buildFuture();
 }
