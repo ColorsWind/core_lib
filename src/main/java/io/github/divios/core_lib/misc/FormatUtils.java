@@ -95,9 +95,17 @@ public class FormatUtils {
      */
     public static String stripColor(String input) { return ChatColor.stripColor(input); }
 
-    public static String unColor(String input) {
-        Pattern STRIP_COLOR_PATTERN = Pattern.compile("(?i)" + String.valueOf('&') + "[0-9A-FK-OR]");
-        return input == null?null:STRIP_COLOR_PATTERN.matcher(input).replaceAll("");
+    public static String unColor(String text) {
+
+            char[] array = text.toCharArray();
+            for (int i = 0; i < array.length - 1; i++) {
+                if (array[i] == ChatColor.COLOR_CHAR && "0123456789AaBbCcDdEeFfKkLlMmNnOoRr".indexOf(array[i + 1]) != -1) {
+                    array[i] = '&';
+                    array[i + 1] = Character.toLowerCase(array[i + 1]);
+                }
+            }
+            return new String(array);
+
     }
 
     /**
