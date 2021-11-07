@@ -16,8 +16,10 @@ import org.bukkit.inventory.ItemStack;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -154,15 +156,8 @@ public class paginatedGui {
             return this;
         }
 
-
         public paginatedGuiBuilder withItems(Supplier<List<ItemButton>> items) {
             this.items = items;
-            return this;
-        }
-
-
-        public paginatedGuiBuilder withItems(Stream<ItemButton> items) {
-            this.items = items.collect(Collectors.toList());
             return this;
         }
 
