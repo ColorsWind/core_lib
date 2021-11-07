@@ -114,7 +114,7 @@ public class CommandManager implements TabCompleter, CommandExecutor {
         if (strings.length == 1) {      // Si son los primeros parametros
             toReturn = Optional.of(cmds.stream()
                     .filter(abstractCommand ->
-                            abstractCommand.getPerms().stream().allMatch(commandSender::hasPermission))
+                            abstractCommand.getSafePerms().stream().allMatch(commandSender::hasPermission))
                     .map(abstractCommand::getName)
                     .collect(Collectors.toList()));
         } else {
