@@ -43,12 +43,17 @@ shadowJar {
     minimize()
 }
 
-task relocateShadowJar(type: ConfigureShadowRelocation) {
-    target = tasks.shadowJar
-
-}
-
 task updateJars {}
 
-compileJava.dependsOn clean
-//build.dependsOn shadowJar
+jar.configure {
+    actions.clear()
+    dependsOn shadowJar
+}
+
+shadowJar.configure {
+    archiveClassifier.set('')
+}
+
+task deploy(dependsOn: ["clean", "jar", "updateJars"]) {
+    updateJars.mustRunAfter shadowJar
+}
