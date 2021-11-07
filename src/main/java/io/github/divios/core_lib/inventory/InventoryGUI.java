@@ -412,9 +412,14 @@ public class InventoryGUI implements Listener {
 
     @EventHandler
     public void onClick(InventoryClickEvent e) {
-        if (!inventory.equals(e.getView().getTopInventory())) {
+        if (!inventory.equals(e.getInventory())) {
             return;
         }
+        
+        if (e.getSlot() != e.getRawSlot()) {
+            e.setCancelled(true);
+        }
+        
         if (e.getAction() == InventoryAction.COLLECT_TO_CURSOR && !e.getClickedInventory().equals(inventory)) {
             e.setCancelled(true);
             return;
