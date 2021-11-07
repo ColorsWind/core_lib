@@ -2,8 +2,6 @@ package io.github.divios.core_lib.commands;
 
 import com.google.common.collect.Lists;
 import org.bukkit.command.*;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -23,7 +21,8 @@ public class CommandManager implements TabCompleter, CommandExecutor {
 
     private static String notPerms = "Not perms";
 
-    private CommandManager() {}
+    private CommandManager() {
+    }
 
     public static void register(PluginCommand cmdPlugin) {
         if (instance != null) return;
@@ -32,23 +31,35 @@ public class CommandManager implements TabCompleter, CommandExecutor {
         cmdPlugin.setExecutor(instance);
     }
 
-    public static void addCommand(abstractCommand cmd) { cmds.add(cmd); }
+    public static void addCommand(abstractCommand cmd) {
+        cmds.add(cmd);
+    }
 
-    public static void addCommand(abstractCommand... _cmds) { cmds.addAll(Arrays.asList(_cmds)); }
+    public static void addCommand(abstractCommand... _cmds) {
+        cmds.addAll(Arrays.asList(_cmds));
+    }
 
-    public static void removeCommand(abstractCommand cmd) { cmds.remove(cmd); }
+    public static void removeCommand(abstractCommand cmd) {
+        cmds.remove(cmd);
+    }
 
-    public static void setNotPerms(String notPermsMsg) { notPerms = notPermsMsg; }
+    public static void setNotPerms(String notPermsMsg) {
+        notPerms = notPermsMsg;
+    }
 
-    public static void setDefault(abstractCommand _default) { DEFAULT = _default; }
+    public static void setDefault(abstractCommand _default) {
+        DEFAULT = _default;
+    }
 
-    public static Set<abstractCommand> getCmds() { return Collections.unmodifiableSet(cmds); }
+    public static Set<abstractCommand> getCmds() {
+        return Collections.unmodifiableSet(cmds);
+    }
 
     @Override
-    public boolean onCommand(@NotNull CommandSender commandSender,
-                             @NotNull Command command,
-                             @NotNull String label,
-                             @NotNull String[] strings) {
+    public boolean onCommand(CommandSender commandSender,
+                             Command command,
+                             String label,
+                             String[] strings) {
 
         if (strings.length == 0) {
             if (DEFAULT != null) DEFAULT.run(commandSender, Lists.newArrayList(strings));
@@ -91,12 +102,12 @@ public class CommandManager implements TabCompleter, CommandExecutor {
         return true;
     }
 
-    @Nullable
+
     @Override
-    public List<String> onTabComplete(@NotNull CommandSender commandSender,
-                                      @NotNull Command command,
-                                      @NotNull String label,
-                                      @NotNull String[] strings) {
+    public List<String> onTabComplete(CommandSender commandSender,
+                                      Command command,
+                                      String label,
+                                      String[] strings) {
 
         Optional<List<String>> toReturn;
 
@@ -106,23 +117,21 @@ public class CommandManager implements TabCompleter, CommandExecutor {
                             abstractCommand.getPerms().stream().allMatch(commandSender::hasPermission))
                     .map(abstractCommand::getName)
                     .collect(Collectors.toList()));
-        }
-
-        else {
+        } else {
             toReturn = Optional.ofNullable(
                     cmds.stream()
-                        .filter(absC -> absC.getName().equalsIgnoreCase(strings[0]))
-                        .findFirst()
-                        .orElseGet(abstractCommand::empty)
-                        .getTabCompletition(Arrays.stream(strings)
-                                .skip(1).collect(Collectors.toList())));
+                            .filter(absC -> absC.getName().equalsIgnoreCase(strings[0]))
+                            .findFirst()
+                            .orElseGet(abstractCommand::empty)
+                            .getTabCompletition(Arrays.stream(strings)
+                                    .skip(1).collect(Collectors.toList())));
         }
 
         return toReturn     // this filters cmds with letters inputed
                 .filter(steam -> steam.stream().findAny().isPresent())
                 .orElseGet(Collections::emptyList).stream()
                 .filter(s -> s.toLowerCase(Locale.ROOT)
-                    .startsWith(strings[strings.length - 1].toLowerCase()))
+                        .startsWith(strings[strings.length - 1].toLowerCase()))
                 .collect(Collectors.toList());
     }
 }

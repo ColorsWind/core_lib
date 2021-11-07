@@ -1,25 +1,25 @@
 package io.github.divios.core_lib.scheduler;
 
-public class Scheduler {
+import io.github.divios.core_lib.time.Ticks;
 
+import java.util.concurrent.TimeUnit;
 
+public interface Scheduler {
 
-    public static final class ScheculerDone {
+    default Task run(Runnable runnable) {
+        return runLater(runnable, 0);
+    }
 
-        private final ModeStrategy strategy;
+    Task runLater(Runnable runnable, long delayTicks);
 
-        public ScheculerDone(ModeStrategy strategy) {
-            this.strategy = strategy;
-        }
+    default Task runLater(Runnable runnable, long delayTicks, TimeUnit units) {
+        return runLater(runnable, Ticks.from(delayTicks, units));
+    }
 
-        public void run(Runnable r) {
-            strategy.run(r, 0, 0);
-        }
+    Task runRepeating(Runnable runnable, long delayTicks, long repeatTicks);
 
-        public void runLater(Runnable r, int delay) {
-            strategy.run(r, delay, 0);
-        }
-
+    default Task runRepeating(Runnable runnable, long delayTicks, TimeUnit delayUnit, long repeatTicks, TimeUnit repeatUnit) {
+        return runRepeating(runnable, Ticks.from(delayTicks, delayUnit), Ticks.from(repeatTicks, repeatUnit));
     }
 
 }

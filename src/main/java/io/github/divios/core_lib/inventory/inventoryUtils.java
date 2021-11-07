@@ -10,7 +10,6 @@ import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.io.BukkitObjectInputStream;
 import org.bukkit.util.io.BukkitObjectOutputStream;
-import org.jetbrains.annotations.Nullable;
 import org.yaml.snakeyaml.external.biz.base64Coder.Base64Coder;
 
 import java.io.ByteArrayInputStream;
@@ -18,7 +17,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.stream.IntStream;
-import java.util.stream.Stream;
 
 public class inventoryUtils {
 
@@ -115,7 +113,7 @@ public class inventoryUtils {
      * @param holder holder to set for the new inventory
      * @return deserialized inventory
      */
-    public static Pair<String, Inventory> deserialize(String base64, @Nullable InventoryHolder holder) {
+    public static Pair<String, Inventory> deserialize(String base64,  InventoryHolder holder) {
         try {
             Inventory inv;
             ByteArrayInputStream InputStream = new ByteArrayInputStream(Base64Coder.decodeLines(base64));

@@ -14,7 +14,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.util.io.BukkitObjectInputStream;
 import org.bukkit.util.io.BukkitObjectOutputStream;
-import org.jetbrains.annotations.NotNull;
 import org.yaml.snakeyaml.external.biz.base64Coder.Base64Coder;
 
 import java.io.ByteArrayInputStream;
@@ -106,7 +105,7 @@ public class ItemUtils {
      * @param item ItemStack to get the lore
      * @return The lore of the ItemStack
      */
-    public static @NotNull List<String> getLore(ItemStack item) {
+    public static  List<String> getLore(ItemStack item) {
         return getMetadata(item).getLore() == null ? new ArrayList<>() :
                 getMetadata(item).getLore();
     }

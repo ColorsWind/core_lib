@@ -3,7 +3,6 @@ package io.github.divios.core_lib.misc;
 import java.util.*;
 import java.util.function.Function;
 import java.util.function.ToDoubleFunction;
-import java.util.stream.IntStream;
 
 /**
  * Uses a map of outcomes to weights to get random values

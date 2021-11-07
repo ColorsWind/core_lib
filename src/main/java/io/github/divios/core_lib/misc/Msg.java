@@ -1,7 +1,5 @@
 package io.github.divios.core_lib.misc;
 
-import io.github.divios.core_lib.utils.Log;
-import net.md_5.bungee.api.chat.TranslatableComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 

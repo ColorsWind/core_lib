@@ -10,8 +10,6 @@ import org.bukkit.conversations.ConversationFactory;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -35,10 +33,11 @@ public class ChatPrompt implements Listener {
 
     /**
      * Prompts a player with callbacks for player response and cancelling
-     * @param player The player to prompt
-     * @param plugin The prompt to send to the player
+     *
+     * @param player     The player to prompt
+     * @param plugin     The prompt to send to the player
      * @param onResponse The callback for when the player responds
-     * @param onCancel The callback for when the prompt is cancelled
+     * @param onCancel   The callback for when the prompt is cancelled
      */
     @Deprecated
     public static void prompt(
@@ -55,9 +54,10 @@ public class ChatPrompt implements Listener {
 
     /**
      * Prompts a player with callbacks for player response and cancelling
-     * @param player The player to prompt
+     *
+     * @param player     The player to prompt
      * @param onResponse The callback for when the player responds
-     * @param onCancel The callback for when the prompt is cancelled
+     * @param onCancel   The callback for when the prompt is cancelled
      */
 
     @Deprecated
@@ -82,20 +82,20 @@ public class ChatPrompt implements Listener {
                 .withEscapeSequence("cancel")
                 .withFirstPrompt(new org.bukkit.conversations.Prompt() {
 
-                    @NotNull
+
                     @Override
-                    public String getPromptText(@NotNull ConversationContext conversationContext) {
+                    public String getPromptText(ConversationContext conversationContext) {
                         return FormatUtils.color(Msg.PREFIX + "&7Input chat. Type &fcancel &7to exit");
                     }
 
                     @Override
-                    public boolean blocksForInput(@NotNull ConversationContext conversationContext) {
+                    public boolean blocksForInput(ConversationContext conversationContext) {
                         return true;
                     }
 
-                    @Nullable
+
                     @Override
-                    public org.bukkit.conversations.Prompt acceptInput(@NotNull ConversationContext conversationContext, @Nullable String s) {
+                    public org.bukkit.conversations.Prompt acceptInput(ConversationContext conversationContext, String s) {
                         Bukkit.getScheduler().scheduleAsyncDelayedTask(Core_lib.PLUGIN, () -> onResponse.accept(s), 1);
                         return null;
                     }
@@ -185,8 +185,10 @@ public class ChatPrompt implements Listener {
         public void prompt() {
 
             Preconditions.checkNotNull(player, "player is null");
-            if (onResponse == null) onResponse = (s) -> {};
-            if (onCancel == null) onCancel = (r) -> {};
+            if (onResponse == null) onResponse = (s) -> {
+            };
+            if (onCancel == null) onCancel = (r) -> {
+            };
             if (title == null) title = "";
             if (subTitle == null) subTitle = "";
 
