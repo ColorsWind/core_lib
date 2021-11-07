@@ -3,7 +3,7 @@ package io.github.divios.core_lib.inventory;
 import com.cryptomorin.xseries.XMaterial;
 import io.github.divios.core_lib.itemutils.ItemBuilder;
 import io.github.divios.core_lib.itemutils.ItemUtils;
-import io.github.divios.core_lib.misc.Task;
+import io.github.divios.core_lib.scheduler.Schedulers;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -93,7 +93,7 @@ public class materialsPrompt {
                 .setName("&cReturn").setLore("&7Click to return")
                 .applyTexture("19bf3292e126a105b54eba713aa1b152d541a1d8938829c56364d178ed22bf")
                     , e -> {
-                Task.syncDelayed(plugin, this::destroyAll, 3L);
+                Schedulers.sync().runLater( this::destroyAll, 3L);
                 consumer.accept(false, null);
             }), 8);
 
@@ -105,7 +105,7 @@ public class materialsPrompt {
                 inventoryGUI.addButton(new ItemButton(new ItemBuilder(contents.get(i))
                         .setName("&f&l" + ItemUtils.getName(contents.get(i))),
                         e -> {
-                            Task.syncDelayed(plugin, this::destroyAll, 3L);
+                            Schedulers.sync().runLater( this::destroyAll, 3L);
                             consumer.accept(true, XMaterial.matchXMaterial(e.getCurrentItem()));
                         }), slot);
             }

@@ -15,11 +15,11 @@ import java.util.function.Predicate;
 public class SingleSubscription<T extends Event> implements Listener, Subscription {
 
     private final Class<T> classz;
-    private final BiConsumer<Subscription<T>, T> action;
+    private final BiConsumer<Subscription, T> action;
     private final EventPriority priority;
     private final Set<Predicate<T>> filters = new HashSet<>();
 
-    protected SingleSubscription(Class<T> classz, BiConsumer<Subscription<T>, T> action, EventPriority priority, Set<Predicate<T>> filters) {
+    protected SingleSubscription(Class<T> classz, BiConsumer<Subscription, T> action, EventPriority priority, Set<Predicate<T>> filters) {
         this.classz = classz;
         this.action = action;
         this.priority = priority;

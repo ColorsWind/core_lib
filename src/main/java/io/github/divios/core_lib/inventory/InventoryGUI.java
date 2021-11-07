@@ -5,7 +5,7 @@ import io.github.divios.core_lib.Core_lib;
 import io.github.divios.core_lib.itemutils.ItemBuilder;
 import io.github.divios.core_lib.misc.FormatUtils;
 import io.github.divios.core_lib.misc.Pair;
-import io.github.divios.core_lib.misc.Task;
+import io.github.divios.core_lib.scheduler.Schedulers;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -454,7 +454,7 @@ public class InventoryGUI implements Listener {
                 ItemStack item = e.getCurrentItem();
                 item.setAmount(amount);
                 e.setCurrentItem(item);
-                Task.syncDelayed(plugin, () ->
+                Schedulers.sync().run(() ->
                         ((Player) e.getWhoClicked()).updateInventory());
                 onClickOpenSlot.accept(e, slots);
                 return;

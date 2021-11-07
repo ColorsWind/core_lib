@@ -18,6 +18,8 @@ public class Schedulers {
         return Bukkit.getScheduler();
     }
 
+    public static SchedulerBuilder builder() { return new SchedulerBuilder(); }
+
     public static final class syncScheduler implements Scheduler {
 
         @Override

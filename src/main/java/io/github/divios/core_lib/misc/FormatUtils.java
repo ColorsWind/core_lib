@@ -5,6 +5,7 @@ import org.bukkit.ChatColor;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 /**
  * Contains utilities for formatting various information
@@ -93,6 +94,11 @@ public class FormatUtils {
      * @return The uncolored String
      */
     public static String stripColor(String input) { return ChatColor.stripColor(input); }
+
+    public static String unColor(String input) {
+        Pattern STRIP_COLOR_PATTERN = Pattern.compile("(?i)" + String.valueOf('&') + "[0-9A-FK-OR]");
+        return input == null?null:STRIP_COLOR_PATTERN.matcher(input).replaceAll("");
+    }
 
     /**
      * Formats money like 3.5B representing 3.5 billion

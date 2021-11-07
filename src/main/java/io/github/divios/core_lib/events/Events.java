@@ -11,7 +11,11 @@ import java.util.function.Predicate;
 
 public class Events {
 
-    public static <T extends Event> EventSubscriptionBuilder<T> suscribe(Class<T> classz) {
+    public static <T extends Event> EventSubscriptionBuilder<T> subscribe(Class<T> classz) {
+        return new EventSubscriptionBuilder<>(classz);
+    }
+
+    public static <T extends Event> EventSubscriptionBuilder<T> subscribe(Class<T> classz, EventPriority priority) {
         return new EventSubscriptionBuilder<>(classz);
     }
 
@@ -22,7 +26,12 @@ public class Events {
         private EventPriority priority;
 
         private EventSubscriptionBuilder(Class<T> classz) {
+            this(classz, EventPriority.NORMAL);
+        }
+
+        private EventSubscriptionBuilder(Class<T> classz, EventPriority priority) {
             this.classz = classz;
+            this.priority = priority;
         }
 
         public EventSubscriptionBuilder<T> filter(Predicate<T> filter) {
@@ -35,12 +44,12 @@ public class Events {
             return this;
         }
 
-        public Subscription<T> handle(Consumer<T> consumer) {
-            return consume((tSubscription, t) -> consumer.accept(t));
+        public Subscription handler(Consumer<T> consumer) {
+            return biHandler((tSubscription, t) -> consumer.accept(t));
         }
 
-        public Subscription<T> consume(BiConsumer<Subscription<T>, T> consumer) {
-            return new SingleSubscription<T>(classz, consumer, priority, filters);
+        public Subscription biHandler(BiConsumer<Subscription, T> consumer) {
+            return new SingleSubscription(classz, consumer, priority, filters);
         }
 
     }

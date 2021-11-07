@@ -31,15 +31,15 @@ repositories {
 dependencies {
     compileOnly 'com.github.MilkBowl:VaultAPI:1.7'
     compileOnly group: "org.spigotmc", name: "spigot-api", version: "1.17-R0.1-SNAPSHOT"
-    compileOnly "de.tr7zw:item-nbt-api-plugin:2.8.0"
-    compileOnly "com.github.cryptomorin:XSeries:8.1.0"
+    implementation "de.tr7zw:item-nbt-api-plugin:2.8.0"
+    implementation "com.github.cryptomorin:XSeries:8.1.0"
 }
 
 shadowJar {
-    relocate('org.bstats', 'io.github.divios.core_lib.dependencies.bstats')
+    //relocate('org.bstats', 'io.github.divios.core_lib.dependencies.bstats')
     relocate('de.tr7zw', 'io.github.divios.core_lib.dependencies.nbt-api')
     relocate('com.cryptomorin.xseries', 'io.github.divios.core_lib.dependencies.XSeries')
-    relocate('org', 'io.github.divios.core_lib.dependencies.org')
+    //relocate('org', 'io.github.divios.core_lib.dependencies.org')
     minimize()
 }
 
@@ -51,4 +51,4 @@ task relocateShadowJar(type: ConfigureShadowRelocation) {
 task updateJars {}
 
 compileJava.dependsOn clean
-build.dependsOn shadowJar
+//build.dependsOn shadowJar

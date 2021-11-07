@@ -1,6 +1,8 @@
 package io.github.divios.core_lib.misc;
 
 import io.github.divios.core_lib.Core_lib;
+import io.github.divios.core_lib.scheduler.Schedulers;
+import io.github.divios.core_lib.scheduler.Task;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -140,12 +142,12 @@ public class LocationUtils {
             }
             if (!start.getWorld().equals(e.getTo().getWorld()) || start.distanceSquared(e.getTo()) > 0.125) {
                 Msg.sendMsg(player, Msg.TELEPORT_CANCELLED);
-                task[0].cancel();
+                task[0].stop();
                 l.unregister();
                 result.accept(false);
             }
         });
-        task[0] = Task.syncDelayed(Core_lib.PLUGIN, () -> {
+        task[0] = Schedulers.sync().runLater(() -> {
             player.teleport(loc);
             listener.unregister();
             result.accept(true);

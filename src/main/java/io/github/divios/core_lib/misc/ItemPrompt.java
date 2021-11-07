@@ -4,6 +4,8 @@ import com.cryptomorin.xseries.messages.Titles;
 import com.google.common.base.Preconditions;
 import io.github.divios.core_lib.Core_lib;
 import io.github.divios.core_lib.itemutils.ItemUtils;
+import io.github.divios.core_lib.scheduler.Schedulers;
+import io.github.divios.core_lib.scheduler.Task;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventPriority;
@@ -41,10 +43,10 @@ public class ItemPrompt{
         this.expiredAction = expiredAction;
 
         p.closeInventory();
-        Task.syncDelayed(plugin, () -> listener = new EventListener<>(PlayerInteractEvent.class,
+        Schedulers.sync().runLater(() -> listener = new EventListener<>(PlayerInteractEvent.class,
                 EventPriority.HIGH, this::OnPlayerClick), 3L);
 
-        TaskID = Task.syncDelayed(plugin, () -> {
+        TaskID = Schedulers.sync().runLater(() -> {
             listener.unregister();
             this.expiredAction.accept(p);
         }, 200);
@@ -72,7 +74,7 @@ public class ItemPrompt{
                         onComplete.accept(p, item)
                 , 1L);
 
-        TaskID.cancel();
+        TaskID.stop();
         listener.unregister();
 
     }

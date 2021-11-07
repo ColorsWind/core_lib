@@ -7,7 +7,7 @@ import io.github.divios.core_lib.itemutils.ItemUtils;
 import io.github.divios.core_lib.misc.ChatPrompt;
 import io.github.divios.core_lib.misc.EventListener;
 import io.github.divios.core_lib.misc.FormatUtils;
-import io.github.divios.core_lib.misc.Task;
+import io.github.divios.core_lib.scheduler.Schedulers;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -85,7 +85,7 @@ public class dynamicGui implements InventoryHolder, Listener {
             if (preventCloseB.get()) {
                 l.unregister();
                 unregister();
-                Task.syncDelayed(plugin, () -> new dynamicGui(plugin, p, contentX, title, back, rows2fill, contentAction,
+                Schedulers.sync().runLater( () -> new dynamicGui(plugin, p, contentX, title, back, rows2fill, contentAction,
                                 nonContentAction, addItems, searchOn, false, page, preventCloseB.get()),
                         1L);
             }
