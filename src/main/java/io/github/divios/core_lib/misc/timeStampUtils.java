@@ -58,5 +58,20 @@ public class timeStampUtils {
 
         return seconds;
     }
+    
+    public static String format(Timestamp date) {
+
+        int timeInSeconds = date.getSeconds();
+
+        int secondsLeft = timeInSeconds % 3600 % 60;
+        int minutes = (int) Math.floor(timeInSeconds % 3600 / 60F);
+        int hours = (int) Math.floor(timeInSeconds / 3600F);
+
+        String HH = ((hours < 10) ? "0" : "") + hours;
+        String MM = ((minutes < 10) ? "0" : "") + minutes;
+        String SS = ((secondsLeft < 10) ? "0" : "") + secondsLeft;
+
+        return HH + ":" + MM + ":" + SS;
+    }
 
 }
