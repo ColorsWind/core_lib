@@ -21,6 +21,8 @@ public abstract class abstractCommand {
     public abstract String getHelp();
 
     public abstract List<String> getPerms();
+    
+    public List<String> getSafePerms() { return getPerms() == null ? Collections.emptyList():getPerms(); }
 
     public abstract List<String> getTabCompletition(List<String> args);
 
