@@ -12,7 +12,7 @@ plugins {
 apply plugin: 'maven-publish'
 
 group = 'io.github.divios'
-def pluginVersion = '3.0'
+def pluginVersion = '4.0'
 version = pluginVersion
 
 sourceCompatibility = '1.8'
@@ -48,30 +48,30 @@ repositories {
 dependencies {
     compileOnly 'com.github.MilkBowl:VaultAPI:1.7'
     compileOnly group: "org.spigotmc", name: "spigot-api", version: "1.17-R0.1-SNAPSHOT"
-    implementation "de.tr7zw:item-nbt-api-plugin:2.8.0"
-    implementation "com.github.cryptomorin:XSeries:8.1.0"
+    api "de.tr7zw:item-nbt-api-plugin:2.8.0"
+    api 'com.github.cryptomorin:XSeries:8.4.0'
 }
 
 shadowJar {
     //relocate('org.bstats', 'io.github.divios.core_lib.dependencies.bstats')
-    relocate('de.tr7zw', 'io.github.divios.core_lib.dependencies.nbt-api')
-    relocate('com.cryptomorin.xseries', 'io.github.divios.core_lib.dependencies.XSeries')
+    //relocate('de.tr7zw', 'io.github.divios.core_lib.dependencies.nbt-api')
+    //relocate('com.cryptomorin.xseries', 'io.github.divios.core_lib.dependencies.XSeries')
     //relocate('org', 'io.github.divios.core_lib.dependencies.org')
-    minimize()
+    //minimize()
 }
 
 task updateJars {}
 
 jar.configure {
     actions.clear()
-    dependsOn shadowJar
+    //dependsOn shadowJar
 }
 
 shadowJar.configure {
     archiveClassifier.set('')
 }
 
-task deploy(dependsOn: ["clean", "jar", "updateJars"]) {
-    updateJars.mustRunAfter shadowJar
+task deploy(dependsOn: ["clean", "jar", "publishing"]) {
+
 }
 
