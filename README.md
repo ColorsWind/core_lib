@@ -27,7 +27,7 @@ dependencies {
 }
 ```
 
-Replace `Tag` with a valid package version [here]().
+Replace `Tag` with a valid package version [here](https://github.com/divios/core_lib/packages).
 
 ## Build it Locally
 
