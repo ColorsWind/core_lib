@@ -41,4 +41,4 @@ After that you can find the jar in `builds/lib/Core_lib.jar`. Take that jar and 
 
 # Usage
 
-For more info of all the core_lib utilities, see [wiki]()
+For more info of all the core_lib utilities, see [wiki]().
