@@ -21,6 +21,14 @@ jobs:
       with:
         java-version: '16'
         distribution: 'adopt'
+    - name: Restore gradle.properties
+      env:
+          GRADLE_PROPERTIES: ${{ secrets.GRADLE_PROPERTIES }}
+      shell: bash
+      run: |
+          mkdir -p ~/.gradle/
+          echo "GRADLE_USER_HOME=${HOME}/.gradle" >> $GITHUB_ENV
+          echo "${GRADLE_PROPERTIES}" > ~/.gradle/gradle.properties
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
     - name: Validate Gradle wrapper
@@ -30,3 +38,5 @@ jobs:
       with:
          name: core_lib
          path: build/libs/core_lib-**.jar
+    - name: publish package 
+    - run: ./gradlew publish
