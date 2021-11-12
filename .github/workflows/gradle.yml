@@ -39,4 +39,4 @@ jobs:
          name: core_lib
          path: build/libs/core_lib-**.jar
     - name: publish package 
-    - run: ./gradlew publish
+      run: ./gradlew publish
