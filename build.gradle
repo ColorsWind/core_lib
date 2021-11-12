@@ -20,16 +20,21 @@ targetCompatibility = '1.8'
 
 publishing {
     publications {
-        maven(MavenPublication) {
+        gpr(MavenPublication) {
+            groupId = group
+            artifactId = "core_lib_api"
+            version = version
+
             from components.java
         }
     }
     repositories {
         maven {
-            url repsyUrl
+            name = "GitHubPackages"
+            url = "https://maven.pkg.github.com/divios/core_lib"
             credentials {
-                username repsyUsername
-                password repsyPassword
+                username "divios"
+                password gitToken
             }
         }
     }
