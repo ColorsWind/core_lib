@@ -23,6 +23,15 @@ repositories {
 
 ```groovy
 dependencies {
-      implementation 'io.github.divios:core_lib_api:5.0'
+      implementation 'io.github.divios:core_lib_api:Tag'
 }
 ```
+
+Replace `Tag` with a valid package version [here]().
+
+## Build it Locally
+
+```
+git clone https://github.com/divios/core_lib
+cd core_lib
+./gradlew build
