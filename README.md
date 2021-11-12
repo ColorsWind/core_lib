@@ -4,7 +4,7 @@ A collection of libraries and methods to speed up the process of creating a spig
 
 # Installation for Development
 
-Core_lib is not a standalone plugin, is a library and is designed to be a dependency to be attached to another plugin. To add it to your dependency, you can either [build it]() or access the artifact via Github Packages. For now the repository is `private` so only people with permissions can access it.
+Core_lib is not a standalone plugin, is a library and is designed to be a dependency to be attached to another plugin. To add it to your dependency, you can either [build it](ttps://github.com/divios/core_lib#build-it-locally or access the artifact via Github Packages. For now the repository is `private` so only people with permissions can access it.
 
 ## With Github Packages
 
@@ -35,3 +35,10 @@ Replace `Tag` with a valid package version [here](https://github.com/divios/core
 git clone https://github.com/divios/core_lib
 cd core_lib
 ./gradlew build
+```
+
+After that you can find the jar in `builds/lib/Core_lib.jar`. Take that jar and it to your proyect classpath.
+
+# Usage
+
+For more info of all the core_lib utilities, see [wiki]()
