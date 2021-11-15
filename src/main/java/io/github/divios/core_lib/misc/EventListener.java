@@ -15,6 +15,7 @@ import java.util.function.Consumer;
  *
  * @param <T> The event being listened for
  */
+@Deprecated
 public class EventListener<T extends Event> implements Listener {
 
     private Plugin plugin = Core_lib.PLUGIN;
