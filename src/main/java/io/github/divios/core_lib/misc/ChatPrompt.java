@@ -3,6 +3,7 @@ package io.github.divios.core_lib.misc;
 import com.cryptomorin.xseries.messages.Titles;
 import com.google.common.base.Preconditions;
 import io.github.divios.core_lib.Core_lib;
+import io.github.divios.core_lib.scheduler.Schedulers;
 import org.bukkit.Bukkit;
 import org.bukkit.conversations.Conversation;
 import org.bukkit.conversations.ConversationContext;
@@ -96,7 +97,7 @@ public class ChatPrompt implements Listener {
 
                     @Override
                     public org.bukkit.conversations.Prompt acceptInput(ConversationContext conversationContext, String s) {
-                        Bukkit.getScheduler().scheduleAsyncDelayedTask(Core_lib.PLUGIN, () -> onResponse.accept(s), 1);
+                        Schedulers.sync().runLater(() -> onResponse.accept(s), 1);
                         return null;
                     }
                 })
