@@ -12,7 +12,10 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 public class DataManagerAbstract {
 
@@ -62,15 +65,6 @@ public class DataManagerAbstract {
     }
 
     /**
-     * Queue a task to be run asynchronously. <br>
-     *
-     * @param runnable task to run
-     */
-    public void async(Runnable runnable) {
-        Bukkit.getScheduler().runTaskAsynchronously(this.plugin, runnable);
-    }
-
-    /**
      * Queue a task to be run synchronously.
      *
      * @param runnable task to run on the next server tick
@@ -80,23 +74,27 @@ public class DataManagerAbstract {
     }
 
     /**
-     * Queue tasks to be ran asynchronously.
+     * Queue a task to be run asynchronously with all the
+     * advantages of CompletableFuture api <br>
      *
-     * @param runnable task to put into queue.
-     * @param queueKey the queue key to add the runnable to.
+     * @param runnable task to run
      */
-    public void queueAsync(Runnable runnable, String queueKey) {
-        if (queueKey == null) return;
-        List<Runnable> queue = queues.computeIfAbsent(queueKey, t -> new LinkedList<>());
-        queue.add(runnable);
-        if (queue.size() == 1) runQueue(queueKey);
+    public CompletableFuture<Void> async(Runnable runnable) {
+        return supplyAsync(() -> {
+            runnable.run();
+            return null;
+        });
     }
 
-    private void runQueue(String queueKey) {
-        doQueue(queueKey, (s) -> {
-            if (!queues.get(queueKey).isEmpty())
-                runQueue(queueKey);
-        });
+    /**
+     * Supplies a task to be run asynchronously with all the
+     * advantages of CompletableFuture api <br>
+     *
+     * @param supplier supplier to run
+     */
+
+    public <T> CompletableFuture<T> supplyAsync(Supplier<T> supplier) {
+        return CompletableFuture.supplyAsync(supplier);
     }
 
     private void doQueue(String queueKey, Consumer<Boolean> callback) {
