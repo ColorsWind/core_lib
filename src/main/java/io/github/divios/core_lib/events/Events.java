@@ -1,5 +1,6 @@
 package io.github.divios.core_lib.events;
 
+import org.bukkit.Bukkit;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventPriority;
 
@@ -10,6 +11,10 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 public class Events {
+
+    public static void callEvent(Event event) {
+        Bukkit.getPluginManager().callEvent(event);
+    }
 
     public static <T extends Event> EventSubscriptionBuilder<T> subscribe(Class<T> classz) {
         return new EventSubscriptionBuilder<>(classz);
