@@ -70,9 +70,7 @@ public class ItemPrompt{
         item.setDurability((short) 0);
 
         Titles.clearTitle(p);
-        Bukkit.getScheduler().runTaskLater(plugin, () ->
-                        onComplete.accept(p, item)
-                , 1L);
+        Schedulers.sync().run(() -> onComplete.accept(p, item));
 
         TaskID.stop();
         listener.unregister();
