@@ -1,6 +1,7 @@
 package io.github.divios.core_lib.database;
 
 import io.github.divios.core_lib.Core_lib;
+import io.github.divios.core_lib.scheduler.Schedulers;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 
@@ -70,7 +71,7 @@ public class DataManagerAbstract {
      * @param runnable task to run on the next server tick
      */
     public void sync(Runnable runnable) {
-        Bukkit.getScheduler().runTask(this.plugin, runnable);
+        Schedulers.sync().run(runnable);
     }
 
     /**
