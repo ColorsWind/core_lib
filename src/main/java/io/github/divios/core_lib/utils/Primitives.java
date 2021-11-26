@@ -11,6 +11,16 @@ public class Primitives {
         return Integer.parseInt(s);
     }
 
+    public static boolean isDouble(String s) {
+        return testCast(() -> Double.parseDouble(s));
+    }
+
+    public static double getAsDouble(String s) {
+        if (!isDouble(s)) throw new RuntimeException("String passed is not a double");
+        return Double.parseDouble(s);
+    }
+
+
     public static boolean isBoolean(String s) {
         return testCast(() -> Boolean.getBoolean(s));
     }
