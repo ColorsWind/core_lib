@@ -23,6 +23,7 @@ public class inventoryUtils {
     /**
      * Returns a copy of the Inventory passed,
      * same holder, same size, same title, same contents
+     *
      * @param inv inventory to be cloned
      * @return cloned inventory
      */
@@ -38,6 +39,7 @@ public class inventoryUtils {
     /**
      * Translates all the items from one inventory to another. This method
      * is aware of the inventory sizes and will not throw errors
+     *
      * @param from
      * @param to
      */
@@ -56,13 +58,14 @@ public class inventoryUtils {
 
     /**
      * Gets the first empty slot of an item
+     *
      * @param inv
      * @return
      */
     public static int getFirstEmpty(Inventory inv) {
         int slot = -1;
 
-        for (int i=0; i < inv.getSize(); i++) {
+        for (int i = 0; i < inv.getSize(); i++) {
             if (ItemUtils.isEmpty(inv.getItem(i))) {
                 slot = i;
                 break;
@@ -80,28 +83,26 @@ public class inventoryUtils {
 
     /**
      * Serializes an inventory to base64
+     *
      * @param inv to be serialized
      * @return base64 serialized inventory
      */
     public static String serialize(Inventory inv, String title) {
-        try {
-            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-            BukkitObjectOutputStream dataOutput = new BukkitObjectOutputStream(outputStream);
+        try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
+            try (BukkitObjectOutputStream dataOutput = new BukkitObjectOutputStream(outputStream)) {
+                // Save inventory's size
+                dataOutput.writeInt(inv.getSize());
 
-            // Save inventory's size
-            dataOutput.writeInt(inv.getSize());
+                // Save inventory's title
+                dataOutput.writeObject(title);
 
-            // Save inventory's title
-            dataOutput.writeObject(title);
+                // Save every item in the inventory
+                for (ItemStack item : inv.getContents())
+                    dataOutput.writeObject(item == null ?
+                            new ItemStack(Material.AIR) : item);
 
-            // Save every item in the inventory
-            for (ItemStack item: inv.getContents())
-                dataOutput.writeObject(item == null ?
-                        new ItemStack(Material.AIR) : item);
-
-            dataOutput.close();
-            return Base64Coder.encodeLines(outputStream.toByteArray());
-
+                return Base64Coder.encodeLines(outputStream.toByteArray());
+            }
         } catch (IOException e) {
             throw new IllegalStateException("Unable to serialize inventory.", e);
         }
@@ -109,31 +110,30 @@ public class inventoryUtils {
 
     /**
      * Deserialize an item from base64. You can specify a holder for this new inventory
+     *
      * @param base64 string on base 64 to deserialize
      * @param holder holder to set for the new inventory
      * @return deserialized inventory
      */
-    public static Pair<String, Inventory> deserialize(String base64,  InventoryHolder holder) {
-        try {
-            Inventory inv;
-            ByteArrayInputStream InputStream = new ByteArrayInputStream(Base64Coder.decodeLines(base64));
-            BukkitObjectInputStream dataInput = new BukkitObjectInputStream(InputStream);
+    public static Pair<String, Inventory> deserialize(String base64, InventoryHolder holder) {
+        Inventory inv;
+        try (ByteArrayInputStream InputStream = new ByteArrayInputStream(Base64Coder.decodeLines(base64))) {
+            try (BukkitObjectInputStream dataInput = new BukkitObjectInputStream(InputStream)) {
+                // Get title and size
+                final int size = dataInput.readInt();
+                final String title = (String) dataInput.readObject();
 
-            // Get title and size
-            final int size = dataInput.readInt();
-            final String title = (String) dataInput.readObject();
+                // Create inventory
+                inv = Bukkit.createInventory(holder, size, title);
 
-            // Create inventory
-            inv = Bukkit.createInventory(holder, size, title);
+                // Get back all the items in the inventory
+                for (int i = 0; i < size; i++) {
+                    ItemStack item = (ItemStack) dataInput.readObject();
+                    inv.setItem(i, item == null ? new ItemStack(Material.AIR) : item);
+                }
 
-            // Get back all the items in the inventory
-            for (int i = 0; i < size; i++) {
-                ItemStack item = (ItemStack) dataInput.readObject();
-                inv.setItem(i, item == null ? new ItemStack(Material.AIR):item);
+                return Pair.of(title, inv);
             }
-
-            dataInput.close();
-            return Pair.of(title, inv);
 
         } catch (Exception e) {
             throw new IllegalStateException("Unable to deserialize inventory.", e);
@@ -143,14 +143,13 @@ public class inventoryUtils {
     /**
      * Deserializes an inventory from base with it's holder to null. Check
      * {@link inventoryUtils#deserialize(String, InventoryHolder)} for more info
+     *
      * @param base64 string on base 64 to deserialize
      * @return deserialized inventory
      */
     public static Pair<String, Inventory> deserialize(String base64) {
         return deserialize(base64, null);
     }
-
-
 
 
 }
