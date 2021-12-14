@@ -12,6 +12,8 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.PotionMeta;
+import org.bukkit.potion.PotionEffect;
 import org.bukkit.util.io.BukkitObjectInputStream;
 import org.bukkit.util.io.BukkitObjectOutputStream;
 import org.yaml.snakeyaml.external.biz.base64Coder.Base64Coder;
@@ -106,7 +108,7 @@ public class ItemUtils {
      * @param item ItemStack to get the lore
      * @return The lore of the ItemStack
      */
-    public static  List<String> getLore(ItemStack item) {
+    public static List<String> getLore(ItemStack item) {
         return getMetadata(item).getLore() == null ? new ArrayList<>() :
                 getMetadata(item).getLore();
     }
@@ -264,6 +266,67 @@ public class ItemUtils {
 
         ItemStack cloned = item.clone();
         cloned.setItemMeta(meta);
+        return cloned;
+    }
+
+    public static boolean isPotion(ItemStack item) {
+        Material material = getMaterial(item);
+        return !(material == Material.POTION || material == Material.SPLASH_POTION
+                || material == Material.LINGERING_POTION);
+    }
+
+    public static PotionMeta getPotionMeta(ItemStack item) {
+        if (!isPotion(item)) return null;
+        try {
+            return (PotionMeta) getMetadata(item);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    public static boolean hasPotionEffect(ItemStack item, PotionEffect effect) {
+        PotionMeta meta;
+        if ((meta = getPotionMeta(item)) == null) return false;
+
+        return meta.hasCustomEffect(effect.getType());
+    }
+
+    public static List<PotionEffect> getAllPotionEffects(ItemStack item) {
+        PotionMeta meta;
+        if ((meta = getPotionMeta(item)) == null) return null;
+
+        return meta.getCustomEffects();
+    }
+
+    public static ItemStack addPotionEffects(ItemStack item, PotionEffect... effects) {
+        return addPotionEffects(item, Arrays.asList(effects));
+    }
+
+    public static ItemStack addPotionEffects(ItemStack item, Collection<PotionEffect> effects) {
+        PotionMeta meta;
+        if ((meta = getPotionMeta(item)) == null) return item;
+
+        effects.forEach(potionEffect -> meta.addCustomEffect(potionEffect, true));
+
+        ItemStack cloned = item.clone();
+        cloned.setItemMeta(meta);
+
+        return cloned;
+    }
+
+    public static ItemStack removePotionEffects(ItemStack item, PotionEffect... effects) {
+        return removePotionEffects(item, Arrays.asList(effects));
+    }
+
+    public static ItemStack removePotionEffects(ItemStack item, Collection<PotionEffect> effects) {
+        PotionMeta meta;
+        if ((meta = getPotionMeta(item)) == null) return item;
+
+        effects.forEach(potionEffect -> meta.removeCustomEffect(potionEffect.getType()));
+
+        ItemStack cloned = item.clone();
+        cloned.setItemMeta(meta);
+
         return cloned;
     }
 
@@ -691,7 +754,7 @@ public class ItemUtils {
         }
     }
 
-    public static ItemStack deserialize (String base64) {
+    public static ItemStack deserialize(String base64) {
         try {
             ByteArrayInputStream InputStream = new ByteArrayInputStream(Base64Coder.decodeLines(base64));
             BukkitObjectInputStream dataInput = new BukkitObjectInputStream(InputStream);

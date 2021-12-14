@@ -5,6 +5,7 @@ import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.PotionEffect;
 
 import java.util.Collections;
 import java.util.List;
@@ -154,6 +155,42 @@ public class ItemBuilder extends ItemStack {
     public ItemBuilder setDurability(int durability) {
         this.setDurability((short) durability);
         return new ItemBuilder(this);
+    }
+
+    /**
+     * Adds effects to the item if it's a potion.
+     * @param effects the effects to add
+     * @return the ItemBuilder with the effects addes
+     */
+    public ItemBuilder addPotionEffects(PotionEffect ...effects) {
+        return new ItemBuilder(ItemUtils.addPotionEffects(this, effects));
+    }
+
+    /**
+     * Adds Potion effects to the item if it's a potion.
+     * @param effects the effects to add
+     * @return the ItemBuilder with the effects added
+     */
+    public ItemBuilder addPotionEffects(List<PotionEffect> effects) {
+        return new ItemBuilder(ItemUtils.addPotionEffects(this, effects));
+    }
+
+    /**
+     * Removes Potion effects to the item if it's a potion.
+     * @param effects the effects to remove
+     * @return the ItemBuilder with the effects removed
+     */
+    public ItemBuilder removePotionEffects(PotionEffect ...effects) {
+        return new ItemBuilder(ItemUtils.removePotionEffects(this, effects));
+    }
+
+    /**
+     * Removes Potion effects to the item if it's a potion.
+     * @param effects the effects to remove
+     * @return the ItemBuilder with the effects removed
+     */
+    public ItemBuilder removePotionEffects(List<PotionEffect> effects) {
+        return new ItemBuilder(ItemUtils.removePotionEffects(this, effects));
     }
 
     /**
