@@ -2,6 +2,7 @@ package io.github.divios.core_lib.itemutils;
 
 import com.cryptomorin.xseries.SkullUtils;
 import com.cryptomorin.xseries.XMaterial;
+import com.cryptomorin.xseries.XPotion;
 import de.tr7zw.nbtapi.NBTItem;
 import io.github.divios.core_lib.misc.FormatUtils;
 import org.bukkit.Bukkit;
@@ -271,8 +272,7 @@ public class ItemUtils {
 
     public static boolean isPotion(ItemStack item) {
         Material material = getMaterial(item);
-        return !(material == Material.POTION || material == Material.SPLASH_POTION
-                || material == Material.LINGERING_POTION);
+        return XPotion.canHaveEffects(material);
     }
 
     public static PotionMeta getPotionMeta(ItemStack item) {
