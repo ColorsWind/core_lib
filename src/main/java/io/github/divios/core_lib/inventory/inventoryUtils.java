@@ -1,5 +1,9 @@
 package io.github.divios.core_lib.inventory;
 
+import com.google.gson.*;
+import de.tr7zw.nbtapi.NBTContainer;
+import de.tr7zw.nbtapi.NBTItem;
+import io.github.divios.core_lib.gson.JsonBuilder;
 import io.github.divios.core_lib.itemutils.ItemUtils;
 import io.github.divios.core_lib.misc.Pair;
 import org.bukkit.Bukkit;
@@ -15,7 +19,10 @@ import org.yaml.snakeyaml.external.biz.base64Coder.Base64Coder;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.util.Arrays;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.stream.IntStream;
 
 public class inventoryUtils {
@@ -149,6 +156,51 @@ public class inventoryUtils {
      */
     public static Pair<String, Inventory> deserialize(String base64) {
         return deserialize(base64, null);
+    }
+
+    private static final Gson gson = new GsonBuilder()
+            .registerTypeAdapter(ItemStack.class, new ItemAdapter())
+            .create();
+
+    public static JsonElement toJson(String title, Inventory inv) {
+        return JsonBuilder.object()
+                .add("title", title)
+                .add("items", gson.toJson(contentsToMap(inv.getContents())))
+                .build();
+    }
+
+    private static Map<Integer, ItemStack> contentsToMap(ItemStack[] contents) {
+        Map<Integer, ItemStack> mapContents = new LinkedHashMap<>();
+        for (int i = 0; i < contents.length; i++) {
+            mapContents.put(i, contents[i]);
+        }
+        return mapContents;
+    }
+
+    public static Inventory fromJson(JsonElement element) {
+        Map<Integer, ItemStack> mapContents = gson.fromJson(element, LinkedHashMap.class);
+
+        Inventory inv = Bukkit.createInventory(null, mapContents.size());
+        mapContents.forEach(inv::setItem);
+
+        return inv;
+    }
+
+    private static final class ItemAdapter implements JsonSerializer<ItemStack>, JsonDeserializer<ItemStack> {
+
+        @Override
+        public ItemStack deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+            if (json.isJsonNull()) return null;
+            NBTContainer compound = new NBTContainer(json.getAsString());
+            return NBTItem.convertNBTtoItem(compound);
+        }
+
+        @Override
+        public JsonElement serialize(ItemStack src, Type typeOfSrc, JsonSerializationContext context) {
+            if (src == null) return JsonNull.INSTANCE;
+
+            return new JsonPrimitive(NBTItem.convertItemtoNBT(src).toString());
+        }
     }
 
 
