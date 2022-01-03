@@ -171,7 +171,7 @@ public class inventoryUtils {
     public static JsonElement toJson(String title, Inventory inv) {
         return JsonBuilder.object()
                 .add("title", title)
-                .add("items", gson.toJson(contentsToMap(inv.getContents()), mapItemsToken.getType()))
+                .add("items", gson.toJsonTree(contentsToMap(inv.getContents()), mapItemsToken.getType()))
                 .build();
     }
 
