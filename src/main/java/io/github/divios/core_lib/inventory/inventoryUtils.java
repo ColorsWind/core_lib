@@ -1,5 +1,6 @@
 package io.github.divios.core_lib.inventory;
 
+import com.google.common.reflect.TypeToken;
 import com.google.gson.*;
 import de.tr7zw.nbtapi.NBTContainer;
 import de.tr7zw.nbtapi.NBTItem;
@@ -16,6 +17,7 @@ import org.bukkit.util.io.BukkitObjectInputStream;
 import org.bukkit.util.io.BukkitObjectOutputStream;
 import org.yaml.snakeyaml.external.biz.base64Coder.Base64Coder;
 
+import javax.annotation.CheckForNull;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -24,6 +26,7 @@ import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.stream.IntStream;
+
 
 public class inventoryUtils {
 
@@ -162,6 +165,9 @@ public class inventoryUtils {
             .registerTypeHierarchyAdapter(ItemStack.class, new ItemAdapter())
             .create();
 
+    private static final TypeToken<LinkedHashMap<Integer, ItemStack>> mapItemsToken = new TypeToken<LinkedHashMap<Integer, ItemStack>>() {
+    };
+
     public static JsonElement toJson(String title, Inventory inv) {
         return JsonBuilder.object()
                 .add("title", title)
@@ -177,8 +183,9 @@ public class inventoryUtils {
         return mapContents;
     }
 
+
     public static Inventory fromJson(JsonElement element) {
-        Map<Integer, ItemStack> mapContents = gson.fromJson(element, LinkedHashMap.class);
+        Map<Integer, ItemStack> mapContents = gson.fromJson(element, mapItemsToken.getType());
 
         Inventory inv = Bukkit.createInventory(null, mapContents.size());
         mapContents.forEach(inv::setItem);
