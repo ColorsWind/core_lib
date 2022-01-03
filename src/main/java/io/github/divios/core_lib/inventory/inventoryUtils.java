@@ -159,7 +159,7 @@ public class inventoryUtils {
     }
 
     private static final Gson gson = new GsonBuilder()
-            .registerTypeAdapter(ItemStack.class, new ItemAdapter())
+            .registerTypeHierarchyAdapter(ItemStack.class, new ItemAdapter())
             .create();
 
     public static JsonElement toJson(String title, Inventory inv) {
@@ -191,6 +191,7 @@ public class inventoryUtils {
         @Override
         public ItemStack deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
             if (json.isJsonNull()) return null;
+
             NBTContainer compound = new NBTContainer(json.getAsString());
             return NBTItem.convertNBTtoItem(compound);
         }
