@@ -183,11 +183,13 @@ public class inventoryUtils {
         return mapContents;
     }
 
-
     public static Inventory fromJson(JsonElement element) {
-        Map<Integer, ItemStack> mapContents = gson.fromJson(element, mapItemsToken.getType());
+        JsonObject object = element.getAsJsonObject();
 
-        Inventory inv = Bukkit.createInventory(null, mapContents.size());
+        String title = object.get("title").getAsString();
+        Map<Integer, ItemStack> mapContents = gson.fromJson(object.get("items"), mapItemsToken.getType());
+
+        Inventory inv = Bukkit.createInventory(null, mapContents.size(), title);
         mapContents.forEach(inv::setItem);
 
         return inv;
