@@ -163,6 +163,7 @@ public class inventoryUtils {
 
     private static final Gson gson = new GsonBuilder()
             .registerTypeHierarchyAdapter(ItemStack.class, new ItemAdapter())
+            .serializeNulls()
             .create();
 
     private static final TypeToken<LinkedHashMap<Integer, ItemStack>> mapItemsToken = new TypeToken<LinkedHashMap<Integer, ItemStack>>() {
