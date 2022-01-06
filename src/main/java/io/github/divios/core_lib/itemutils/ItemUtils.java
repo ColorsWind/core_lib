@@ -72,8 +72,8 @@ public class ItemUtils {
      * @return The name of the ItemStack
      */
     public static String getName(ItemStack item) {
-        String name = getMetadata(item).getDisplayName();
-        return name.isEmpty() ? getMaterial(item).name() : name;
+        ItemMeta meta = getMetadata(item);
+        return meta.hasDisplayName() ? meta.getDisplayName() : getMaterial(item).name();
     }
 
     public static ItemStack setAmount(ItemStack item, int amount) {
@@ -476,6 +476,12 @@ public class ItemUtils {
     public static ItemMeta getMetadata(ItemStack item) {
         return item.getItemMeta() == null ?
                 Bukkit.getItemFactory().getItemMeta(item.getType()) : item.getItemMeta();
+    }
+
+    public static ItemStack setItemMeta(ItemStack item, ItemMeta meta) {
+        ItemStack clone = item.clone();
+        item.setItemMeta(meta);
+        return clone;
     }
 
     /**
