@@ -44,6 +44,7 @@ public class ItemUtils {
      * @param name The name to give the ItemStack
      * @return The renamed ItemStack
      */
+
     public static ItemStack rename(ItemStack item, String name) {
         ItemMeta meta = getMetadata(item);
         meta.setDisplayName(FormatUtils.color(name));
@@ -71,7 +72,18 @@ public class ItemUtils {
      * @return The name of the ItemStack
      */
     public static String getName(ItemStack item) {
-        return getMetadata(item).getDisplayName();
+        String name = getMetadata(item).getDisplayName();
+        return name.isEmpty() ? getMaterial(item).getData().getName() : name;
+    }
+
+    public static ItemStack setAmount(ItemStack item, int amount) {
+        ItemStack cloned = item.clone();
+        cloned.setAmount(amount);
+        return cloned;
+    }
+
+    public static int getAmount(ItemStack item) {
+        return item.getAmount();
     }
 
     public static ItemStack setMaterial(ItemStack item, Material m) {
