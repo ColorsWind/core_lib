@@ -73,7 +73,7 @@ public class ItemUtils {
      */
     public static String getName(ItemStack item) {
         String name = getMetadata(item).getDisplayName();
-        return name.isEmpty() ? getMaterial(item).getData().getName() : name;
+        return name.isEmpty() ? getMaterial(item).name() : name;
     }
 
     public static ItemStack setAmount(ItemStack item, int amount) {
