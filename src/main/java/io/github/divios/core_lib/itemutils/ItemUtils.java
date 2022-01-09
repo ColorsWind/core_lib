@@ -81,8 +81,8 @@ public class ItemUtils {
     }
 
     private static String getPrettyMaterialName(Material m) {
-        String CURSIVE = "&7";
-        String nameSpace = m.getKey().getKey().replace("_", "");
+        String CURSIVE = "&f";
+        String nameSpace = m.getKey().getKey().replaceAll("_", " ");
 
         return ChatColor.translateAlternateColorCodes('&', CURSIVE + nameSpace);
     }
