@@ -83,8 +83,20 @@ public class ItemUtils {
     private static String getPrettyMaterialName(Material m) {
         String CURSIVE = "&f";
         String nameSpace = m.getKey().getKey().replaceAll("_", " ");
+        String capitalizeNameSpace = capitalizeString(nameSpace);
 
-        return ChatColor.translateAlternateColorCodes('&', CURSIVE + nameSpace);
+        return ChatColor.translateAlternateColorCodes('&', CURSIVE + capitalizeNameSpace);
+    }
+
+    private static String capitalizeString(String s) {
+        String[] arr = s.split(" ");
+        StringBuilder sb = new StringBuilder();
+
+        for (String value : arr) {
+            sb.append(Character.toUpperCase(value.charAt(0)))
+                    .append(value.substring(1)).append(" ");
+        }
+        return sb.toString().trim();
     }
 
     public static ItemStack setAmount(ItemStack item, int amount) {
