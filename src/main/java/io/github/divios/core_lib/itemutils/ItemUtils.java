@@ -82,7 +82,7 @@ public class ItemUtils {
 
     private static String getPrettyMaterialName(Material m) {
         String CURSIVE = "&f";
-        String nameSpace = m.getKey().getKey().replaceAll("_", " ");
+        String nameSpace = m.name().toLowerCase(Locale.ROOT).replaceAll("_", " ");
         String capitalizeNameSpace = capitalizeString(nameSpace);
 
         return ChatColor.translateAlternateColorCodes('&', CURSIVE + capitalizeNameSpace);
