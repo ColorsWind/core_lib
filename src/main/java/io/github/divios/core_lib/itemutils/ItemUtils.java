@@ -84,7 +84,7 @@ public class ItemUtils {
         String CURSIVE = "&7";
         String nameSpace = m.getKey().getKey().replace("_", "");
 
-        return CURSIVE + nameSpace;
+        return ChatColor.translateAlternateColorCodes('&', CURSIVE + nameSpace);
     }
 
     public static ItemStack setAmount(ItemStack item, int amount) {
