@@ -77,7 +77,14 @@ public class ItemUtils {
 
         return meta.hasDisplayName()
                 ? meta.getDisplayName()
-                : getMaterial(item).getKey().getKey();
+                : getPrettyMaterialName(getMaterial(item));
+    }
+
+    private static String getPrettyMaterialName(Material m) {
+        String CURSIVE = "&7";
+        String nameSpace = m.getKey().getKey().replace("_", "");
+
+        return CURSIVE + nameSpace;
     }
 
     public static ItemStack setAmount(ItemStack item, int amount) {
