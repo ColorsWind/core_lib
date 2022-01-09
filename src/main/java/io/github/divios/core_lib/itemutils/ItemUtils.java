@@ -5,6 +5,7 @@ import com.cryptomorin.xseries.XMaterial;
 import com.cryptomorin.xseries.XPotion;
 import de.tr7zw.nbtapi.NBTItem;
 import io.github.divios.core_lib.misc.FormatUtils;
+import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -73,7 +74,10 @@ public class ItemUtils {
      */
     public static String getName(ItemStack item) {
         ItemMeta meta = getMetadata(item);
-        return meta.hasDisplayName() ? meta.getDisplayName() : getMaterial(item).name();
+
+        return meta.hasDisplayName()
+                ? meta.getDisplayName()
+                : getMaterial(item).getKey().getKey();
     }
 
     public static ItemStack setAmount(ItemStack item, int amount) {
