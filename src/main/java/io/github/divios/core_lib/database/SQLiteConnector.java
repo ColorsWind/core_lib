@@ -5,13 +5,15 @@ import com.zaxxer.hikari.HikariDataSource;
 import org.bukkit.plugin.Plugin;
 
 import java.io.File;
+import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class SQLiteConnector implements DatabaseConnector {
 
     private final Plugin plugin;
     private final String connectionString;
-    private HikariDataSource hikariConnection;
+    private Connection connection;
 
     public SQLiteConnector(Plugin plugin) {
         this.plugin = plugin;
@@ -31,26 +33,27 @@ public class SQLiteConnector implements DatabaseConnector {
 
     @Override
     public void closeConnection() {
-        if (this.hikariConnection != null) {
-            this.hikariConnection.close();
+        try {
+            if (this.connection != null) {
+                this.connection.close();
+            }
+        } catch (SQLException ex) {
+            this.plugin.getLogger().severe("An error occurred closing the SQLite database connection: " + ex.getMessage());
         }
     }
 
     @Override
     public void connect(ConnectionCallback callback) {
-        if (this.hikariConnection == null) {
-            HikariConfig config = new HikariConfig();
-            config.setJdbcUrl(connectionString);
-            config.addDataSourceProperty("autoReconnect", "true");
-            config.addDataSourceProperty("leakDetectionThreshold", "true");
-            config.addDataSourceProperty("verifyServerCertificate", "false");
-            config.addDataSourceProperty("useSSL", "false");
-            config.setConnectionTimeout(5000);
-            hikariConnection = new HikariDataSource(config);
+        if (this.connection == null) {
+            try {
+                this.connection = DriverManager.getConnection(this.connectionString);
+            } catch (SQLException ex) {
+                this.plugin.getLogger().severe("An error occurred retrieving the SQLite database connection: " + ex.getMessage());
+            }
         }
 
         try {
-            callback.accept(this.hikariConnection.getConnection());
+            callback.accept(this.connection);
         } catch (Exception ex) {
             this.plugin.getLogger().severe("An error occurred executing an SQLite query: " + ex.getMessage());
             ex.printStackTrace();
