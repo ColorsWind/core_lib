@@ -129,7 +129,7 @@ public class materialsPrompt {
                 err = true;
             }
             if (!err) {
-                item = new ItemBuilder(item).setName("&f&l" + m.toString());
+                item = new ItemBuilder(item).setName("&f&l" + m);
                 materialsaux.add(item);
             }
         }

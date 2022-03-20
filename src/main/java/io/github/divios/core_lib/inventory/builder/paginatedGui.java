@@ -17,15 +17,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
-import java.util.function.BiConsumer;
-import java.util.function.Consumer;
-import java.util.function.Supplier;
+import java.util.function.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class paginatedGui {
 
-    private final String title;
+    private final BiFunction<Integer, Integer, String> title;
     private final Supplier<List<ItemButton>> items;
     private final Pair<ItemStack, Integer> backButton;
     private final Pair<ItemStack, Integer> nextButton;
@@ -36,7 +34,7 @@ public class paginatedGui {
     private final List<InventoryGUI> invs = new ArrayList<>();
 
     private paginatedGui(
-            String title,
+            BiFunction<Integer, Integer, String> title,
             Supplier<List<ItemButton>> items,
             Pair<ItemStack, Integer> backButton,
             Pair<ItemStack, Integer> nextButton,
@@ -87,9 +85,9 @@ public class paginatedGui {
         int max = (int) Math.ceil( (float) supplierItems.size() / inventoryUtils.getEmptySlots(dummyInv));
         if (max == 0) max = 1;
 
-        for (int i = 0; i < max; i++) {         // initial population
+        for (int i = 0; i <= max; i++) {         // initial population
 
-            InventoryGUI invGui = new InventoryGUI(Core_lib.PLUGIN, 54, title);
+            InventoryGUI invGui = new InventoryGUI(Core_lib.PLUGIN, 54, title.apply(i + 1, max));
             Inventory inv = invGui.getInventory();
 
             if (populator != null) populator.apply(inv);     // Apply populator
@@ -140,7 +138,7 @@ public class paginatedGui {
 
     protected static final class BuilderImpl implements paginatedGuiBuilder {
 
-        private String title;
+        private BiFunction<Integer, Integer, String> title;
         private Supplier<List<ItemButton>> items;
         private Pair<ItemStack, Integer> backButton;
         private Pair<ItemStack, Integer> nextButton;
@@ -152,6 +150,12 @@ public class paginatedGui {
 
         @Override
         public paginatedGuiBuilder withTitle(String title) {
+            this.title = (current, max) -> title;
+            return this;
+        }
+
+        @Override
+        public paginatedGuiBuilder withTitle(BiFunction<Integer, Integer, String> title) {
             this.title = title;
             return this;
         }
@@ -219,7 +223,7 @@ public class paginatedGui {
                     "nextButton slot out of bounds");
 
             if (withButtons == null) withButtons = (e, i) -> {};
-            if (title == null) title = "";
+            if (title == null) title = (current, max) -> "";
 
             return new paginatedGui(title, items, backButton, nextButton, exitButton, withButtons, populator);
         }

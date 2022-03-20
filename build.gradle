@@ -12,7 +12,7 @@ plugins {
 apply plugin: 'maven-publish'
 
 group = 'io.github.divios'
-def pluginVersion = '6.4.2'
+def pluginVersion = '6.4.3'
 version = pluginVersion
 
 sourceCompatibility = '1.8'
@@ -53,10 +53,9 @@ repositories {
 dependencies {
     compileOnly 'com.github.MilkBowl:VaultAPI:1.7'
     compileOnly group: "org.spigotmc", name: "spigot-api", version: "1.18-R0.1-SNAPSHOT"
-    compileOnly 'com.mojang:authlib:1.5.21'
     implementation group: 'com.zaxxer', name: 'HikariCP', version: '2.3.2'
-    api "de.tr7zw:item-nbt-api-plugin:2.9.0-SNAPSHOT"
-    api 'com.github.cryptomorin:XSeries:8.5.0.1'
+    api "de.tr7zw:item-nbt-api-plugin:2.9.2-SNAPSHOT"
+    api 'com.github.cryptomorin:XSeries:8.6.1'
 }
 
 shadowJar {
@@ -71,7 +70,7 @@ task updateJars {}
 
 jar.configure {
     actions.clear()
-    //dependsOn shadowJar
+    dependsOn shadowJar
 }
 
 shadowJar.configure {
