@@ -3,9 +3,11 @@ package io.github.divios.core_lib.itemutils;
 import com.cryptomorin.xseries.SkullUtils;
 import com.cryptomorin.xseries.XMaterial;
 import com.cryptomorin.xseries.XPotion;
+import com.mojang.authlib.GameProfile;
 import de.tr7zw.nbtapi.NBTItem;
 import io.github.divios.core_lib.misc.FormatUtils;
 import net.md_5.bungee.api.ChatColor;
+import net.md_5.bungee.api.chat.TranslatableComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -15,6 +17,8 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
+import org.bukkit.inventory.meta.SkullMeta;
+import com.mojang.authlib.properties.Property;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.util.io.BukkitObjectInputStream;
 import org.bukkit.util.io.BukkitObjectOutputStream;
@@ -23,6 +27,9 @@ import org.yaml.snakeyaml.external.biz.base64Coder.Base64Coder;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BiPredicate;
@@ -707,6 +714,40 @@ public class ItemUtils {
      */
     public static void give(Player player, Material type, int amount) {
         give(player, new ItemStack(type), amount);
+    }
+
+    public static ItemStack createSkull(String url) {
+        ItemStack head = XMaterial.PLAYER_HEAD.parseItem();
+
+        if (url.isEmpty()) return head;
+
+        SkullMeta headMeta = (SkullMeta) head.getItemMeta();
+        headMeta.setOwner("Notch");
+
+        GameProfile profile = new GameProfile(UUID.randomUUID(), null);
+        profile.getProperties().put("textures", new Property("textures", url));
+
+        Method setProfileMethod = null;
+        try {
+            setProfileMethod = headMeta.getClass().getDeclaredMethod("setProfile", GameProfile.class);
+        } catch (NoSuchMethodException | SecurityException ignored) {}
+        try {
+            // if available, we use setProfile(GameProfile) so that it sets both the profile field and the
+            // serialized profile field for us. If the serialized profile field isn't set
+            // ItemStack#isSimilar() and ItemStack#equals() throw an error.
+            if (setProfileMethod == null) {
+                Field profileField = headMeta.getClass().getDeclaredField("profile");
+                profileField.setAccessible(true);
+                profileField.set(headMeta, profile);
+            } else {
+                setProfileMethod.setAccessible(true);
+                setProfileMethod.invoke(headMeta, profile);
+            }
+        } catch (NoSuchFieldException | IllegalArgumentException | IllegalAccessException | SecurityException | InvocationTargetException e1) {
+            e1.printStackTrace();
+        }
+        head.setItemMeta(headMeta);
+        return head;
     }
 
     /**
