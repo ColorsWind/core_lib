@@ -85,6 +85,9 @@ public class FormatUtils {
      * @return The colored string, replacing color codes using & with proper codes
      */
     public static String color(String input) {
+        if (input.chars().filter(ch -> ch == ChatColor.COLOR_CHAR).count() == 0)
+            input = ChatColor.COLOR_CHAR + "f" + input;
+
         return ChatColor.translateAlternateColorCodes('&', input);
     }
 
