@@ -420,11 +420,12 @@ public class InventoryGUI implements Listener {
             e.setCancelled(true);
         }
         
-        if (e.getAction() == InventoryAction.COLLECT_TO_CURSOR && !e.getClickedInventory().equals(inventory)) {
+        if (e.getAction() == InventoryAction.COLLECT_TO_CURSOR && !e.getInventory().equals(inventory)) {
             e.setCancelled(true);
             return;
         }
-        if (!inventory.equals(e.getClickedInventory()) && e.getAction() == InventoryAction.MOVE_TO_OTHER_INVENTORY) {
+
+        if (!inventory.equals(e.getInventory()) && e.getAction() == InventoryAction.MOVE_TO_OTHER_INVENTORY) {
             if (openSlots.size() > 0) {
                 List<Integer> slots = new ArrayList<>();
                 int amount = e.getCurrentItem().getAmount();
@@ -466,7 +467,8 @@ public class InventoryGUI implements Listener {
             }
             e.setCancelled(true);
         }
-        if (e.getInventory().equals(e.getClickedInventory())) {
+
+        if (inventory.equals(e.getInventory()) && (e.getSlot() == e.getRawSlot())) {
             if (openSlots.contains(e.getSlot())) {
                 List<Integer> list = new ArrayList<>();
                 list.add(e.getSlot());

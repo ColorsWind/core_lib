@@ -1,7 +1,5 @@
 package io.github.divios.core_lib.database;
 
-import com.zaxxer.hikari.HikariConfig;
-import com.zaxxer.hikari.HikariDataSource;
 import org.bukkit.plugin.Plugin;
 
 import java.io.File;
