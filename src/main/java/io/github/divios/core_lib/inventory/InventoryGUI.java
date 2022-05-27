@@ -412,7 +412,7 @@ public class InventoryGUI implements Listener {
 
     @EventHandler
     public void onClick(InventoryClickEvent e) {
-        if (!inventory.equals(e.getInventory())) {
+        if (!inventory.equals(e.getClickedInventory())) {
             return;
         }
         
@@ -425,7 +425,7 @@ public class InventoryGUI implements Listener {
             return;
         }
 
-        if (!inventory.equals(e.getInventory()) && e.getAction() == InventoryAction.MOVE_TO_OTHER_INVENTORY) {
+        if (!inventory.equals(e.getClickedInventory()) && e.getAction() == InventoryAction.MOVE_TO_OTHER_INVENTORY) {
             if (openSlots.size() > 0) {
                 List<Integer> slots = new ArrayList<>();
                 int amount = e.getCurrentItem().getAmount();
@@ -468,7 +468,7 @@ public class InventoryGUI implements Listener {
             e.setCancelled(true);
         }
 
-        if (inventory.equals(e.getInventory()) && (e.getSlot() == e.getRawSlot())) {
+        if (inventory.equals(e.getClickedInventory())) {
             if (openSlots.contains(e.getSlot())) {
                 List<Integer> list = new ArrayList<>();
                 list.add(e.getSlot());
