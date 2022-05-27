@@ -22,7 +22,7 @@ dependencies {
 }
 ```
 
-Replace `Tag` with a valid Core_lib version. Example `6.0.1`. Check the latest tag on [packages]()
+Replace `Tag` with a valid Core_lib version. Example `6.0.1`. Check the latest tag on [packages](https://github.com/divios?tab=packages&repo_name=core_lib)
 
 ## Build it Locally
 
