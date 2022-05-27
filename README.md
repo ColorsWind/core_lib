@@ -20,5 +20,5 @@ cd core_lib
 
 Note: you need to run [buildtools](https://www.spigotmc.org/wiki/buildtools/) since the api uses mojand's Authlib library internally. If you are not familiar with this i strongly suggest to get the jar via [releases](https://github.com/divios/core_lib/releases) and add to your project path.
 
-After that you can find the jar in `builds/lib/Core_lib.jar`. Take that jar and add it to your proyect classpath.
+After that you can find the jar in `builds/lib/Core_lib.jar`. Take that jar and add it to your proyect classpath or instead publish it to your maven local.
 
