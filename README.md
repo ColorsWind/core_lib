@@ -4,7 +4,7 @@ A collection of libraries and methods to speed up the process of creating a spig
 
 # Installation for Development
 
-Core_lib is not a standalone plugin, is a library and is designed to be a dependency to be attached to another plugin. To add it to your project, you can either [build it](ttps://github.com/divios/core_lib#build-it-locally) youself or get the jar via [releases](https://github.com/divios/core_lib/releases) and add to your project path.
+Core_lib is not a standalone plugin, is a library and is designed to be a dependency to be attached to another plugin. To add it to your project, you can either take it from github packages via maven or [build it](ttps://github.com/divios/core_lib#build-it-locally) yourself.
 
 ## With Github Packages
 
