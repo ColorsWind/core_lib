@@ -6,9 +6,23 @@ A collection of libraries and methods to speed up the process of creating a spig
 
 Core_lib is not a standalone plugin, is a library and is designed to be a dependency to be attached to another plugin. To add it to your project, you can either [build it](ttps://github.com/divios/core_lib#build-it-locally) youself or get the jar via [releases](https://github.com/divios/core_lib/releases) and add to your project path.
 
-## Maven Central
+## With Github Packages
 
-Working in progress
+You can use the artifacts hosted on Github Packages to access the api.
+
+```groovy
+repositories {
+    maven { url = "https://maven.pkg.github.com/divios/core_lib" }
+}
+```
+
+``` groovy
+dependencies {
+        compileOnly 'io.github.divios:core_lib:Tag'
+}
+```
+
+Replace `Tag` with a valid Core_lib version. Example `6.0.1`. Check the latest tag on [packages]()
 
 ## Build it Locally
 
