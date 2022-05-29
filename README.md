@@ -6,13 +6,13 @@ A collection of libraries and methods to speed up the process of creating a spig
 
 Core_lib is not a standalone plugin, is a library and is designed to be a dependency to be attached to another plugin. To add it to your project, you can either take it from github packages via maven or [build it](ttps://github.com/divios/core_lib#build-it-locally) yourself.
 
-## With Github Packages
+## With Maven
 
-You can use the artifacts hosted on Github Packages to access the api.
+You can use the artifacts hosted on Repsy to access the api.
 
 ```groovy
 repositories {
-    maven { url = "https://maven.pkg.github.com/divios/core_lib" }
+    maven { url 'https://repo.repsy.io/mvn/divios/core_lib' }
 }
 ```
 
