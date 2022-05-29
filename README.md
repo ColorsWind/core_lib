@@ -4,7 +4,11 @@ A collection of libraries and methods to speed up the process of creating a spig
 
 # Installation for Development
 
-Core_lib is not a standalone plugin, is a library and is designed to be a dependency to be attached to another plugin. To add it to your project, you can either take it from github packages via maven or [build it](ttps://github.com/divios/core_lib#build-it-locally) yourself.
+Core_lib is not a standalone plugin, is a library and is designed to be a dependency to be attached to another plugin. To add it to your project, you can either take it from [github packages](https://github.com/divios/core_lib#github-packages), via [maven](https://github.com/divios/core_lib#with-maven) or [build it](ttps://github.com/divios/core_lib#build-it-locally) yourself.
+
+## Github Packages
+
+You can download the latest jar shipped via [packages](https://github.com/divios?tab=packages&repo_name=core_lib) (instead of building youself) and add the artifact to your project path.
 
 ## With Maven
 
@@ -22,7 +26,7 @@ dependencies {
 }
 ```
 
-Replace `Tag` with a valid Core_lib version. Example `6.0.1`. Check the latest tag on [packages](https://github.com/divios?tab=packages&repo_name=core_lib)
+Replace `Tag` with a valid Core_lib version. Example `6.4.8`. 
 
 ## Build it Locally
 
