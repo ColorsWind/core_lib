@@ -1,4 +1,4 @@
-# Core_lib
+# Core_lib ![Latest Version](https://img.shields.io/badge/Version-6.4.8-blue.svg)
 
 A collection of libraries and methods to speed up the process of creating a spigot plugin.
 
