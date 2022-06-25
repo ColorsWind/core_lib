@@ -33,12 +33,24 @@ import org.bukkit.Bukkit;
  */
 public final class Log {
 
+    public static void info(String format, Object... objects) {
+        info(String.format(format, objects));
+    }
+
     public static void info(String s) {
         Core_lib.PLUGIN.getLogger().info(s);
     }
 
+    public static void warn(String format, Object... objects) {
+        warn(String.format(format, objects));
+    }
+
     public static void warn(String s) {
         Core_lib.PLUGIN.getLogger().warning(s);
+    }
+
+    public static void severe(String format, Object... objects) {
+        severe(String.format(format, objects));
     }
 
     public static void severe(String s) {
