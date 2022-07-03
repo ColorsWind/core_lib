@@ -14,8 +14,12 @@ public class SQLiteConnector implements DatabaseConnector {
     private Connection connection;
 
     public SQLiteConnector(Plugin plugin) {
+        this(plugin, plugin.getDescription().getName().toLowerCase());
+    }
+
+    public SQLiteConnector(Plugin plugin, String fileName) {
         this.plugin = plugin;
-        this.connectionString = "jdbc:sqlite:" + plugin.getDataFolder() + File.separator + plugin.getDescription().getName().toLowerCase() + ".db";
+        this.connectionString = "jdbc:sqlite:" + plugin.getDataFolder() + File.separator + fileName + ".db";
 
         try {
             Class.forName("org.sqlite.JDBC"); // This is required to put here for Spigot 1.10 and below to force class load

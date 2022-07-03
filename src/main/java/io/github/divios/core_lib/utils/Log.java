@@ -27,18 +27,23 @@ package io.github.divios.core_lib.utils;
 
 import io.github.divios.core_lib.Core_lib;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 
 /**
  * Utility for quickly accessing a logger instance without using {@link Bukkit#getLogger()}
  */
 public final class Log {
 
+    private static final String INFO = ChatColor.COLOR_CHAR + "f";
+    private static final String WARN = ChatColor.COLOR_CHAR + "e";
+    private static final String SEVERE = ChatColor.COLOR_CHAR + "c";
+
     public static void info(String format, Object... objects) {
         info(String.format(format, objects));
     }
 
     public static void info(String s) {
-        Core_lib.PLUGIN.getLogger().info(s);
+        sendMsg(INFO, s);
     }
 
     public static void warn(String format, Object... objects) {
@@ -46,7 +51,7 @@ public final class Log {
     }
 
     public static void warn(String s) {
-        Core_lib.PLUGIN.getLogger().warning(s);
+        sendMsg(WARN, s);
     }
 
     public static void severe(String format, Object... objects) {
@@ -54,7 +59,12 @@ public final class Log {
     }
 
     public static void severe(String s) {
-        Core_lib.PLUGIN.getLogger().severe(s);
+        sendMsg(SEVERE, s);
+    }
+
+    private static void sendMsg(String prefix, String msg) {
+        String finalMsg = String.format("%s[%s] %s", prefix, Core_lib.PLUGIN.getName(), msg);
+        Bukkit.getConsoleSender().sendMessage(finalMsg);
     }
 
     private Log() {

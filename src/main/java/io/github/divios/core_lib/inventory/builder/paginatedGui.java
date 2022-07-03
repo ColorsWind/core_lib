@@ -7,6 +7,7 @@ import io.github.divios.core_lib.inventory.ItemButton;
 import io.github.divios.core_lib.inventory.inventoryUtils;
 import io.github.divios.core_lib.itemutils.ItemUtils;
 import io.github.divios.core_lib.misc.Pair;
+import io.github.divios.core_lib.scheduler.Schedulers;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -15,12 +16,15 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
-import java.util.function.*;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+import java.util.function.BiConsumer;
+import java.util.function.BiFunction;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
 
+@SuppressWarnings("unused")
 public class paginatedGui {
 
     private final BiFunction<Integer, Integer, String> title;
@@ -79,18 +83,22 @@ public class paginatedGui {
         if (populator != null) populator.apply(dummyInv);
         dummyInv.setItem(backButton.get2(), backButton.get1());
         dummyInv.setItem(nextButton.get2(), nextButton.get1());
-        
-        List<ItemButton> supplierItems = items.get();
-        
-        int max = (int) Math.ceil( (float) supplierItems.size() / inventoryUtils.getEmptySlots(dummyInv));
+
+        List<ItemButton> itemButtons = items.get();
+
+        int max = (int) Math.ceil((float) itemButtons.size() / inventoryUtils.getEmptySlots(dummyInv));
         if (max == 0) max = 1;
+
+        Inventory skeletonInv = Bukkit.createInventory(null, 54);
+        if (populator != null) populator.apply(skeletonInv);     // Apply populator
+
+        Iterator<ItemButton> iteratorButton = itemButtons.iterator();
 
         for (int i = 0; i <= max; i++) {         // initial population
 
             InventoryGUI invGui = new InventoryGUI(Core_lib.PLUGIN, 54, title.apply(i + 1, max));
-            Inventory inv = invGui.getInventory();
+            invGui.getInventory().setContents(skeletonInv.getContents());
 
-            if (populator != null) populator.apply(inv);     // Apply populator
             if (i != 0) {
                 int finalI = i;
                 invGui.addButton(backButton.get2(), ItemButton.create(backButton.get1(),
@@ -109,24 +117,21 @@ public class paginatedGui {
 
             invGui.setDestroyOnClose(false);
             invs.add(invGui);
-        }
 
-        InventoryGUI inv = invs.get(0);         // Populate with items
-        for (ItemButton item : supplierItems) {
-
-            int slot;
-            if ((slot = inventoryUtils.getFirstEmpty(inv.getInventory())) == -1) {
-                inv = invs.get(invs.indexOf(inv) + 1);
-                slot = inventoryUtils.getFirstEmpty(inv.getInventory());
-            }
-
-            inv.addButton(slot, item);
-
+            Schedulers.sync().run(() -> {
+                int slot;
+                while (iteratorButton.hasNext()
+                        && (slot = inventoryUtils.getFirstEmpty(invGui.getInventory())) != -1) {
+                    invGui.addButton(slot, iteratorButton.next());
+                }
+            });
         }
 
     }
 
-    public inventoryPopulatorState getPopulator() { return populator.toState(); }
+    public inventoryPopulatorState getPopulator() {
+        return populator.toState();
+    }
 
     public void destroy() {
         invs.forEach(InventoryGUI::destroy);
@@ -146,7 +151,8 @@ public class paginatedGui {
         private BiConsumer<InventoryGUI, Integer> withButtons;
         private PopulatorContentContext populator;
 
-        BuilderImpl() {}
+        BuilderImpl() {
+        }
 
         @Override
         public paginatedGuiBuilder withTitle(String title) {
@@ -222,12 +228,13 @@ public class paginatedGui {
             Preconditions.checkArgument(exitButton.get2() >= 0 && exitButton.get2() < 54,
                     "nextButton slot out of bounds");
 
-            if (withButtons == null) withButtons = (e, i) -> {};
+            if (withButtons == null) withButtons = (e, i) -> {
+            };
             if (title == null) title = (current, max) -> "";
 
             return new paginatedGui(title, items, backButton, nextButton, exitButton, withButtons, populator);
         }
-        
+
         @Override
         public CompletableFuture<paginatedGui> buildFuture() {
             return CompletableFuture.supplyAsync(this::build);
