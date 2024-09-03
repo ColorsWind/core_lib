@@ -62,6 +62,7 @@ public class WeightedRandom<T> {
      * @param weights The map of outcomes to weights
      * @deprecated Use {@link WeightedRandom#fromIntMap(Map)}
      */
+    @Deprecated
     public WeightedRandom(Map<T, Integer> weights) {
         HashMap<T, Double> dmap = new HashMap<>();
         weights.forEach((k, v) -> {

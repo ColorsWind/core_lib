@@ -9,11 +9,11 @@ plugins {
 
 def id = "core_lib"
 group = 'io.github.divios'
-def pluginVersion = '6.5.9'
+def pluginVersion = '6.6.0'
 version = pluginVersion
 
-sourceCompatibility = '1.8'
-targetCompatibility = '1.8'
+sourceCompatibility = '17'
+targetCompatibility = '17'
 
 publishing {
     publications {
@@ -32,15 +32,15 @@ publishing {
         }
     }
 
-    repositories {
-        maven {
-            url 'https://repo.repsy.io/mvn/divios/core_lib'
-            credentials {
-                username repsyUsername
-                password repsyPassword
-            }
-        }
-    }
+//    repositories {
+//        maven {
+//            url 'https://repo.repsy.io/mvn/divios/core_lib'
+//            credentials {
+//                username repsyUsername
+//                password repsyPassword
+//            }
+//        }
+//    }
 
 }
 
@@ -50,13 +50,15 @@ repositories {
 
     maven { url 'https://hub.spigotmc.org/nexus/content/repositories/public/' }
     maven { url 'https://repo.codemc.org/repository/maven-public/' }
+    maven { url 'https://libraries.minecraft.net/'}
     maven { url 'https://jitpack.io' }
 
 }
 
 dependencies {
-    compileOnly group: "org.spigotmc", name: "spigot-api", version: "1.18-R0.1-SNAPSHOT"
-    compileOnly group: "org.spigotmc", name: "spigot", version: "1.18.2-R0.1-SNAPSHOT"
-    api "de.tr7zw:item-nbt-api-plugin:2.10.0-SNAPSHOT"
-    api 'com.github.cryptomorin:XSeries:8.8.0'
+    compileOnly group: "org.spigotmc", name: "spigot-api", version: "1.18.2-R0.1-SNAPSHOT"
+//    compileOnly group: "org.spigotmc", name: "spigot", version: "1.20.6-R0.1-SNAPSHOT"
+    compileOnly group: "com.mojang", name: "authlib", version: "6.0.54"
+    api "de.tr7zw:item-nbt-api-plugin:2.13.2"
+    api 'com.github.cryptomorin:XSeries:11.2.1'
 }

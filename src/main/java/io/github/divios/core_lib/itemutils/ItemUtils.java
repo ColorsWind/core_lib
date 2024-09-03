@@ -1,8 +1,10 @@
 package io.github.divios.core_lib.itemutils;
 
-import com.cryptomorin.xseries.SkullUtils;
 import com.cryptomorin.xseries.XMaterial;
 import com.cryptomorin.xseries.XPotion;
+import com.cryptomorin.xseries.profiles.builder.XSkull;
+import com.cryptomorin.xseries.profiles.objects.ProfileInputType;
+import com.cryptomorin.xseries.profiles.objects.Profileable;
 import com.mojang.authlib.GameProfile;
 import de.tr7zw.nbtapi.NBTItem;
 import io.github.divios.core_lib.misc.FormatUtils;
@@ -487,20 +489,14 @@ public class ItemUtils {
         if (!item.getType().equals(XMaterial.PLAYER_HEAD.parseMaterial()))
             return item;
 
-        ItemStack cloned = item.clone();
-        cloned.setItemMeta(SkullUtils.applySkin(cloned.getItemMeta(), url));
-
-        return cloned;
+        return XSkull.of(item).profile(Profileable.of(ProfileInputType.TEXTURE_URL, url)).apply();
     }
 
     public static ItemStack applyTexture(ItemStack item, UUID uuid) {
         if (!item.getType().equals(XMaterial.PLAYER_HEAD.parseMaterial()))
             return item;
 
-        ItemStack cloned = item.clone();
-        cloned.setItemMeta(SkullUtils.applySkin(cloned.getItemMeta(), uuid));
-
-        return cloned;
+        return XSkull.of(item).profile(Profileable.of(uuid)).apply();
     }
 
     public static ItemMeta getMetadata(ItemStack item) {
